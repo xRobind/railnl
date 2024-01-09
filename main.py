@@ -55,10 +55,13 @@ class RailNL:
                 time = int(parts[2].strip("\n"))
 
                 # add connection to connection list in Station class,
-                # and the list of all connections
+                # and the list of all connections,
+                # for both stations
                 for station in self.stations:
-                    if name == station.name or connection == station.name:
+                    if name == station.name:
                         station.add_connection(connection, time)
+                    if connection == station.name:
+                        station.add_connection(name, time)
 
                 # add the connection and time to the list of all connections
                 self.connections[f"{name} -> {connection}"] = time
