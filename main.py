@@ -2,8 +2,11 @@ from stations import Station
 
 class RailNL:
 
-    def __init__(self) -> None:
+    def __init__(self, filename) -> None:
         self.stations = []
+
+        # Load room structures
+        self.load_stations(f"data/StationsHolland.txt")
             
     def load_stations(self, filename):
         # open file, read the lines and split into the three parts
@@ -14,11 +17,11 @@ class RailNL:
                 parts = line.split(",", 2)
 
                 name = parts[0]
-                connection = parts[1]
-                time = int(parts[2].strip("\n"))
+                y = parts[1]
+                x = int(parts[2].strip("\n"))
 
                 # create the room, add room to self.rooms
-                station = Station(name, connection, time)
+                station = Station(name, y, x)
                 self.stations.append(station)
 
                 # read new line
