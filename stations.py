@@ -3,9 +3,9 @@ class Station:
     """
 
     def __init__(self, name: str, y: str, x: str) -> None:
-        self.station_name: str = name
-        self.station_y: str = y
-        self.station_x: str = x
+        self.name: str = name
+        self.y: str = y
+        self.x: str = x
 
         self.connections_: dict[str: int] = {}
 
