@@ -3,7 +3,8 @@ from stations import Station
 class RailNL:
 
     def __init__(self) -> None:
-        # initialise lists
+        # initialise lists that contain stations as objects of the class,
+        # and connections as a dict that links the connection to the time
         self.stations = []
         self.connections = {}
 
@@ -14,6 +15,7 @@ class RailNL:
     def load_stations(self, filename):
         # open file, read the lines and split into the three parts
         with open(filename) as f:
+            # skip first line
             next(f)
             line = f.readline()
             while line != "\n":
@@ -35,8 +37,10 @@ class RailNL:
                 line = f.readline()
 
     def load_connections(self, filename):
-        # open file, read the lines and split into the three parts
+        """open file, read the lines and split into the three parts
+        """ 
         with open(filename) as f:
+            # skip first line
             next(f)
             line = f.readline()
             while line != "\n":
@@ -57,6 +61,7 @@ class RailNL:
                         station.add_connection(connection, time)
                 # add the connection and time to the list of all connections
                 self.connections[f"{name} -> {connection}"] = time
+                self.connections[f"{connection} -> {name}"] = time
                 
                 # read new line
                 line = f.readline()
