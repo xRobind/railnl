@@ -22,6 +22,7 @@ class RailNL:
                 # remove newline character and split into different parts
                 parts = line.split(",", 2)
 
+                # set the different parts of the line to its variable
                 name = parts[0]
                 try:
                     y = parts[1]
@@ -47,6 +48,7 @@ class RailNL:
                 # remove newline character and split into different parts
                 parts = line.split(",", 2)
 
+                # set the different parts of the line to its variable
                 name = parts[0]
                 try:
                     connection = parts[1]
