@@ -57,11 +57,11 @@ class RailNL:
                 # add connection to connection list in Station class,
                 # and the list of all connections
                 for station in self.stations:
-                    if name == station.name:
+                    if name == station.name or connection == station.name:
                         station.add_connection(connection, time)
+
                 # add the connection and time to the list of all connections
                 self.connections[f"{name} -> {connection}"] = time
-                self.connections[f"{connection} -> {name}"] = time
                 
                 # read new line
                 line = f.readline()
