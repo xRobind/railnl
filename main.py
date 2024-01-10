@@ -18,9 +18,6 @@ class RailNL:
         self.load_stations(f"data/StationsHolland.txt")
         self.load_connections(f"data/ConnectiesHolland.txt")
 
-        self.start_trajectory()
-        self.continue_trajectory(self.trajectories[0])
-
     def load_stations(self, filename):
         # open file, read the lines and split into the three parts
         with open(filename) as f:
@@ -90,6 +87,8 @@ class RailNL:
         # create trajectory with starting station, add to the Trajectory class
         trajectory = Trajectory(starting_station)
         self.trajectories.append(trajectory)
+
+        return trajectory
     
     def continue_trajectory(self, trajectory):
         """continue a trajectory by choosing between available connections
@@ -112,15 +111,25 @@ class RailNL:
                 time = station.connection_time[connection]
 
         # add travel time if it stays under 2hrs
-        try:
-            trajectory.add_time(time)
-        except(trajectory.time > 120):
+        if (trajectory.time + time) > 120:
             return False
+        else:
+            trajectory.add_time(time)
 
-        # add connected station
-        trajectory.add_connection(chosen_connection)
+            # add connected station as an object by searching for it by name
+            for item in self.stations:
+                if item.name == chosen_connection:
+                    trajectory.add_connection(item)
 
         return True
 
-x = RailNL()
+if __name__ == "__main__":
+    rail = RailNL()
+    trajectory = rail.start_trajectory()
+    
+    run = rail.continue_trajectory(trajectory)
+    while run is True:
+        run = rail.continue_trajectory(trajectory)
+
+
 
