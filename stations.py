@@ -8,6 +8,7 @@ class Station:
         self.x: str = x
 
         self.connections_: dict[str: int] = {}
-
+#comment
     def add_connection(self, connection: str, time: int):
         self.connections_[connection] = time
+        
