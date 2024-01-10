@@ -15,3 +15,4 @@ class Station:
     def add_connection(self, connection: str, time: int):
         self.connection_time[connection] = time
         self.connections.append(connection)
+        
