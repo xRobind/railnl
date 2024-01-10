@@ -5,11 +5,20 @@ import random
 
 
 class RailNL:
+    """This class reads data from csv files about train stations in Holland,
+    saves them in classes and uses them to create imaginary trains that follow
+    a trajectory through the saved train stations.
+    This process continues until all saved connections between two specific
+    stations are used. It then uses a known formula to calculate the quality
+    of the lines. The goal is to implement its methods in such a way that the
+    quality of the lines will end up the closest to the number 10000.
+    """    
 
     def __init__(self) -> None:
-        # initialise lists that contain stations as objects of the class,
-        # connections as a dict that links the connection to the time,
-        # and trajectories made and time spent
+        """initialise lists that contain stations as objects of the class,
+        connections as a dict that links the connection to the time,
+        and trajectories made and time spent
+        """
         self.stations = []
         self.connections = []
         self.trajectories = []
@@ -20,7 +29,8 @@ class RailNL:
         self.load_connections(f"data/ConnectiesHolland.txt")
 
     def load_stations(self, filename):
-        # open file, read the lines and split into the three parts
+        """open file, read the lines and split into the three parts
+        """
         with open(filename) as f:
             # skip first line
             next(f)
@@ -46,7 +56,7 @@ class RailNL:
 
     def load_connections(self, filename):
         """open file, read the lines and split into the three parts
-        """ 
+        """
         with open(filename) as f:
             # skip first line
             next(f)
@@ -96,12 +106,11 @@ class RailNL:
         """continue a trajectory by choosing between available connections
         of the current station and updating the current one to the next one,
         except if we've reached the end.
+
         Returns "continue" if continued, "new trajectory" if not because the
         2hrs are over,
         "all connections used" if not because all connections have been
         used and the goal has been reached.
-
-        accepts a trajectory from self.trajectories
         """
         # get available connections
         station = trajectory.stations[-1]
@@ -111,9 +120,7 @@ class RailNL:
 
         # get the travel time by finding the chosen connection
         # in the dict where it's time is mapped
-        for connection in station.connection_time:
-            if connection == chosen_connection:
-                time = station.connection_time[connection]
+        time = self.get_time(station, chosen_connection)
 
         # add travel time if it stays under 2hrs, otherwise stop
         # add to total time and start new trajectory
@@ -138,11 +145,21 @@ class RailNL:
             
         return "continue"
     
+    def get_time(self, station, chosen_connection):
+        """get the travel time by finding the chosen connection
+        in the dict where it's time is mapped
+        """        
+        for connection in station.connection_time:
+            if connection == chosen_connection:
+                return station.connection_time[connection]
+
+
     def calculate_K(self):
         """calculate the quality of the lijnvoering
         """        
         T = len(self.trajectories)
         return 10000 - (T*100 + self.total_time)
+
 
 if __name__ == "__main__":
     rail = RailNL()
@@ -157,7 +174,7 @@ if __name__ == "__main__":
             run = rail.continue_trajectory(trajectory)
 
     K = rail.calculate_K()
-    print(K)
+    print(f"Quality of the lines: {K}")
     
 
     
