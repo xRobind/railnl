@@ -7,7 +7,11 @@ class Station:
         self.y: str = y
         self.x: str = x
 
-        self.connections_: dict[str: int] = {}
+        # make a dict that maps connections to their travel time
+        # and a list that just has the connections
+        self.connection_time: dict[str: int] = {}
+        self.connections: list[str] = []
 
     def add_connection(self, connection: str, time: int):
-        self.connections_[connection] = time
+        self.connection_time[connection] = time
+        self.connections.append(connection)

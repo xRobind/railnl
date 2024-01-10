@@ -1,4 +1,5 @@
 from stations import Station
+from trajectory import Trajectory
 
 import random
 
@@ -11,11 +12,14 @@ class RailNL:
         # and trajectories made
         self.stations = []
         self.connections = {}
-        self.trajectories
+        self.trajectories = []
 
         # load station structures and connections 
         self.load_stations(f"data/StationsHolland.txt")
         self.load_connections(f"data/ConnectiesHolland.txt")
+
+        self.start_trajectory()
+        self.continue_trajectory(self.trajectories[0])
 
     def load_stations(self, filename):
         # open file, read the lines and split into the three parts
@@ -82,14 +86,41 @@ class RailNL:
         """
         # random starting station from our list of station objects
         starting_station = random.choice(self.stations)
-        # random number of stops between 4 and 7
-        number_of_connections = random.randrange(4, 8)
 
-        # add the starting station as a key and the number of stops as value
-        # to all trajectories
-        self.trajectories[starting_station] = number_of_connections
+        # create trajectory with starting station, add to the Trajectory class
+        trajectory = Trajectory(starting_station)
+        self.trajectories.append(trajectory)
     
     def continue_trajectory(self, trajectory):
-        pass
+        """continue a trajectory by choosing between available connections
+        of the current station and updating the current one to the next one,
+        except if we've reached the end.
+        Returns True if continued, False if not because the 2hrs are over.
+
+        accepts a trajectory from self.trajectories
+        """
+        # get available connections
+        station = trajectory.stations[-1]
+        connections = station.connections
+        # choose a random connection
+        chosen_connection = random.choice(connections)
+
+        # get the travel time by finding the chosen connection
+        # in the dict where it's time is mapped
+        for connection in station.connection_time:
+            if connection == chosen_connection:
+                time = station.connection_time[connection]
+
+        # add travel time if it stays under 2hrs
+        try:
+            trajectory.add_time(time)
+        except(trajectory.time > 120):
+            return False
+
+        # add connected station
+        trajectory.add_connection(chosen_connection)
+
+        return True
 
 x = RailNL()
+
