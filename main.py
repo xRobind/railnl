@@ -7,12 +7,13 @@ import random
 class RailNL:
 
     def __init__(self) -> None:
-        # initialise lists/dicts that contain stations as objects of the class,
+        # initialise lists that contain stations as objects of the class,
         # connections as a dict that links the connection to the time,
-        # and trajectories made
+        # and trajectories made and time spent
         self.stations = []
-        self.connections = {}
+        self.connections = []
         self.trajectories = []
+        self.total_time = 0
 
         # load station structures and connections 
         self.load_stations(f"data/StationsHolland.txt")
@@ -72,7 +73,8 @@ class RailNL:
                         station.add_connection(name, time)
 
                 # add the connection and time to the list of all connections
-                self.connections[f"{name} -> {connection}"] = time
+                self.connections.append((name, connection))
+                self.connections.append((connection, name))
                 
                 # read new line
                 line = f.readline()
@@ -94,7 +96,10 @@ class RailNL:
         """continue a trajectory by choosing between available connections
         of the current station and updating the current one to the next one,
         except if we've reached the end.
-        Returns True if continued, False if not because the 2hrs are over.
+        Returns "continue" if continued, "new trajectory" if not because the
+        2hrs are over,
+        "all connections used" if not because all connections have been
+        used and the goal has been reached.
 
         accepts a trajectory from self.trajectories
         """
@@ -110,9 +115,11 @@ class RailNL:
             if connection == chosen_connection:
                 time = station.connection_time[connection]
 
-        # add travel time if it stays under 2hrs
+        # add travel time if it stays under 2hrs, otherwise stop
+        # add to total time and start new trajectory
         if (trajectory.time + time) > 120:
-            return False
+            self.total_time += trajectory.time
+            return "new trajectory"
         else:
             trajectory.add_time(time)
 
@@ -121,15 +128,44 @@ class RailNL:
                 if item.name == chosen_connection:
                     trajectory.add_connection(item)
 
-        return True
+        # remove connection from connections that have to be used
+        # and check if they have all been used
+        if (station.name, chosen_connection) in self.connections:
+            self.connections.remove((station.name, chosen_connection))
+
+            if len(self.connections) == 0:
+                return "all connections used"
+            
+        return "continue"
+    
+    def calculate_K(self):
+        """calculate the quality of the lijnvoering
+        """        
+        T = len(self.trajectories)
+        return 10000 - (T*100 + self.total_time)
 
 if __name__ == "__main__":
     rail = RailNL()
-    trajectory = rail.start_trajectory()
-    
-    run = rail.continue_trajectory(trajectory)
-    while run is True:
+
+    run = "new trajectory"
+    while run == "new trajectory":
+
+        trajectory = rail.start_trajectory()
         run = rail.continue_trajectory(trajectory)
+        while run == "continue":
+
+            run = rail.continue_trajectory(trajectory)
+
+    K = rail.calculate_K()
+    print(K)
+    
+
+    
+
+    
+
+    
+
 
 
 
