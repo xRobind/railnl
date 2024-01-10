@@ -1,12 +1,17 @@
 from stations import Station
 
+import random
+
+
 class RailNL:
 
     def __init__(self) -> None:
-        # initialise lists that contain stations as objects of the class,
-        # and connections as a dict that links the connection to the time
+        # initialise lists/dicts that contain stations as objects of the class,
+        # connections as a dict that links the connection to the time,
+        # and trajectories made
         self.stations = []
         self.connections = {}
+        self.trajectories
 
         # load station structures and connections 
         self.load_stations(f"data/StationsHolland.txt")
@@ -70,5 +75,21 @@ class RailNL:
                 
                 # read new line
                 line = f.readline()
+
+    def start_trajectory(self):
+        """initialize a trajectory with a starting station and amount of stops
+        that it will make
+        """
+        # random starting station from our list of station objects
+        starting_station = random.choice(self.stations)
+        # random number of stops between 4 and 7
+        number_of_connections = random.randrange(4, 8)
+
+        # add the starting station as a key and the number of stops as value
+        # to all trajectories
+        self.trajectories[starting_station] = number_of_connections
+    
+    def continue_trajectory(self, trajectory):
+        pass
 
 x = RailNL()
