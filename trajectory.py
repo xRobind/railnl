@@ -1,7 +1,6 @@
 class Trajectory:
     
-    def _init_(self, start) -> None:
-        self.start = start
+    def __init__(self, start) -> None:
         self.stations = [start]
         self.time = 0
         self.nr_connections = 0
