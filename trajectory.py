@@ -1,4 +1,7 @@
 class Trajectory:
+    """this class keeps track of a trajectory and it's eslapsed
+    time and visited stations
+    """    
     
     def __init__(self, start) -> None:
         self.stations = [start]
