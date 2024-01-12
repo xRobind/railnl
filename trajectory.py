@@ -11,3 +11,6 @@ class Trajectory:
     def add_connection(self, connection):
         self.stations.append(connection)
         self.nr_connections += 1
+        
+    def current_station():
+        pass

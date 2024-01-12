@@ -16,3 +16,4 @@ class Station:
         self.connection_time[connection] = time
         self.connections.append(connection)
         
+        
