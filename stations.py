@@ -3,6 +3,7 @@ class Station:
     """
 
     def __init__(self, name: str, y: str, x: str) -> None:
+        # name and coordinates of the station
         self.name: str = name
         self.y: str = y
         self.x: str = x
@@ -13,6 +14,7 @@ class Station:
         self.connections: list[str] = []
 
     def add_connection(self, connection: str, time: int):
+        # add the connection to the dict and list
         self.connection_time[connection] = time
         self.connections.append(connection)
         
