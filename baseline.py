@@ -2,13 +2,13 @@ from main import RailNL
 import matplotlib.pyplot as plt
 
 K_values = []
-x = 100
+x = 10000
 
 for i in range(x):
-    rail = RailNL(7)
+    rail = RailNL(2)
     run = "new trajectory"
     
-    while run == "new trajectory" and len(rail.trajectories) < 7:
+    while run == "new trajectory" and len(rail.trajectories) < 2:
 
         trajectory = rail.start_trajectory()
         run = rail.continue_trajectory(trajectory)
@@ -18,9 +18,7 @@ for i in range(x):
             
     K = rail.calculate_K()
     K_values.append(K)
-    
-print(K_values)
 
-plt.hist(bins[:-1], bins, weights=counts)
+plt.hist(K_values)
 
 plt.show()
