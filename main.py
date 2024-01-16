@@ -28,6 +28,8 @@ class RailNL:
         self.load_stations(f"data/StationsHolland.txt")
         self.load_connections(f"data/ConnectiesHolland.txt")
         
+        self.total_connections = len(self.connections)
+        
         #set maximum of trajectories
         self.max_trajectories = max
 
@@ -87,7 +89,7 @@ class RailNL:
 
                 # add the connection and time to the list of all connections
                 self.connections.append((name, connection))
-                self.connections.append((connection, name))
+                
                 
                 # read new line
                 line = f.readline()
@@ -142,6 +144,9 @@ class RailNL:
         # and check if they have all been used
         if (station.name, chosen_connection) in self.connections:
             self.connections.remove((station.name, chosen_connection))
+            
+        if (chosen_connection, station.name) in self.connections:
+            self.connections.remove((chosen_connection, station.name))
 
             if len(self.connections) == 0:
                 return "all connections used"
@@ -161,7 +166,8 @@ class RailNL:
         """calculate the quality of the lijnvoering
         """        
         T = len(self.trajectories)
-        return 10000 - (T*100 + self.total_time)
+        p = (self.total_connections - len(self.connections)) / self.total_connections
+        return 10000 * p - (T*100 + self.total_time)
 
 
 if __name__ == "__main__":
@@ -180,6 +186,7 @@ if __name__ == "__main__":
     K = rail.calculate_K()
     print(f"Quality of the lines: {K}")
     print(len(rail.trajectories))
+    print(len(rail.connections))
     
 
     
