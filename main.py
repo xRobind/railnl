@@ -122,7 +122,10 @@ class RailNL:
         connections = station.connections
         # choose a random connection
         chosen_connection = random.choice(connections)
-
+        #calculate probability train stops
+        # if random.random() < (1 / len(connections)+1):
+            # run = "new trajectory"
+            
         # get the travel time by finding the chosen connection
         # in the dict where it's time is mapped
         time = self.get_time(station, chosen_connection)
@@ -168,8 +171,8 @@ class RailNL:
         T = len(self.trajectories)
         p = (self.total_connections - len(self.connections)) / self.total_connections
         return 10000 * p - (T*100 + self.total_time)
-
-
+        
+        
 if __name__ == "__main__":
     rail = RailNL(7)
 
