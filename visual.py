@@ -18,11 +18,11 @@ with open(f"data/StationsHolland.txt") as f:
         # set the different parts of the line to its variable
         station = str(parts[0])
         try:
-            x_coord = float(parts[1])
+            y_coord = float(parts[1])
         except(IndexError):
             break
         try:
-            y_coord = float(parts[2].strip("\n"))
+            x_coord = float(parts[2].strip("\n"))
         except(IndexError):
             break
 
@@ -85,3 +85,5 @@ for line in connections:
 plt.axis('off')
 plt.savefig("visual_representation.png")
 plt.show()
+
+print(size_of_station)
