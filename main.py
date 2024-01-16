@@ -14,7 +14,7 @@ class RailNL:
     quality of the lines will end up the closest to the number 10000.
     """    
 
-    def __init__(self) -> None:
+    def __init__(self,max) -> None:
         """initialise lists that contain stations as objects of the class,
         connections as a dict that links the connection to the time,
         and trajectories made and time spent
@@ -27,6 +27,9 @@ class RailNL:
         # load station structures and connections 
         self.load_stations(f"data/StationsHolland.txt")
         self.load_connections(f"data/ConnectiesHolland.txt")
+        
+        #set maximum of trajectories
+        self.max_trajectories = max
 
     def load_stations(self, filename):
         """open file, read the lines and split into the three parts
@@ -162,19 +165,21 @@ class RailNL:
 
 
 if __name__ == "__main__":
-    rail = RailNL()
+    rail = RailNL(7)
 
     run = "new trajectory"
-    while run == "new trajectory":
+    
+    while run == "new trajectory" and len(rail.trajectories) < 7:
 
         trajectory = rail.start_trajectory()
         run = rail.continue_trajectory(trajectory)
         while run == "continue":
 
             run = rail.continue_trajectory(trajectory)
-
+    
     K = rail.calculate_K()
     print(f"Quality of the lines: {K}")
+    print(len(rail.trajectories))
     
 
     
