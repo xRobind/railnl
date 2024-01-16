@@ -70,7 +70,7 @@ for station in x_station:
     y_values.append(y_station[station])
 
 # size of the figure
-plt.figure(figsize=(20,12))
+plt.figure(figsize=(12,20))
 # scatter the stations with their corresponding size, 
 # stations with the same size have the same color
 plt.scatter(x_values, y_values, s=sizes, c=sizes)
@@ -85,5 +85,3 @@ for line in connections:
 plt.axis('off')
 plt.savefig("visual_representation.png")
 plt.show()
-
-print(size_of_station)
