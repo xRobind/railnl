@@ -70,7 +70,7 @@ for station in x_station:
     y_values.append(y_station[station])
 
 # size of the figure
-plt.figure(figsize=(12,20))
+plt.figure(figsize=(11,15))
 # scatter the stations with their corresponding size, 
 # stations with the same size have the same color
 plt.scatter(x_values, y_values, s=sizes, c=sizes)

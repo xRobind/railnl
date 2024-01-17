@@ -147,13 +147,16 @@ class RailNL:
         # and check if they have all been used
         if (station.name, chosen_connection) in self.connections:
             self.connections.remove((station.name, chosen_connection))
-            
+
+            if len(self.connections) == 0:
+                return "all connections used"
+
         if (chosen_connection, station.name) in self.connections:
             self.connections.remove((chosen_connection, station.name))
 
             if len(self.connections) == 0:
                 return "all connections used"
-            
+
         return "continue"
     
     def get_time(self, station, chosen_connection):
