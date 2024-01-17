@@ -19,25 +19,31 @@ Holland or Nederland (case-sensitive).\n")
     # execution of baseline algorithm
     if algorithm == "baseline":
         # get max trajectories
-        max = input("What is the maximum of trajectories?\n")
-        print
-        ("Using Baseline algorithm a number of times and plotting Histogram..")
+        max = int(input("What is the maximum of trajectories?\n"))
 
-        # initialise and run baseline algorithm
-        rail = Baseline(max, region)
-        run = "new trajectory"
-        
-        # continue trajectories until it doesn't create a new
-        while run == "new trajectory" and len(rail.trajectories) < 7:
+        K_values = []
+        x = 1000
 
-            trajectory = rail.start_trajectory()
-            run = rail.continue_trajectory(trajectory)
-            while run == "continue":
+        print(f"Using Baseline algorithm {x} times and plotting Histogram..")
 
+        for i in range(0, x):
+            # initialise and run baseline algorithm
+            rail = Baseline(max, region)
+            run = "new trajectory"
+            
+            # continue trajectories until it doesn't create a new
+            while run == "new trajectory" and len(rail.trajectories) < max:
+
+                trajectory = rail.start_trajectory()
                 run = rail.continue_trajectory(trajectory)
-        
-        # plot a histogram of all K's
-        rail.histogram(max)
+                while run == "continue":
+
+                    run = rail.continue_trajectory(trajectory)
+
+                K = rail.calculate_K()
+                K_values.append(K)
+
+        rail.histogram(K_values, 1000)
 
     
 
