@@ -14,7 +14,7 @@ if __name__ == "__main__":
     # Holland of Nederland
     while region != "Holland" and region != "Nederland":
         region = input
-        ("Choose a region: Holland or Nederland (case-sensitive).")
+        ("Choose a region: Holland or Nederland (case-sensitive).\n")
 
     # execution of baseline algorithm
     if algorithm == "baseline":

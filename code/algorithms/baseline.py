@@ -180,14 +180,14 @@ class Baseline:
         p = (self.total_connections - len(self.connections)) / self.total_connections
         return 10000 * p - (T * 100 + self.total_time)
 
-    def histogram(self):
+    def histogram(self, max):
         """plot a histogram of the quality of all the solutions
         """        
         K_values = []
         x = 1000
 
         for i in range(x):
-            rail = Baseline(7, "Holland")
+            rail = Baseline(max, "Holland")
             run = "new trajectory"
             
             while run == "new trajectory" and len(rail.trajectories) < 7:
