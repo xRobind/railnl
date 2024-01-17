@@ -123,8 +123,10 @@ class RailNL:
         # choose a random connection
         chosen_connection = random.choice(connections)
         #calculate probability train stops
-        # if random.random() < (1 / len(connections)+1):
-            # run = "new trajectory"
+        if random.random() < ((1 / (len(connections)+1)) * (trajectory.time / 120)):
+            if random.random() < ((1/7)**(7-len(self.trajectories))):
+                return "stop"
+            return "new trajectory"
             
         # get the travel time by finding the chosen connection
         # in the dict where it's time is mapped
@@ -134,6 +136,8 @@ class RailNL:
         # add to total time and start new trajectory
         if (trajectory.time + time) > 120:
             self.total_time += trajectory.time
+            if random.random() < ((1/7)**(7-len(self.trajectories))):
+                return "stop"
             return "new trajectory"
         else:
             trajectory.add_time(time)
@@ -149,13 +153,13 @@ class RailNL:
             self.connections.remove((station.name, chosen_connection))
 
             if len(self.connections) == 0:
-                return "all connections used"
+                return "stop"
 
         if (chosen_connection, station.name) in self.connections:
             self.connections.remove((chosen_connection, station.name))
 
             if len(self.connections) == 0:
-                return "all connections used"
+                return "stop"
 
         return "continue"
     
@@ -173,7 +177,7 @@ class RailNL:
         """        
         T = len(self.trajectories)
         p = (self.total_connections - len(self.connections)) / self.total_connections
-        return 10000 * p - (T*100 + self.total_time)
+        return 10000 * p - (T * 100 + self.total_time)
         
         
 if __name__ == "__main__":

@@ -19,6 +19,6 @@ for i in range(x):
     K = rail.calculate_K()
     K_values.append(K)
 
-plt.hist(K_values)
+plt.hist(K_values, 1000)
 
 plt.show()
