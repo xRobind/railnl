@@ -13,8 +13,8 @@ if __name__ == "__main__":
     region = input("Which region?\n")
     # Holland of Nederland
     while region != "Holland" and region != "Nederland":
-        region = input
-        ("Choose a region: Holland or Nederland (case-sensitive).\n")
+        region = input("Choose a region: \
+Holland or Nederland (case-sensitive).\n")
 
     # execution of baseline algorithm
     if algorithm == "baseline":
@@ -37,7 +37,7 @@ if __name__ == "__main__":
                 run = rail.continue_trajectory(trajectory)
         
         # plot a histogram of all K's
-        rail.histogram()
+        rail.histogram(max)
 
     
 
