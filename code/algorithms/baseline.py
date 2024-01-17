@@ -183,6 +183,6 @@ class Baseline:
     def histogram(self, K_values, iterations):
         """plot a histogram of the quality of all the solutions
         """
-        plt.hist(K_values, iterations)
-        plt.savefig("bb.png")
+        plt.hist(K_values, int(iterations / 4))
+        plt.savefig("baseline.png")
         plt.show()
