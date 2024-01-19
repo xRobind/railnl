@@ -156,7 +156,7 @@ class Baseline:
             if len(self.connections) == 0:
                 return "stop"
 
-        if (chosen_connection, station.name) in self.connections:
+        elif (chosen_connection, station.name) in self.connections:
             self.connections.remove((chosen_connection, station.name))
 
             if len(self.connections) == 0:
@@ -172,17 +172,9 @@ class Baseline:
             if connection == chosen_connection:
                 return station.connection_time[connection]
 
-
     def calculate_K(self):
         """calculate the quality of the lijnvoering
         """        
         T = len(self.trajectories)
         p = (self.total_connections - len(self.connections)) / self.total_connections
         return 10000 * p - (T * 100 + self.total_time)
-
-    def histogram(self, K_values, iterations):
-        """plot a histogram of the quality of all the solutions
-        """
-        plt.hist(K_values, int(iterations / 4))
-        plt.savefig("baseline.png")
-        plt.show()
