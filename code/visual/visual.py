@@ -101,7 +101,6 @@ class Visualisation:
     def draw(self):
         # determine size of the figure and remove axes
         plt.figure(figsize=(5.8,8))
-        plt.title("Visualisation of railway")
         plt.axis('off')
         # scatter the stations with their corresponding size, 
         # stations with the same size have the same color
@@ -117,18 +116,30 @@ class Visualisation:
             plt.draw()
             plt.pause(.1)
 
-        plt.savefig("visual_representation.png")
+        # plt.savefig(f"railmap_{self.region}.png")
         plt.show()
 
     def histogram(self, K_values, iterations):
         """plot a histogram of the quality of all the solutions
         """
         plt.figure()
-        plt.title("Histogram of K-values")
+        plt.title(f"Histogram of K-values ({self.region})")
         if iterations > 400:
             plt.hist(K_values, int(iterations / 4))
         else:
             plt.hist(K_values, int(iterations))
-        plt.savefig("histogram.png")
+        # plt.savefig(f"hist_{self.region}.png")
         plt.show()
         plt.clf()
+
+    def boxplot(self, all_K_values):
+        """plot the K's of all algorithms and their averages next to eachother
+        for comparison reasons.
+        """
+        plt.title("K's of our algorithms")
+        plt.boxplot(all_K_values, showfliers=False, labels=["baseline", "hill_climber", "beam"])
+        # plt.savefig(f"boxplot_{self.region}")
+        plt.show()
+        
+
+

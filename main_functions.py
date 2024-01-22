@@ -13,6 +13,7 @@ class Main:
         and a variable to set how many iterations there will be done.
         """        
         self.K_values = []
+        self.all_K_values = []
         self.highest_K = 0
         self.iterations = 100
 
@@ -24,13 +25,15 @@ class Main:
         self.algorithm = input("\nWhich algorithm?\n")
 
         # choose between all our algorithms
-        while self.algorithm not in ["baseline", "hill climber", "beam"]:
+        while self.algorithm not in \
+                                ["baseline", "hill climber", "beam", "all"]:
             self.algorithm = \
             input("Please provide an algortihm in the command line.\n\
         Options:\n\
         baseline\n\
         hill climber\n\
-        beam\n\n")
+        beam\n\
+        all/n\n")
             
         # retrieve region
         self.region = input("\nWhich region?\n")
@@ -38,15 +41,15 @@ class Main:
         # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
             self.region = \
-            input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
+        input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
         # get max trajectories
         self.max = int(input("\nWhat is the maximum of trajectories?\n"))
 
         # must be between 1 and 7
-        while self.max < 1 or self.max > 15:
+        while self.max < 1 or self.max > 45:
             self.max = \
-        int(input("\nMaximum number of trajectories must be between 1 and 15.\n"))
+        int(input("\nMaximum number of trajectories must be between 1 and 45.\n"))
 
         # let the user know the algorithm is running
         print(f"\nUsing {self.algorithm} algorithm in {self.region} \
@@ -84,6 +87,8 @@ class Main:
                     self.highest_K = K_value
                     self.best_rail = rail
     
+        self.all_K_values.extend(self.K_values)
+
     # def hill_climber(self):
     #     for i in range(0, self.iterations):
 
@@ -91,15 +96,19 @@ class Main:
         """This method carries out the visualisation.
         """
         # plot rails of best_rail
-        x = Visualisation(self.region, self.best_rail.trajectories)
-        x.load_stations()
-        x.load_sizes()
-        x.get_connections()
+        v = Visualisation(self.region, self.best_rail.trajectories)
+        v.load_stations()
+        v.load_sizes()
+        v.get_connections()
 
         # plot map of the best lijnvoering
-        x.draw()
-        # plot histogram of all K's
-        x.histogram(self.K_values, self.iterations)
+        v.draw()
+        # plot histogram of all K's from a single algorithm
+        v.histogram(self.K_values, self.iterations)
+        # plot all K's next to eachother from all algorithms
+        if len(self.all_K_values) == 3:
+            v.boxplot(self.all_K_values)
+
 
 
         
