@@ -29,3 +29,7 @@ class Hillclimber:
         quality = self.baseline_instance.calculate_K()
         print(quality)
         return quality
+        
+    def change_node(self):
+        
+        
