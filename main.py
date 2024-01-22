@@ -17,7 +17,7 @@ if __name__ == "__main__":
         main.hill_climber()
         main.visualisation()
         
-    if main.algorithm == "beam"
+    if main.algorithm == "beam":
         #testen
         main.beam()
     
