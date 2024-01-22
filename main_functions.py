@@ -23,11 +23,13 @@ class Main:
         self.algorithm = input("\nWhich algorithm?\n")
 
         # tot nu toe alleen nog maar baseline
-        while self.algorithm not in ["baseline", "hill climber"]:
+        while self.algorithm not in ["baseline", "hill climber", "beam"]:
             self.algorithm = \
             input("Please provide an algortihm in the command line.\n\
         Options:\n\
-        baseline\n\n")
+        baseline\n\
+        hill climber\n\
+        beam\n\n")
             
         # retrieve region
         self.region = input("\nWhich region?\n")
@@ -79,7 +81,7 @@ class Main:
                     self.highest_K = K_value
                     self.best_rail = rail
     
-    def baseline(self):
+    def hill_climber(self):
         # get max trajectories
         max = int(input("\nWhat is the maximum of trajectories?\n"))
 
@@ -101,9 +103,10 @@ class Main:
         x.load_sizes()
         x.get_connections()
 
+        # plot map of the best lijnvoering
+        x.draw()
         # plot histogram of all K's
         x.histogram(self.K_values, self.iterations)
-        # plot map of the best lijnvoering
-        x.plot()
+
 
         
