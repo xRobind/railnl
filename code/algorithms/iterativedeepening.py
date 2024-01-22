@@ -101,22 +101,21 @@ class IDS:
         """
         # depth 1
         # pick every starting trajectory once
-        for starting_connection in self.connections:
-            for i in range(2):
-                current = Trajectory()
-                current.add_history(starting_connection)
-                current.add_connection(starting_connection[i])
-                self.stack.push(current)
+        for station in self.stations:
+                current = Trajectory(station)
+                for connection in station.connections:
+                    current.add_connection(connection)
+                    self.stack.push(current)
         return self.stack.size()
 
     def continue_trajectory(self):
-        # depth 2
+        depth 2
         for i in range(self.stack.size()):
             current = self.stack.pop()
             station = current.stations[-1]
             return current.stations
-            # connections = station.connections
-            # for connection in connections:
-                # current.add_connection(connection)
-                # self.stack.push(current)
-        # return self.stack.size()
+            connections = station.connections
+            for connection in connections:
+                current.add_connection(connection)
+                self.stack.push(current)
+        return self.stack.size()
