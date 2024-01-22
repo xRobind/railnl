@@ -2,6 +2,7 @@
 # and handles our different algorithms
 
 from code.algorithms.baseline import Baseline
+from code.algorithms.hill_climber import Hillclimber
 from code.visual.visual import Visualisation
 
 
@@ -74,7 +75,7 @@ class Main:
                     self.highest_K = K_value
                     self.best_rail = rail
     
-    def baseline(self):
+    def hill_climber(self):
         # get max trajectories
         max = int(input("\nWhat is the maximum of trajectories?\n"))
 
@@ -85,7 +86,11 @@ class Main:
     
             print(f"\nUsing {self.algorithm} algorithm in {self.region} \
             {self.iterations} times and plotting Histogram..")
-        for i in range(0, self.iterations):
+        
+        rail = Hillclimber(max, self.region)
+        solution = rail.random_railmap()
+        self.best_rail = rail
+
 
     def visualisation(self):
         """This method carries out the visualisation.
