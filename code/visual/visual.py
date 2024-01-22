@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib
 
 
 class Visualisation:
@@ -15,6 +16,8 @@ class Visualisation:
         # a region (str) and the trajectories (list of objects from class Trajectory)
         self.region = region
         self.trajectories = trajectories
+
+        matplotlib.use("TkAgg")
 
     def load_stations(self):
         with open(f"data/Stations{self.region}.txt") as f:
@@ -92,8 +95,10 @@ class Visualisation:
                 self.connections.append((stations[i], stations [i + 1]))
 
     def plot(self):
-        # size of the figure
-        plt.figure(figsize=(11,15))
+        # determine size of the figure and remove axes
+        plt.figure(figsize=(7.3,10))
+        plt.title("Visualisation of railway")
+        plt.axis('off')
         # scatter the stations with their corresponding size, 
         # stations with the same size have the same color
         plt.scatter(self.x_values, self.y_values, s=self.sizes, c=self.sizes)
@@ -104,15 +109,18 @@ class Visualisation:
             self.x_values = [self.x_station[station], self.x_station[connection]]
             self.y_values = [self.y_station[station], self.y_station[connection]]
             plt.plot(self.x_values, self.y_values, '-', color='blue', alpha=0.33)
+            plt.draw()
+            plt.pause(.1)
 
-        plt.axis('off')
         plt.savefig("visual_representation.png")
-        plt.show()
+        plt.clf()
 
     def histogram(self, K_values, iterations):
         """plot a histogram of the quality of all the solutions
         """
         plt.figure()
+        plt.title("Histogram of K-values")
         plt.hist(K_values, int(iterations / 4))
         plt.savefig("histogram.png")
         plt.show()
+        plt.clf()

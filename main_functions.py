@@ -95,7 +95,10 @@ class Main:
         x.load_stations()
         x.load_sizes()
         x.get_connections()
-        x.plot()
 
         # plot histogram of all K's
         x.histogram(self.K_values, self.iterations)
+        # plot map of the best lijnvoering
+        x.plot()
+
+        
