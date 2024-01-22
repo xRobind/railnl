@@ -3,6 +3,7 @@ import sys
 import matplotlib.pyplot as plt
 
 sys.path.append('../classes')
+sys.path.append('code/classes')
 
 from stations import Station
 from trajectory import Trajectory
