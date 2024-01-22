@@ -22,7 +22,7 @@ class Main:
         self.algorithm = input("\nWhich algorithm?\n")
 
         # tot nu toe alleen nog maar baseline
-        while self.algorithm != "baseline":
+        while self.algorithm not in ["baseline", "hill climber"]:
             self.algorithm = \
             input("Please provide an algortihm in the command line.\n\
         Options:\n\
@@ -73,6 +73,19 @@ class Main:
                 if self.highest_K < K_value:
                     self.highest_K = K_value
                     self.best_rail = rail
+    
+    def baseline(self):
+        # get max trajectories
+        max = int(input("\nWhat is the maximum of trajectories?\n"))
+
+        # must be between 1 and 7
+        while max < 1 or max > 7:
+            max = \
+            int(input("\nMaximum number of trajectories must be between 1 and 7.\n"))
+    
+            print(f"\nUsing {self.algorithm} algorithm in {self.region} \
+            {self.iterations} times and plotting Histogram..")
+        for i in range(0, self.iterations):
 
     def visualisation(self):
         """This method carries out the visualisation.
