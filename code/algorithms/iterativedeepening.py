@@ -97,8 +97,20 @@ class IDS:
         """initialize a trajectory with a starting station and amount of stops
         that it will make
         """
-        
+        # depth 1
         # pick every starting trajectory once
         for starting_connection in self.connections:
              self.stack.push(Trajectory(starting_connection))
         return self.stack.size()
+
+    def continue_trajectory(self):
+        #depth 2
+        for i in range(self.stack.size()):
+            current = self.stack.pop()
+            station = current.stations[-1]
+            return current.stations
+            # connections = station.connections
+            # for connection in connections:
+                # current.add_connection(connection)
+                # self.stack.push(current)
+        # return self.stack.size()
