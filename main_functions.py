@@ -27,7 +27,9 @@ class Main:
             self.algorithm = \
             input("Please provide an algortihm in the command line.\n\
         Options:\n\
-        baseline\n\n")
+        baseline\n\
+        hill climber\n\
+        beam\n\n")
             
         # retrieve region
         self.region = input("\nWhich region?\n")
@@ -37,32 +39,32 @@ class Main:
             self.region = \
             input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
+        # get max trajectories
+        self.max = int(input("\nWhat is the maximum of trajectories?\n"))
+
+        # must be between 1 and 7
+        while self.max < 1 or self.max > 7:
+            self.max = \
+        int(input("\nMaximum number of trajectories must be between 1 and 7.\n"))
+
+        print(f"\nUsing {self.algorithm} algorithm in {self.region} \
+        {self.iterations} times...")
+
     def beam(self):
-        test = IDS(max, self.region)
+        test = IDS(self.max, self.region)
         print(test.start_trajectory())
         print(test.continue_trajectory())
         
     def baseline(self):
         """this method carries out the baseline algorithm
-        """        
-        # get max trajectories
-        max = int(input("\nWhat is the maximum of trajectories?\n"))
-
-        # must be between 1 and 7
-        while max < 1 or max > 7:
-            max = \
-        int(input("\nMaximum number of trajectories must be between 1 and 7.\n"))
-
-        print(f"\nUsing {self.algorithm} algorithm in {self.region} \
-{self.iterations} times and plotting Histogram..")
-
+        """
         for i in range(0, self.iterations):
             # initialise and run baseline algorithm
-            rail = Baseline(max, self.region)
+            rail = Baseline(self.max, self.region)
             run = "new trajectory"
             
             # continue trajectories until it doesn't create a new
-            while run == "new trajectory" and len(rail.trajectories) < max:
+            while run == "new trajectory" and len(rail.trajectories) < self.max:
 
                 # create new trajectory and continue it
                 trajectory = rail.start_trajectory()
@@ -79,6 +81,9 @@ class Main:
                 if self.highest_K < K_value:
                     self.highest_K = K_value
                     self.best_rail = rail
+    
+    def hill_climber(self):
+        for i in range(0, self.iterations):
 
     def visualisation(self):
         """This method carries out the visualisation.
@@ -89,9 +94,10 @@ class Main:
         x.load_sizes()
         x.get_connections()
 
+        # plot map of the best lijnvoering
+        x.draw()
         # plot histogram of all K's
         x.histogram(self.K_values, self.iterations)
-        # plot map of the best lijnvoering
-        x.plot()
+
 
         

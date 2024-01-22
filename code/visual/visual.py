@@ -94,9 +94,9 @@ class Visualisation:
             for i in range(0, len(stations) - 1):
                 self.connections.append((stations[i], stations [i + 1]))
 
-    def plot(self):
+    def draw(self):
         # determine size of the figure and remove axes
-        plt.figure(figsize=(7.3,10))
+        plt.figure(figsize=(5.8,8))
         plt.title("Visualisation of railway")
         plt.axis('off')
         # scatter the stations with their corresponding size, 
@@ -109,11 +109,12 @@ class Visualisation:
             self.x_values = [self.x_station[station], self.x_station[connection]]
             self.y_values = [self.y_station[station], self.y_station[connection]]
             plt.plot(self.x_values, self.y_values, '-', color='blue', alpha=0.33)
+            # draw the connections
             plt.draw()
             plt.pause(.1)
 
         plt.savefig("visual_representation.png")
-        plt.clf()
+        plt.show()
 
     def histogram(self, K_values, iterations):
         """plot a histogram of the quality of all the solutions

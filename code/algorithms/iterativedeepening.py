@@ -88,8 +88,7 @@ class IDS:
 
                 # add the connection and time to the list of all connections
                 self.connections.append((name, connection))
-                
-                
+
                 # read new line
                 line = f.readline()
                 
