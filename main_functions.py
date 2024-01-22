@@ -55,6 +55,7 @@ class Main:
     def beam(self):
         test = IDS(self.max, self.region)
         print(test.start_trajectory())
+        print(test.continue_trajectory())
         
     def baseline(self):
         """this method carries out the baseline algorithm
