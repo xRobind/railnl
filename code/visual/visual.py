@@ -78,8 +78,12 @@ class Visualisation:
 
         # make separate list of all the different sizes for plotting
         self.sizes = []
-        for station in self.size_of_station:
-            self.sizes.append((self.size_of_station[station] + 1) ** 4)
+        if self.region == "Holland":
+            for station in self.size_of_station:
+                self.sizes.append((self.size_of_station[station] + 1) ** 4)
+        else:
+            for station in self.size_of_station:
+                self.sizes.append(self.size_of_station[station] ** 2)
 
     def get_connections(self):
         # for each trajectory, create a list that saves the name of the
@@ -121,7 +125,10 @@ class Visualisation:
         """
         plt.figure()
         plt.title("Histogram of K-values")
-        plt.hist(K_values, int(iterations / 4))
+        if iterations > 400:
+            plt.hist(K_values, int(iterations / 4))
+        else:
+            plt.hist(K_values, int(iterations))
         plt.savefig("histogram.png")
         plt.show()
         plt.clf()
