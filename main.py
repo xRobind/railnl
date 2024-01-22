@@ -11,6 +11,9 @@ if __name__ == "__main__":
         main.baseline()
         main.visualisation()
 
+    if main.algorithm == "beam"
+        #testen
+        main.beam()
     
 
     

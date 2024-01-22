@@ -3,6 +3,7 @@
 
 from code.algorithms.baseline import Baseline
 from code.visual.visual import Visualisation
+from code.algorithms.iterativedeepening import IDS
 
 
 class Main:
@@ -36,6 +37,10 @@ class Main:
             self.region = \
             input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
+    def beam(self):
+        test = IDS(max, self.region)
+        print(test.start_trajectory())
+        
     def baseline(self):
         """this method carries out the baseline algorithm
         """        
