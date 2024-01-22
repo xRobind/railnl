@@ -75,7 +75,10 @@ class IDS:
                     connection = parts[1]
                 except(IndexError):
                     break
-                time = int(parts[2].strip("\n"))
+                if "Holland" in filename:
+                    time = int(parts[2].strip("\n"))
+                else:
+                    time = int(parts[2].strip(".0\n"))
 
                 # add connection to connection list in Station class,
                 # and the list of all connections,
