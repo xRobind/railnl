@@ -85,7 +85,6 @@ class Main:
                     self.highest_K = K_value
                     self.best_rail = rail
     
-<<<<<<< HEAD
     def hill_climber(self):
         # get max trajectories
         max = int(input("\nWhat is the maximum of trajectories?\n"))
@@ -102,10 +101,6 @@ class Main:
         solution = rail.random_railmap()
         self.best_rail = rail
 
-=======
-    # def hill_climber(self):
-    #     for i in range(0, self.iterations):
->>>>>>> 34d650664591f0bbbab9023698c90bac4be5878e
 
     def visualisation(self):
         """This method carries out the visualisation.
