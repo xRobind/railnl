@@ -82,8 +82,8 @@ class Main:
                     self.highest_K = K_value
                     self.best_rail = rail
     
-    def hill_climber(self):
-        for i in range(0, self.iterations):
+    # def hill_climber(self):
+        # for i in range(0, self.iterations):
 
     def visualisation(self):
         """This method carries out the visualisation.

@@ -3,8 +3,9 @@ class Trajectory:
     time and visited stations
     """    
     
-    def __init__(self, start) -> None:
+    def __init__(self, start= None) -> None:
         self.stations = [start]
+        self.history = []
         self.time = 0
         self.nr_connections = 0
 
@@ -14,4 +15,9 @@ class Trajectory:
     def add_connection(self, connection):
         self.stations.append(connection)
         self.nr_connections += 1
+        
+    def add_history(self, connection):
+        self.history.append(connection)
+        
+        
 
