@@ -3,7 +3,7 @@ from main_functions import Main
 if __name__ == "__main__":
     main = Main()
     # retrieve input from user
-    main.algorithm_and_region()
+    main.user_input()
 
     # execution of baseline algorithm
     if main.algorithm == "baseline":
@@ -16,6 +16,10 @@ if __name__ == "__main__":
         #initialise and run baseline algorithm 
         main.hill_climber()
         main.visualisation()
+        
+    if main.algorithm == "beam":
+        #testen
+        main.beam()
     
 
     

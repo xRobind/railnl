@@ -78,8 +78,12 @@ class Visualisation:
 
         # make separate list of all the different sizes for plotting
         self.sizes = []
-        for station in self.size_of_station:
-            self.sizes.append((self.size_of_station[station] + 1) ** 4)
+        if self.region == "Holland":
+            for station in self.size_of_station:
+                self.sizes.append((self.size_of_station[station] + 1) ** 4)
+        else:
+            for station in self.size_of_station:
+                self.sizes.append(self.size_of_station[station] ** 2)
 
     def get_connections(self):
         # for each trajectory, create a list that saves the name of the
@@ -94,9 +98,9 @@ class Visualisation:
             for i in range(0, len(stations) - 1):
                 self.connections.append((stations[i], stations [i + 1]))
 
-    def plot(self):
+    def draw(self):
         # determine size of the figure and remove axes
-        plt.figure(figsize=(7.3,10))
+        plt.figure(figsize=(5.8,8))
         plt.title("Visualisation of railway")
         plt.axis('off')
         # scatter the stations with their corresponding size, 
@@ -109,18 +113,22 @@ class Visualisation:
             self.x_values = [self.x_station[station], self.x_station[connection]]
             self.y_values = [self.y_station[station], self.y_station[connection]]
             plt.plot(self.x_values, self.y_values, '-', color='blue', alpha=0.33)
+            # draw the connections
             plt.draw()
             plt.pause(.1)
 
         plt.savefig("visual_representation.png")
-        plt.clf()
+        plt.show()
 
     def histogram(self, K_values, iterations):
         """plot a histogram of the quality of all the solutions
         """
         plt.figure()
         plt.title("Histogram of K-values")
-        plt.hist(K_values, int(iterations / 4))
+        if iterations > 400:
+            plt.hist(K_values, int(iterations / 4))
+        else:
+            plt.hist(K_values, int(iterations))
         plt.savefig("histogram.png")
         plt.show()
         plt.clf()

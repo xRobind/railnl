@@ -4,6 +4,7 @@
 from code.algorithms.baseline import Baseline
 from code.algorithms.hill_climber import Hillclimber
 from code.visual.visual import Visualisation
+from code.algorithms.iterativedeepening import IDS
 
 
 class Main:
@@ -14,50 +15,59 @@ class Main:
         """        
         self.K_values = []
         self.highest_K = 0
-        self.iterations = 1000
+        self.iterations = 100
 
-    def algorithm_and_region(self):
-        """This method asks the user to fill in the algorithm and region
+    def user_input(self):
+        """This method asks the user to fill in the algorithm, region,
+        and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
         self.algorithm = input("\nWhich algorithm?\n")
 
-        # tot nu toe alleen nog maar baseline
-        while self.algorithm not in ["baseline", "hill climber"]:
+        # choose between all our algorithms
+        while self.algorithm not in ["baseline", "hill climber", "beam"]:
             self.algorithm = \
             input("Please provide an algortihm in the command line.\n\
         Options:\n\
-        baseline\n\n")
+        baseline\n\
+        hill climber\n\
+        beam\n\n")
             
         # retrieve region
         self.region = input("\nWhich region?\n")
 
-        # Holland of Nederland
+        # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
             self.region = \
             input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
-    def baseline(self):
-        """this method carries out the baseline algorithm
-        """        
         # get max trajectories
-        max = int(input("\nWhat is the maximum of trajectories?\n"))
+        self.max = int(input("\nWhat is the maximum of trajectories?\n"))
 
         # must be between 1 and 7
-        while max < 1 or max > 7:
-            max = \
-        int(input("\nMaximum number of trajectories must be between 1 and 7.\n"))
+        while self.max < 1 or self.max > 15:
+            self.max = \
+        int(input("\nMaximum number of trajectories must be between 1 and 15.\n"))
 
+        # let the user know the algorithm is running
         print(f"\nUsing {self.algorithm} algorithm in {self.region} \
-{self.iterations} times and plotting Histogram..")
+{self.iterations} times...")
 
+    def beam(self):
+        test = IDS(self.max, self.region)
+        print(test.start_trajectory())
+        print(test.continue_trajectory())
+        
+    def baseline(self):
+        """this method carries out the baseline algorithm
+        """
         for i in range(0, self.iterations):
             # initialise and run baseline algorithm
-            rail = Baseline(max, self.region)
+            rail = Baseline(self.max, self.region)
             run = "new trajectory"
             
             # continue trajectories until it doesn't create a new
-            while run == "new trajectory" and len(rail.trajectories) < max:
+            while run == "new trajectory" and len(rail.trajectories) < self.max:
 
                 # create new trajectory and continue it
                 trajectory = rail.start_trajectory()
@@ -75,6 +85,7 @@ class Main:
                     self.highest_K = K_value
                     self.best_rail = rail
     
+<<<<<<< HEAD
     def hill_climber(self):
         # get max trajectories
         max = int(input("\nWhat is the maximum of trajectories?\n"))
@@ -91,6 +102,10 @@ class Main:
         solution = rail.random_railmap()
         self.best_rail = rail
 
+=======
+    # def hill_climber(self):
+    #     for i in range(0, self.iterations):
+>>>>>>> 34d650664591f0bbbab9023698c90bac4be5878e
 
     def visualisation(self):
         """This method carries out the visualisation.
@@ -101,9 +116,10 @@ class Main:
         x.load_sizes()
         x.get_connections()
 
+        # plot map of the best lijnvoering
+        x.draw()
         # plot histogram of all K's
         x.histogram(self.K_values, self.iterations)
-        # plot map of the best lijnvoering
-        x.plot()
+
 
         

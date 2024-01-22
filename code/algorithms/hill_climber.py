@@ -6,8 +6,12 @@ import matplotlib.pyplot as plt
 
 from code.classes.stations import Station
 from code.classes.trajectory import Trajectory
+<<<<<<< HEAD
 from code.algorithms.baseline import Baseline
 
+=======
+from baseline import Baseline
+>>>>>>> 34d650664591f0bbbab9023698c90bac4be5878e
 
 
 class Hillclimber:
@@ -15,6 +19,7 @@ class Hillclimber:
 
     def __init__(self, max, region) -> None:
         self.baseline_instance = Baseline(max, region)
+<<<<<<< HEAD
         self.stations = []
         self.connections = []
         self.trajectories = []
@@ -29,6 +34,9 @@ class Hillclimber:
         #set maximum of trajectories
         self.max_trajectories = max
 
+=======
+    
+>>>>>>> 34d650664591f0bbbab9023698c90bac4be5878e
     def random_railmap(self):
         """Generate a random railmap using the Baseline class."""
         # Start with a random trajectory from the baseline
