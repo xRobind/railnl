@@ -1,9 +1,11 @@
-from code.classes.stations import Station
-from code.classes.trajectory import Trajectory
-
 import random
+import sys
 import matplotlib.pyplot as plt
 
+sys.path.append('../classes')
+
+from stations import Station
+from trajectory import Trajectory
 
 class Baseline:
     """This class reads data from csv files about train stations in Holland,
