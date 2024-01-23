@@ -111,9 +111,9 @@ class IDS:
                 for connection in station.connections:
                     new = copy.deepcopy(current)
                     new.add_connection(connection)
+                    new.add_time(station.connection_time[connection])
                     self.stack.push(new)
-                    del new
-        return self.stack.size()
+        return self.stack.items[1].time
 
     def continue_trajectory(self):
         # depth 2
@@ -122,8 +122,7 @@ class IDS:
             station = current.stations[-1]
             connections = station.connections
             for connection in connections:
-                newtrajectory = copy.deepcopy(current) 
+                newtrajectory = copy.deepcopy(current)
                 newtrajectory.add_connection(connection)
                 self.stack.push(newtrajectory)
-                del newtrajectory
-        return self.stack.item[2].stations
+        return self.stack.items[1].stations

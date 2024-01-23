@@ -105,7 +105,7 @@ class Main:
 
         rail = Hillclimber(self.max, self.region)
         solution = rail.random_railmap()
-        node = rail.change_node(solution)
+        node = rail.change_node()
 
     def beam(self):
         # let the user know the algorithm is running

@@ -109,17 +109,24 @@ class Hillclimber:
             result = self.baseline_instance.continue_trajectory(current_trajectory)
 
             if result == "stop":
+                self.trajectories.append((current_trajectory))
                 break
             elif result == "new trajectory":
+                self.trajectories.append((current_trajectory))
                 current_trajectory = self.baseline_instance.start_trajectory()
-            print(current_trajectory)
+
 
         # Calculate the quality of the generated railmap
         quality = self.baseline_instance.calculate_K()
-        return quality
+        return current_trajectory
         
-    def change_node(self, new_trajectory):
+    def change_node(self):
         """Change a node/connection in the current trajectory."""
-        random_note = random.choice(new_trajectory)
-        print(random_note)
-        available_changes = random_note
+        #randomly select a trajectory from the railmap 
+        random_trajectory = random.choice(self.trajectories)
+        
+        #select last connection from random trajectory
+        last_station = random_trajectory.stations[-2]
+        print(last_station.name)
+        
+        #randomly
