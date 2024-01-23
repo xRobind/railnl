@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib
-
+import numpy as np
 
 class Visualisation:
 
@@ -80,10 +80,10 @@ class Visualisation:
         self.sizes = []
         if self.region == "Holland":
             for station in self.size_of_station:
-                self.sizes.append((self.size_of_station[station] + 1) ** 4)
+                self.sizes.append((self.size_of_station[station] + 1) ** 2)
         else:
             for station in self.size_of_station:
-                self.sizes.append(self.size_of_station[station] ** 2)
+                self.sizes.append(self.size_of_station[station] * 3)
 
     def get_connections(self):
         # for each trajectory, create a list that saves the name of the
@@ -100,23 +100,29 @@ class Visualisation:
 
     def draw(self):
         # determine size of the figure and remove axes
-        plt.figure(figsize=(5.8,8))
+        plt.figure()
+        img = plt.imread(f"code/visual/maps/{self.region}_empty.jpeg")
         plt.axis('off')
         # scatter the stations with their corresponding size, 
         # stations with the same size have the same color
-        plt.scatter(self.x_values, self.y_values, s=self.sizes, c=self.sizes)
+        plt.scatter(self.x_values, self.y_values, s=self.sizes)
+        if self.region == "Holland":
+            plt.imshow(img, zorder=0, extent=[4.1, 5.25, 51.7, 53.18])
+        else:
+            plt.imshow(img, zorder=0, extent=[3.1, 7.5, 50.6, 53.7])
+
 
         # make lists of all connections and plot them
         for line in self.connections:
             station, connection = line
             self.x_values = [self.x_station[station], self.x_station[connection]]
             self.y_values = [self.y_station[station], self.y_station[connection]]
-            plt.plot(self.x_values, self.y_values, '-', color='blue', alpha=0.33)
+            plt.plot(self.x_values, self.y_values, '-', c=np.random.rand(3,), alpha=0.33)
             # draw the connections
             plt.draw()
             plt.pause(.1)
 
-        # plt.savefig(f"railmap_{self.region}.png")
+        plt.savefig(f"railmap_{self.region}.png")
         plt.show()
 
     def histogram(self, K_values, iterations):
@@ -128,7 +134,7 @@ class Visualisation:
             plt.hist(K_values, int(iterations / 4))
         else:
             plt.hist(K_values, int(iterations))
-        # plt.savefig(f"hist_{self.region}.png")
+        plt.savefig(f"hist_{self.region}.png")
         plt.show()
         plt.clf()
 
@@ -138,7 +144,7 @@ class Visualisation:
         """
         plt.title("K's of our algorithms")
         plt.boxplot(all_K_values, showfliers=False, labels=["baseline", "hill_climber", "beam"])
-        # plt.savefig(f"boxplot_{self.region}")
+        plt.savefig(f"boxplot_{self.region}")
         plt.show()
         
 
