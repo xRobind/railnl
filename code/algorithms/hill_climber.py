@@ -110,6 +110,7 @@ class Hillclimber:
                 break
             elif result == "new trajectory":
                 current_trajectory = self.baseline_instance.start_trajectory()
+            print(current_trajectory)
 
         # Calculate the quality of the generated railmap
         quality = self.baseline_instance.calculate_K()
