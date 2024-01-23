@@ -97,7 +97,7 @@ class Main:
         
         rail = Hillclimber(max, self.region)
         solution = rail.random_railmap()
-        node = rail.change_node(solution)
+        node = rail.change_node()
         
         
         
