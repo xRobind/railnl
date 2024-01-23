@@ -9,6 +9,8 @@ from code.classes.stations import Station
 from code.classes.trajectory import Trajectory
 from code.algorithms.baseline import Baseline
 
+from code.algorithms.baseline import Baseline
+
 
 class Hillclimber:
     """ this class......."""

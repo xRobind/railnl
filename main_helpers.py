@@ -34,7 +34,7 @@ class Main:
         baseline\n\
         hill climber\n\
         beam\n\
-        all/n\n")
+        all\n\n")
             
         # retrieve region
         self.region = input("\nWhich region?\n")
