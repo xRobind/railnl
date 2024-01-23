@@ -1,4 +1,4 @@
-from railnl.main_helpers import Main
+from main_helpers import Main
 
 if __name__ == "__main__":
     main = Main()
