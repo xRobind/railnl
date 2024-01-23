@@ -1,6 +1,7 @@
 import sys
 import random
 import matplotlib.pyplot as plt
+import copy
 
 
 
@@ -18,6 +19,7 @@ class Hillclimber:
         self.connections = []
         self.trajectories = []
         self.total_time = 0
+        self.current_directory = []
         
         # load station structures and connections 
         self.load_stations(f"data/Stations{region}.txt")
@@ -27,6 +29,10 @@ class Hillclimber:
         
         #set maximum of trajectories
         self.max_trajectories = max
+        
+        #deepcopy
+        # self.railmap = copy.deepcopy(railmap)
+        # self.value = railmap.calculate_K()
 
     def load_stations(self, filename):
         """open file, read the lines and split into the three parts
@@ -109,5 +115,8 @@ class Hillclimber:
         quality = self.baseline_instance.calculate_K()
         return quality
         
-    def change_node(self):
+    def change_node(self, new_trajectory):
         """Change a node/connection in the current trajectory."""
+        random_note = random.choice(new_trajectory)
+        print(random_note)
+        available_changes = random_note
