@@ -31,7 +31,7 @@ class Hillclimber:
         
         #set maximum of trajectories
         self.max_trajectories = max
-        
+
         #deepcopy
         # self.railmap = copy.deepcopy(railmap)
         # self.value = railmap.calculate_K()
@@ -127,6 +127,26 @@ class Hillclimber:
         
         #select last connection from random trajectory
         last_station = random_trajectory.stations[-2]
-        print(last_station.name)
         
-        #randomly
+        # get available connections
+        connections = last_station.connections
+        print(connections)
+        
+        #randomly choose new connection
+        new_connection = random.choice(connections)
+        print(new_connection)
+        
+        # create a copy of the current trajectory to make changes
+        changed_trajectory = copy.deepcopy(random_trajectory)
+
+        # remove the last connection from the current trajectory
+        changed_trajectory.stations.pop()
+
+        # add the new connection to the modified trajectory
+        changed_trajectory.stations.append(new_connection)
+
+        # print the modified trajectory for verification
+        print("Original Trajectory:", random_trajectory.stations)
+        print("Modified Trajectory:", changed_trajectory.stations)
+        
+        
