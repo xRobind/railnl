@@ -109,7 +109,7 @@ class IDS:
         return self.stack.size()
 
     def continue_trajectory(self):
-        depth 2
+        # depth 2
         for i in range(self.stack.size()):
             current = self.stack.pop()
             station = current.stations[-1]
