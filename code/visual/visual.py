@@ -83,7 +83,7 @@ class Visualisation:
                 self.sizes.append((self.size_of_station[station] + 1) ** 2)
         else:
             for station in self.size_of_station:
-                self.sizes.append(self.size_of_station[station] * 3)
+                self.sizes.append(self.size_of_station[station])
 
     def get_connections(self):
         # for each trajectory, create a list that saves the name of the
@@ -107,9 +107,9 @@ class Visualisation:
         # stations with the same size have the same color
         plt.scatter(self.x_values, self.y_values, s=self.sizes)
         if self.region == "Holland":
-            plt.imshow(img, zorder=0, extent=[4.1, 5.25, 51.7, 53.18])
+            plt.imshow(img, extent=[4.1, 5.25, 51.7, 53.18])
         else:
-            plt.imshow(img, zorder=0, extent=[3.1, 7.5, 50.6, 53.7])
+            plt.imshow(img, extent=[3.1, 7.5, 50.6, 53.7])
 
 
         # make lists of all connections and plot them
@@ -122,30 +122,34 @@ class Visualisation:
             plt.draw()
             plt.pause(.1)
 
-        plt.savefig(f"railmap_{self.region}.png")
+        # plt.savefig(f"railmap_{self.region}.png")
         plt.show()
 
     def histogram(self, K_values, iterations):
         """plot a histogram of the quality of all the solutions
         """
-        plt.figure()
         plt.title(f"Histogram of K-values ({self.region})")
         if iterations > 400:
             plt.hist(K_values, int(iterations / 4))
         else:
             plt.hist(K_values, int(iterations))
-        plt.savefig(f"hist_{self.region}.png")
+        # plt.savefig(f"hist_{self.region}.png")
         plt.show()
-        plt.clf()
 
     def boxplot(self, all_K_values):
         """plot the K's of all algorithms and their averages next to eachother
         for comparison reasons.
         """
-        plt.title("K's of our algorithms")
-        plt.boxplot(all_K_values, showfliers=False, labels=["baseline", "hill_climber", "beam"])
-        plt.savefig(f"boxplot_{self.region}")
-        plt.show()
+        if len(all_K_values) == 3:
+            plt.title("K's of our algorithms")
+            plt.boxplot(all_K_values, showfliers=True, labels=["baseline", "hill_climber", "beam"])
+            # plt.savefig(f"boxplot_{self.region}")
+            plt.show()
+        else:
+            plt.title("K's of our baseline algorithm")
+            plt.boxplot(all_K_values, showfliers=True)
+            # plt.savefig(f"boxplot_{self.region}")
+            plt.show()
         
 
 

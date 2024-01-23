@@ -7,9 +7,9 @@ sys.path.append('../classes')
 sys.path.append('code/classes')
 sys.path.append('../..')
 
-from stations import Station
-from trajectory import Trajectory
-from stack import Stack
+from code.classes.stations import Station
+from code.classes.trajectory import Trajectory
+from code.classes.stack import Stack
 
 class IDS:
 

@@ -96,8 +96,7 @@ class Baseline:
 
                 # add the connection and time to the list of all connections
                 self.connections.append((name, connection))
-                
-                
+
                 # read new line
                 line = f.readline()
 
@@ -105,6 +104,10 @@ class Baseline:
         """initialize a trajectory with a starting station and amount of stops
         that it will make
         """
+        # stop if the maximum of trajectories
+        if len(self.trajectories) == self.max_trajectories:
+            return "stop"
+        
         # random starting station from our list of station objects
         starting_station = random.choice(self.stations)
 
@@ -119,9 +122,9 @@ class Baseline:
         of the current station and updating the current one to the next one,
         except if we've reached the end.
 
-        Returns "continue" if continued, "new trajectory" if not because the
-        2hrs are over,
-        "all connections used" if not because all connections have been
+        Returns "continue" if continued, "new trajectory" if not continued
+        because the 2hrs are over,
+        "stop" if not continued because all connections have been
         used and the goal has been reached.
         """
         # get available connections
@@ -129,24 +132,34 @@ class Baseline:
         connections = station.connections
         # choose a random connection
         chosen_connection = random.choice(connections)
-        #calculate probability train stops
+
+        # probability that the trajectory stops, add to the total time if yes
         if random.random() < ((1 / (len(connections)+1)) * (trajectory.time / 120)):
+            self.total_time += trajectory.time
+
+            # probability that the whole train table stops
             if random.random() < ((1/7)**(7-len(self.trajectories))):
                 return "stop"
+            
+            # start a new trajectory
             return "new trajectory"
             
-        # get the travel time by finding the chosen connection
-        # in the dict where it's time is mapped
+        # find the chosen connection in the dict where it's time is mapped
         time = self.get_time(station, chosen_connection)
 
         # add travel time if it stays under 2hrs, otherwise stop
-        # add to total time and start new trajectory
+        # add to total time if t stops
         if (trajectory.time + time) > 120:
             self.total_time += trajectory.time
+            
+            # probability that the whole train table stops
             if random.random() < ((1/7)**(7-len(self.trajectories))):
                 return "stop"
+            
+            # start a new trajectory
             return "new trajectory"
         else:
+            # add the travel time to the time of the trajectory
             trajectory.add_time(time)
 
             # add connected station as an object by searching for it by name
