@@ -1,6 +1,7 @@
 import random
 import sys
 import matplotlib.pyplot as plt
+import copy
 
 sys.path.append('../classes')
 sys.path.append('code/classes')
@@ -85,9 +86,13 @@ class IDS:
                 # for both stations
                 for station in self.stations:
                     if name == station.name:
-                        station.add_connection(connection, time)
+                        for station2 in self.stations:
+                            if station2.name == connection:
+                                station.add_connection(station2, time)
                     if connection == station.name:
-                        station.add_connection(name, time)
+                        for station1 in self.stations:
+                            if station1.name == name:
+                                station.add_connection(station1, time)
 
                 # add the connection and time to the list of all connections
                 self.connections.append((name, connection))
@@ -101,12 +106,13 @@ class IDS:
         """
         # depth 1
         # pick every starting trajectory once
-        for starting_connection in self.connections:
-            for i in range(2):
-                current = Trajectory()
-                current.add_history(starting_connection)
-                current.add_connection(starting_connection[i])
-                self.stack.push(current)
+        for station in self.stations:
+                current = Trajectory(station)
+                for connection in station.connections:
+                    new = copy.deepcopy(current)
+                    new.add_connection(connection)
+                    self.stack.push(new)
+                    del new
         return self.stack.size()
 
     def continue_trajectory(self):
@@ -114,9 +120,10 @@ class IDS:
         for i in range(self.stack.size()):
             current = self.stack.pop()
             station = current.stations[-1]
-            return current.stations
-            # connections = station.connections
-            # for connection in connections:
-                # current.add_connection(connection)
-                # self.stack.push(current)
-        # return self.stack.size()
+            connections = station.connections
+            for connection in connections:
+                newtrajectory = copy.deepcopy(current) 
+                newtrajectory.add_connection(connection)
+                self.stack.push(newtrajectory)
+                del newtrajectory
+        return self.stack.item[2].stations

@@ -94,20 +94,13 @@ class Main:
     #     for i in range(0, self.iterations):
     
     def hill_climber(self):
-        # get max trajectories
-        max = int(input("\nWhat is the maximum of trajectories?\n"))
-
-        # must be between 1 and 7
-        while max < 1 or max > 7:
-            max = \
-            int(input("\nMaximum number of trajectories must be between 1 and 7.\n"))
-    
-            print(f"\nUsing {self.algorithm} algorithm in {self.region} \
-            {self.iterations} times and plotting Histogram..")
         
         rail = Hillclimber(max, self.region)
         solution = rail.random_railmap()
-        self.best_rail = rail
+        node = rail.change_node(solution)
+        
+        
+        
 
 
     def visualisation(self):
