@@ -19,7 +19,6 @@ if __name__ == "__main__":
     elif main.algorithm == "beam":
         #testen
         main.beam()
-        main.visualisation()
 
     elif main.algorithm == "random":
         main.random_change()
