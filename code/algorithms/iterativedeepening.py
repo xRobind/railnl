@@ -121,9 +121,9 @@ class IDS:
         i = 0
         while( i != 10):
             current = self.stack.pop()
-                for next_connection in current.stations[-1].connection.connections:
-                    new = copy.deepcopy(current)
-                    new.add_connection(next_connection)
-                self.stack.push(new)
-                i += 1
+            for next_connection in current.stations[-1].connection.connections:
+                new = copy.deepcopy(current)
+                new.add_connection(next_connection)
+            self.stack.push(new)
+            i += 1
         return len(self.stack.items)
