@@ -4,7 +4,10 @@ class Trajectory:
     """    
     
     def __init__(self, start= None) -> None:
-        self.stations = [start]
+        if start != None:
+            self.stations = [start]
+        else:
+            self.stations = []
         self.history = []
         self.time = 0
         self.nr_connections = 0
