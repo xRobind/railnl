@@ -19,7 +19,7 @@ class Hillclimber:
         self.baseline_instance = Baseline(max, region)
         self.stations = []
         self.connections = []
-        self.trajectories = []
+        self.network = []
         self.total_time = 0
         self.current_directory = []
         
@@ -109,10 +109,10 @@ class Hillclimber:
             result = self.baseline_instance.continue_trajectory(current_trajectory)
 
             if result == "stop":
-                self.trajectories.append((current_trajectory))
+                self.network.append((current_trajectory))
                 break
             elif result == "new trajectory":
-                self.trajectories.append((current_trajectory))
+                self.network.append((current_trajectory))
                 current_trajectory = self.baseline_instance.start_trajectory()
 
 
@@ -123,30 +123,50 @@ class Hillclimber:
     def change_node(self):
         """Change a node/connection in the current trajectory."""
         #randomly select a trajectory from the railmap 
-        random_trajectory = random.choice(self.trajectories)
+        random_trajectory = random.choice(self.network)
+        print(random_trajectory)
         
-        #select last connection from random trajectory
-        last_station = random_trajectory.stations[-2]
+        #decide if the first or the last connection will be replaced
+        if random.random() < 0.5:
+            #select last connection from random trajectory 
+            last_station = random_trajectory.stations[-2]
+            print(last_station)
+            
+            # get available connections 
+            connections = last_station.connections
+            print(connections)
         
-        # get available connections
-        connections = last_station.connections
-        print(connections)
+            #randomly choose new connection
+            new_connection = random.choice(connections)
+            print(new_connection)
         
-        #randomly choose new connection
-        new_connection = random.choice(connections)
-        print(new_connection)
-        
-        # create a copy of the current trajectory to make changes
-        changed_trajectory = copy.deepcopy(random_trajectory)
+            # create a copy of the current trajectory to make changes
+            changed_trajectory = copy.deepcopy(random_trajectory)
 
-        # remove the last connection from the current trajectory
-        changed_trajectory.stations.pop()
+            # remove the last connection from the current trajectory
+            changed_trajectory.stations.pop()
 
-        # add the new connection to the modified trajectory
-        changed_trajectory.stations.append(new_connection)
+            # add the new connection to the modified trajectory
+            changed_trajectory.stations.append(new_connection)
+        
+        else:
+            #select first connection from random trajectory
+            first_station = random_trajectory.stations[1]
+            
+            #get available connections 
+            connections = last_station.connections
+            
+            #randomly choose new connection
+            new_connection = random.choice(connections)
+            
+            # create a copy of the current trajectory to make changes
+            changed_trajectory = copy.deepcopy(random_trajectory)
 
-        # print the modified trajectory for verification
-        print("Original Trajectory:", random_trajectory.stations)
-        print("Modified Trajectory:", changed_trajectory.stations)
+            # remove the last connection from the current trajectory
+            changed_trajectory.stations.pop()
+
+            # add the new connection to the modified trajectory
+            changed_trajectory.stations.append(new_connection)
+            
         
         
