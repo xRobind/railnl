@@ -24,6 +24,7 @@ class Hillclimber:
         self.network = []
         self.total_time = 0
         self.current_directory = []
+        self.schedules = []
         
         # load station structures and connections 
         self.load_stations(f"data/Stations{region}.txt")
@@ -109,7 +110,6 @@ class Hillclimber:
         """Generate a random railmap using the Baseline class."""
         # Start with a random trajectory from the baseline
         random_network = self.baseline_instance.start_trajectory()
-
         # Continue the trajectory until a stopping condition is met
         while True:
             result = self.baseline_instance.continue_trajectory(random_network)
@@ -125,7 +125,8 @@ class Hillclimber:
         # Calculate the quality of the generated railmap
         quality = self.baseline_instance.calculate_K()
         print(quality)
-        return random_network
+        
+        return self.network
         
     def change_node(self):
         """Change a node/connection in the current trajectory."""
@@ -161,6 +162,8 @@ class Hillclimber:
             
             #add new trajectory to network
             self.network.append(changed_trajectory)
+            
+            quality = self.baseline_instance.calculate_K()
 
         
         else:
