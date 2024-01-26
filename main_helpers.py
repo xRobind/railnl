@@ -106,14 +106,15 @@ class Main:
         rail = Hillclimber(self.max, self.region)
         solution = rail.random_railmap()
         node = rail.change_node()
+        rail.compare_K_values(solution, node)
 
     def beam(self):
         # let the user know the algorithm is running
         print(f"\nUsing Iterative Deepening algorithm in {self.region}")
 
         test = IDS(self.max, self.region)
-        print(test.start_trajectory())
-        print(test.continue_trajectory())
+        test.start_trajectory()
+        test.continue_trajectory()
 
     def random_change(self):
         amount = \
@@ -129,7 +130,7 @@ class Main:
         rail = Random_change(self.max, self.region, amount)
 
         for i in range(0, changes):
-            rail.change_trajectory()
+            rail.change_trajectory(self.random_trajectory, self.changed_trajectory)
 
         self.trajectories = rail.train_table
         self.K_values = rail.K

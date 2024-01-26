@@ -10,6 +10,8 @@ sys.path.append('../..')
 from code.classes.stations import Station
 from code.classes.trajectory import Trajectory
 from code.classes.stack import Stack
+from code.classes.connection import Connection
+from code.classes.schedule import Schedule
 
 class IDS:
 
@@ -20,8 +22,6 @@ class IDS:
         """
         self.stations = []
         self.connections = []
-        self.trajectories = []
-        self.total_time = 0
         self.stack = Stack()
 
         # load station structures and connections 
@@ -88,14 +88,15 @@ class IDS:
                     if name == station.name:
                         for station2 in self.stations:
                             if station2.name == connection:
-                                station.add_connection(station2, time)
+                                connection_object = Connection(station, station2, time)
+                                station.add_connection(connection_object)
+                                self.connections.append(connection_object)
                     if connection == station.name:
                         for station1 in self.stations:
                             if station1.name == name:
-                                station.add_connection(station1, time)
-
-                # add the connection and time to the list of all connections
-                self.connections.append((name, connection))
+                                connection_object = Connection(station, station1, time)
+                                station.add_connection(connection_object)
+                                self.connections.append(connection_object)
 
                 # read new line
                 line = f.readline()
@@ -106,23 +107,30 @@ class IDS:
         """
         # depth 1
         # pick every starting trajectory once
-        for station in self.stations:
-                current = Trajectory(station)
-                for connection in station.connections:
+        for connection in self.connections:
+                current = Trajectory(connection)
+                for second_connection in current.stations[-1].connection.connections:
                     new = copy.deepcopy(current)
-                    new.add_connection(connection)
-                    new.add_time(station.connection_time[connection])
-                    self.stack.push(new)
-        return self.stack.items[1].time
+                    new.add_connection(second_connection)
+                    
+                    ## add trajectory to schedule
+                    self.stack.push(Schedule(new, self.connections))
+        for item in self.stack.items:
+            print(item.calculate_K())
 
     def continue_trajectory(self):
         # depth 2
-        for i in range(self.stack.size()):
+        depth = 8
+        yeh = 0
+        while(yeh < 1000):
             current = self.stack.pop()
-            station = current.stations[-1]
-            connections = station.connections
-            for connection in connections:
-                newtrajectory = copy.deepcopy(current)
-                newtrajectory.add_connection(connection)
-                self.stack.push(newtrajectory)
-        return self.stack.items[1].stations
+            for next_connection in current.trajectories[-1].stations[-1].connection.connections:
+                new = copy.deepcopy(current)
+                new.trajectories[-1].add_connection(next_connection)
+                if len(new.trajectories[-1].stations) < depth:
+                    self.stack.push(new)
+                    print(new.calculate_K())
+                yeh += 1
+                # if new.calculate_K() > 5000:
+                    # print(new.trajectories[-1].stations)
+                    # yeh = True
