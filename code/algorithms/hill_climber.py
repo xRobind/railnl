@@ -35,6 +35,8 @@ class Hillclimber:
         self.max_trajectories = max
         self.random_network = []
         self.changed_network = []
+        
+        self.current_railmap = None
 
         #deepcopy
         # self.railmap = copy.deepcopy(railmap)
@@ -189,21 +191,31 @@ class Hillclimber:
         return self.network
             
 
-    def compare_K_values(self, random_network, network):
-        """
-        Compare the K values of the original and changed networks.
+    def compare_K_values(self, random_network, changed_network):
+            """
+            Compare the K values of the original and changed networks.
+            """
+            # Set the railmap for the current trajectory
+            self.current_railmap = random_network
 
-        """
-        # Calculate the K value for the original trajectory
-        original_quality = self.baseline_instance.calculate_K()
-        print(original_quality)
+            # Calculate the K value for the original trajectory
+            original_quality = self.baseline_instance.calculate_K()
 
-        # Calculate the K value for the changed trajectory
-        changed_quality = self.baseline_instance.calculate_K()
-        print(changed_quality)
+            print(original_quality)
 
-        # Compare the K values and determine if there is an improvement
-        improvement = changed_quality > original_quality
+            # Set the railmap for the changed trajectory
+            self.current_railmap = changed_network
+
+            # Calculate the K value for the changed trajectory
+            changed_quality = self.baseline_instance.calculate_K()
+
+            print(changed_quality)
+
+            # Compare the K values and determine if there is an improvement
+            improvement = changed_quality > original_quality
+            print("Improvement:", improvement)
+            return improvement
+    
 
     
         
