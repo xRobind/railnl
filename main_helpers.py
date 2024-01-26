@@ -123,7 +123,7 @@ class Main:
     int(input("\nHow many times do you want to update the train table?\n"))
         
         # let the user know the algorithm is running
-        print(f"\nUsing Random algorithm in {self.region} {amount} times...")
+        print(f"\nUsing Random algorithm in {self.region} {changes} times...")
         
         # initiate the algorithm
         rail = Random_change(self.max, self.region, amount)

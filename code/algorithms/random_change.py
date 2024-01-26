@@ -24,8 +24,9 @@ class Random_change:
         """Create a number trajectories.
         """
         for i in range(0, amount):
-            # empty list of trajectories and start again
+            # empty lists and start again
             self.B.trajectories = []
+            self.B.connections = []
             trajectory = self.B.start_trajectory()
             
             # continue a trajectory until a stopping condition is met
@@ -98,5 +99,3 @@ class Random_change:
         if k >= self.K:
             self.K = k
             self.best_train_table = self.train_table
-
-        print(self.K, self.best_train_table)
