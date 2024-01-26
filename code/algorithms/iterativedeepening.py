@@ -11,6 +11,7 @@ from code.classes.stations import Station
 from code.classes.trajectory import Trajectory
 from code.classes.stack import Stack
 from code.classes.connection import Connection
+from code.classes.schedule import Schedule
 
 class IDS:
 
@@ -96,7 +97,6 @@ class IDS:
                                 connection_object = Connection(station, station1, time)
                                 station.add_connection(connection_object)
                                 self.connections.append(connection_object)
-                print(len(self.connections))
 
                 # read new line
                 line = f.readline()
@@ -112,18 +112,25 @@ class IDS:
                 for second_connection in current.stations[-1].connection.connections:
                     new = copy.deepcopy(current)
                     new.add_connection(second_connection)
+                    
                     ## add trajectory to schedule
-                    self.stack.push(new)
-        return len(self.stack.items)
+                    self.stack.push(Schedule(new, self.connections))
+        for item in self.stack.items:
+            print(item.calculate_K())
 
     def continue_trajectory(self):
         # depth 2
-        i = 0
-        while( i != 10):
+        depth = 8
+        yeh = 0
+        while(yeh < 1000):
             current = self.stack.pop()
-            for next_connection in current.stations[-1].connection.connections:
+            for next_connection in current.trajectories[-1].stations[-1].connection.connections:
                 new = copy.deepcopy(current)
-                new.add_connection(next_connection)
-            self.stack.push(new)
-            i += 1
-        return len(self.stack.items)
+                new.trajectories[-1].add_connection(next_connection)
+                if len(new.trajectories[-1].stations) < depth:
+                    self.stack.push(new)
+                    print(new.calculate_K())
+                yeh += 1
+                # if new.calculate_K() > 5000:
+                    # print(new.trajectories[-1].stations)
+                    # yeh = True

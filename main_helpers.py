@@ -113,8 +113,8 @@ class Main:
         print(f"\nUsing Iterative Deepening algorithm in {self.region}")
 
         test = IDS(self.max, self.region)
-        print(test.start_trajectory())
-        print(test.continue_trajectory())
+        test.start_trajectory()
+        test.continue_trajectory()
 
     def random_change(self):
         amount = \
