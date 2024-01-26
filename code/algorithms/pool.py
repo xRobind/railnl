@@ -6,9 +6,7 @@ from code.algorithms.baseline import Baseline
 from code.classes.schedule import Schedule
 
 
-
-
-class Random_change:
+class Pool:
     """This class contains an algorithm that takes 10000 randomly-created
     trajectories and combines them in a train-table over and over again,
     while keeping track of which combination returns the highest K-value.

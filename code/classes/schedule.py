@@ -19,10 +19,12 @@ class Schedule:
             except(AttributeError):
                 pass
         
+        # sometimes self.all_connections is already an integer of the number
+        # of connections
         try:
             self.p = 2 * len(self.connections_used) / len(self.all_connections)
         except(TypeError):
-            self.p = 2 * len(self.connections_used) / self.all_connections
+            self.p = len(self.connections_used) / self.all_connections
 
         return 10000 * self.p - (self.T * 100 + self.time)
         

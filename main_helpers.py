@@ -4,7 +4,7 @@
 from code.algorithms.baseline import Baseline
 from code.algorithms.hill_climber import Hillclimber
 from code.algorithms.iterativedeepening import IDS
-from code.algorithms.random_change import Random_change
+from code.algorithms.pool import Pool
 
 from code.visual.visual import Visualisation
 
@@ -19,7 +19,7 @@ class Main:
         self.K_values = []
         self.all_K_values = []
         self.highest_K = 0
-        self.iterations = 100
+        self.iterations = 1000
         self.trajectories = None
 
     def user_input(self):
@@ -32,14 +32,14 @@ class Main:
 
         # choose between all our algorithms
         while self.algorithm not in \
-                    ["baseline", "hill climber", "beam", "random", "all"]:
+                    ["baseline", "hill climber", "beam", "pool", "all"]:
             self.algorithm = \
             input("Please provide an algortihm in the command line.\n\
         Options:\n\
         baseline\n\
         hill climber\n\
         beam\n\
-        random\n\
+        pool\n\
         all\n\n")
             
         # retrieve region
@@ -67,14 +67,17 @@ class Main:
         print(f"\nUsing Baseline algorithm in {self.region} \
 {self.iterations} times...")
         
+        # initialise baseline algorithm
+        rail = Baseline(self.max, self.region)
+
         # repeat a specified number of times
         for i in range(0, self.iterations):
-            # initialise and run baseline algorithm
-            rail = Baseline(self.max, self.region)
+            # empty railmap info
+            rail.trajectories = []
+            rail.total_time = 0
 
             # continue trajectories until it doesn't create a new
             while True:
-
                 # create new trajectory
                 trajectory = rail.start_trajectory()
 
@@ -86,10 +89,6 @@ class Main:
                 run = rail.continue_trajectory(trajectory)
                 while run == "continue":
                     run = rail.continue_trajectory(trajectory)
-                
-                # stop if a stopping condition is met
-                if run == "stop":
-                    break
 
                 # calculate K and add it to list of all K's
                 K_value = rail.calculate_K()
@@ -99,6 +98,10 @@ class Main:
                 if self.highest_K < K_value:
                     self.highest_K = K_value
                     self.trajectories = rail.trajectories
+
+                # stop if a stopping condition is met
+                if run == "stop":
+                    break
     
         self.all_K_values.extend(self.K_values)
 
@@ -119,7 +122,7 @@ class Main:
         test.start_trajectory()
         test.continue_trajectory()
 
-    def random_change(self):
+    def pool(self):
         amount = \
     int(input("\nHow many random trajectories do you want to create?\n"))
         
@@ -130,7 +133,7 @@ class Main:
         print(f"\nUsing Random algorithm in {self.region} {changes} times...")
         
         # initiate the algorithm
-        rail = Random_change(self.max, self.region, amount)
+        rail = pool(self.max, self.region, amount)
 
         for i in range(0, changes):
             rail.change_trajectory(self.random_trajectory, self.changed_trajectory)

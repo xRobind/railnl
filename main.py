@@ -20,8 +20,8 @@ if __name__ == "__main__":
         #testen
         main.beam()
 
-    elif main.algorithm == "random":
-        main.random_change()
+    elif main.algorithm == "pool":
+        main.pool()
         main.visualisation()
 
     elif main.algorithm == "all":
