@@ -18,5 +18,10 @@ class Schedule:
                 self.time += trajectory.stations[i].time
             except(AttributeError):
                 pass
-        self.p = 2 * len(self.connections_used) / len(self.all_connections)
+        
+        try:
+            self.p = 2 * len(self.connections_used) / len(self.all_connections)
+        except(TypeError):
+            self.p = 2 * len(self.connections_used) / self.all_connections
+
         return 10000 * self.p - (self.T * 100 + self.time)
