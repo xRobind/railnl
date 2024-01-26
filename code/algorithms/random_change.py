@@ -1,5 +1,11 @@
-from code.algorithms.baseline import Baseline
 import random as r
+
+
+from code.algorithms.baseline import Baseline
+
+from code.classes.schedule import Schedule
+
+
 
 
 class Random_change:
@@ -24,8 +30,9 @@ class Random_change:
         """Create a number trajectories.
         """
         for i in range(0, amount):
-            # empty list of trajectories and start again
+            # empty lists and start again
             self.B.trajectories = []
+            self.B.connections = []
             trajectory = self.B.start_trajectory()
             
             # continue a trajectory until a stopping condition is met
@@ -36,40 +43,6 @@ class Random_change:
                 if result == "stop" or result == "new trajectory":
                     self.all_trajectories.append(trajectory)
                     break
-
-    def count_connections(self):
-        """Count all unique connections in a train table
-        """
-        # list to store all connections
-        connections = []
-
-        # loop through the trajectories
-        for trajectory in self.train_table:
-            # loop through all connections in a trajectory and add to the list
-            for i in range(0, len(trajectory.stations) - 1):
-                station = trajectory.stations[i]
-                connection = trajectory.stations[i + 1]
-                connections.append((station, connection))
-
-        # make sure there are no doubles
-        self.connections = set(connections)
-
-    def count_time(self):
-        """Count the total time in a train table.
-        """
-        # variable to store the time
-        self.total_time = 0
-
-        # loop through the trajectories
-        for trajectory in self.train_table:
-            self.total_time += trajectory.time
-    
-    def calculate_K(self):
-        """calculate the quality of the train table
-        """        
-        T = len(self.train_table)
-        p = (self.B.total_connections - len(self.connections)) / self.B.total_connections
-        return 10000 * p - (T * 100 + self.total_time)
         
     def create_train_table(self):
         """Create a train table with the maximum amount of trajectories.
@@ -85,12 +58,8 @@ class Random_change:
         and calculate the K after. If it is better: keep the change,
         otherwise discard it.
         """
-        # create a new train table
+        # create a new train table and calculate it's K
         self.create_train_table()
-
-        # calculate K
-        self.count_connections()
-        self.count_time()
         k = self.calculate_K()
 
         # update if it is better or the same, 
@@ -99,4 +68,8 @@ class Random_change:
             self.K = k
             self.best_train_table = self.train_table
 
-        print(self.K, self.best_train_table)
+    def calculate_K(self):
+        """calculate the quality of the train table using Schedule class.
+        """        
+        S = Schedule(self.train_table, self.B.connections)
+        return S.calculate_K()
