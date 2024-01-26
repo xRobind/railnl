@@ -35,7 +35,6 @@ class Hillclimber:
         """Generate a random railmap using the Baseline class."""
         # Start with a random trajectory from the baseline
         random_network = self.baseline_instance.start_trajectory()
-
         # Continue the trajectory until a stopping condition is met
         while True:
             result = self.baseline_instance.continue_trajectory(random_network)
@@ -52,8 +51,7 @@ class Hillclimber:
         S = Schedule(self.network, self.connections)
         self.original_quality = S.calculate_K()
         print(self.original_quality)
-
-        return
+        
         
     def change_node(self):
         """Change a node/connection in the current trajectory."""
@@ -85,6 +83,8 @@ class Hillclimber:
             
             #add new trajectory to network
             self.network.append(changed_trajectory)
+            
+            quality = self.baseline_instance.calculate_K()
 
         
         else:

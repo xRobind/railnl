@@ -25,3 +25,7 @@ class Schedule:
             self.p = 2 * len(self.connections_used) / self.all_connections
 
         return 10000 * self.p - (self.T * 100 + self.time)
+        
+    def add_trajectory(self, trajectory):
+        self.trajectories.append(trajectory)
+    
