@@ -13,7 +13,7 @@ if __name__ == "__main__":
     
     # execution of hill climber algorrithm
     elif main.algorithm == "hill climber":
-        #initialise and run baseline algorithm 
+        #initialise and run hill climber algorithm 
         main.hill_climber()
         
     elif main.algorithm == "beam":

@@ -27,7 +27,8 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        self.algorithm = input("\nWhich algorithm?\n")
+        # self.algorithm = input("\nWhich algorithm?\n")
+        self.algorithm = "hill climber"
 
         # choose between all our algorithms
         while self.algorithm not in \
@@ -42,7 +43,8 @@ class Main:
         all\n\n")
             
         # retrieve region
-        self.region = input("\nWhich region?\n")
+        # self.region = input("\nWhich region?\n")
+        self.region = "Holland"
 
         # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
@@ -50,7 +52,8 @@ class Main:
         input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
         # get max trajectories
-        self.max = int(input("\nWhat is the maximum of trajectories?\n"))
+        # self.max = int(input("\nWhat is the maximum of trajectories?\n"))
+        self.max = 7
 
         # must be between 1 and 7
         while self.max < 1 or self.max > 45:
@@ -104,9 +107,9 @@ class Main:
         print(f"\nUsing Hill Climber algorithm in {self.region}")
 
         rail = Hillclimber(self.max, self.region)
-        solution = rail.random_railmap()
-        node = rail.change_node()
-        rail.compare_K_values(solution, node)
+        rail.random_railmap()
+        rail.change_node()
+        rail.compare_K_values()
 
     def beam(self):
         # let the user know the algorithm is running
