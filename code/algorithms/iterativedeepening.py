@@ -84,6 +84,7 @@ class IDS:
                 # add connection to connection list in Station class,
                 # and the list of all connections,
                 # for both stations
+                connection_id = 0
                 for station in self.stations:
                     if name == station.name:
                         for station2 in self.stations:
@@ -134,17 +135,29 @@ class IDS:
     def continue_trajectory(self):
         # depth 2
         depth = 16
-        yeh = 0
-        while(yeh < 1000):
+        number_trajectories = 3
+        yeh = False
+        while(yeh == False):
             current = self.stack.pop()
             for next_connection in current.trajectories[-1].stations[-1].connection.connections:
                 new = copy.deepcopy(current)
                 if new.trajectories[-1].add_connection_and_time(next_connection, 120):
                     if len(new.trajectories[-1].stations) < depth:
-                        # print(new.trajectories[-1].stations)
+                        print(len(new.trajectories[-1].stations))
                         self.stack.push(new)
                         # print(new.trajectories[-1].time)
-                        # print(new.calculate_K())
-                # yeh += 1
-                # if new.calculate_K() > 4000:
-                    # print(new.trajectories[-1].stations)
+                        print(new.calculate_K())
+                elif len(new.trajectories) <  number_trajectories:
+                    for connection in new.connections_over:
+                        trajectory = Trajectory(connection)
+                        new2 = copy.deepcopy(new)
+                        new2.add_trajectory(trajectory)
+                        self.stack.push(new2)
+                if new.calculate_K() > 6500:
+                    for i in range(len(new.trajectories[-1].stations)):
+                        print(new.trajectories[-1].stations[i].station.name, new.trajectories[-1].stations[i].connection.name)
+                    for i in range(len(new.trajectories[-2].stations)):
+                        print(new.trajectories[0].stations[i].station.name, new.trajectories[0].stations[i].connection.name)
+                    print(len(new.connections_used))
+                    yeh = True
+

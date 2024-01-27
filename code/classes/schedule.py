@@ -4,6 +4,7 @@ class Schedule:
         self.trajectories = trajectories
         self.connections_used = []
         self.all_connections = all_connections
+        self.connections_over = all_connections
         self.time = 0
         self.T = 0
         self.p = 0
@@ -15,6 +16,9 @@ class Schedule:
                 if connection not in self.connections_used:
                     self.connections_used.append(connection)
                     self.connections_used.append(connection.corresponding)
+                    if connection in self.connections_over:
+                        self.connections_over.remove(connection)
+                        self.connections_over.remove(connection.corresponding)
             
             
         self.T = len(self.trajectories)
