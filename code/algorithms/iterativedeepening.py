@@ -91,12 +91,24 @@ class IDS:
                                 connection_object = Connection(station, station2, time)
                                 station.add_connection(connection_object)
                                 self.connections.append(connection_object)
-                    if connection == station.name:
-                        for station1 in self.stations:
-                            if station1.name == name:
-                                connection_object = Connection(station, station1, time)
-                                station.add_connection(connection_object)
-                                self.connections.append(connection_object)
+                                connection_object2 = Connection(station2, station, time)
+                                station2.add_connection(connection_object2)
+                                self.connections.append(connection_object2)
+                                connection_object.add_corresponding_connection(connection_object2)
+                                connection_object2.add_corresponding_connection(connection_object)
+                                
+                    # if connection == station.name:
+                        # for station1 in self.stations:
+                            # if station1.name == name:
+                                # connection_object = Connection(station, station1, time)
+                                # station.add_connection(connection_object)
+                                # self.connections.append(connection_object)
+                                
+        # for connection in self.connections:
+            # for connection2 in self.connections:
+                # if connection.connection == connection2.station and connection.station == connection2.connection:
+                    # print("het lukt")
+                    # connection.add_corresponding_connection(connection2)
 
                 # read new line
                 line = f.readline()
@@ -111,26 +123,28 @@ class IDS:
                 current = Trajectory(connection)
                 for second_connection in current.stations[-1].connection.connections:
                     new = copy.deepcopy(current)
-                    new.add_connection(second_connection)
-                    
+                    new.add_connection_and_time(second_connection, 120)
+                    new = [new]
                     ## add trajectory to schedule
                     self.stack.push(Schedule(new, self.connections))
-        for item in self.stack.items:
-            print(item.calculate_K())
+        # for item in self.stack.items:
+            # print(item.calculate_K())
+            # print(item.trajectories[-1].time, item.time)
 
     def continue_trajectory(self):
         # depth 2
-        depth = 8
+        depth = 16
         yeh = 0
         while(yeh < 1000):
             current = self.stack.pop()
             for next_connection in current.trajectories[-1].stations[-1].connection.connections:
                 new = copy.deepcopy(current)
-                new.trajectories[-1].add_connection(next_connection)
-                if len(new.trajectories[-1].stations) < depth:
-                    self.stack.push(new)
-                    print(new.calculate_K())
-                yeh += 1
-                # if new.calculate_K() > 5000:
+                if new.trajectories[-1].add_connection_and_time(next_connection, 120):
+                    if len(new.trajectories[-1].stations) < depth:
+                        # print(new.trajectories[-1].stations)
+                        self.stack.push(new)
+                        # print(new.trajectories[-1].time)
+                        # print(new.calculate_K())
+                # yeh += 1
+                # if new.calculate_K() > 4000:
                     # print(new.trajectories[-1].stations)
-                    # yeh = True

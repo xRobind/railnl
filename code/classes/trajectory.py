@@ -8,7 +8,6 @@ class Trajectory:
             self.stations = [start]
         else:
             self.stations = []
-        self.history = []
         self.time = 0
         self.nr_connections = 0
 
@@ -19,8 +18,13 @@ class Trajectory:
         self.stations.append(connection)
         self.nr_connections += 1
         
-    def add_history(self, connection):
-        self.history.append(connection)
+    def add_connection_and_time(self, connection, max_time):
+        if self.time + connection.time > max_time:
+            return False
+        self.stations.append(connection)
+        self.time += connection.time
+        return True
+        
         
         
 

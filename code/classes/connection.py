@@ -7,3 +7,8 @@ class Connection:
         self.station = station1
         self.connection = station2
         self.time = time
+        self.corresponding = None
+        
+    def add_corresponding_connection(self, corresponding):
+        self.corresponding = corresponding
+        
