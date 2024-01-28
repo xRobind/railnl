@@ -22,6 +22,7 @@ class IDS:
         """
         self.stations = []
         self.connections = []
+        self.connection_dict = {}
         self.stack = Stack()
 
         # load station structures and connections 
@@ -62,6 +63,7 @@ class IDS:
     def load_connections(self, filename):
         """open file, read the lines and split into the three parts
         """
+        connection_id = 1
         with open(filename) as f:
             # skip first line
             next(f)
@@ -84,32 +86,23 @@ class IDS:
                 # add connection to connection list in Station class,
                 # and the list of all connections,
                 # for both stations
-                connection_id = 0
                 for station in self.stations:
                     if name == station.name:
                         for station2 in self.stations:
                             if station2.name == connection:
-                                connection_object = Connection(station, station2, time)
+                                connection_object = Connection(station, station2, time, connection_id)
                                 station.add_connection(connection_object)
                                 self.connections.append(connection_object)
-                                connection_object2 = Connection(station2, station, time)
+                                self.connection_dict[connection_id] = connection_object
+                                connection_id += 1
+                                connection_object2 = Connection(station2, station, time, connection_id)
                                 station2.add_connection(connection_object2)
                                 self.connections.append(connection_object2)
+                                self.connection_dict[connection_id] = connection_object2
+                                connection_id += 1
                                 connection_object.add_corresponding_connection(connection_object2)
                                 connection_object2.add_corresponding_connection(connection_object)
-                                
-                    # if connection == station.name:
-                        # for station1 in self.stations:
-                            # if station1.name == name:
-                                # connection_object = Connection(station, station1, time)
-                                # station.add_connection(connection_object)
-                                # self.connections.append(connection_object)
-                                
-        # for connection in self.connections:
-            # for connection2 in self.connections:
-                # if connection.connection == connection2.station and connection.station == connection2.connection:
-                    # print("het lukt")
-                    # connection.add_corresponding_connection(connection2)
+                
 
                 # read new line
                 line = f.readline()
@@ -127,9 +120,9 @@ class IDS:
                     new.add_connection_and_time(second_connection, 120)
                     new = [new]
                     ## add trajectory to schedule
-                    self.stack.push(Schedule(new, self.connections))
+                    self.stack.push(Schedule(new, self.connection_dict))
         # for item in self.stack.items:
-            # print(item.calculate_K())
+            # print(item.calculate_K2())
             # print(item.trajectories[-1].time, item.time)
 
     def continue_trajectory(self):
@@ -138,24 +131,30 @@ class IDS:
         number_trajectories = 3
         yeh = False
         while(yeh == False):
+            # print(len(self.stack.items))
             current = self.stack.pop()
             for next_connection in current.trajectories[-1].stations[-1].connection.connections:
                 new = copy.deepcopy(current)
                 if new.trajectories[-1].add_connection_and_time(next_connection, 120):
                     if len(new.trajectories[-1].stations) < depth:
-                        print(len(new.trajectories[-1].stations))
+                        # print(len(new.trajectories[-1].stations))
                         self.stack.push(new)
                         # print(new.trajectories[-1].time)
-                        print(new.calculate_K())
+                        # print(new.calculate_K2())
                 elif len(new.trajectories) <  number_trajectories:
-                    for connection in new.connections_over:
-                        trajectory = Trajectory(connection)
+                    new.calculate_K2()
+                    print(len(new.connections_over), len(new.connections_used), len(new.all_connections))
+                    for connection_id in new.connections_over:
+                        # print(len(new.connections_over), len(new.connections_used), len(new.all_connections))
+                        trajectory = Trajectory(new.connections_over[connection_id])
                         new2 = copy.deepcopy(new)
                         new2.add_trajectory(trajectory)
                         self.stack.push(new2)
-                if new.calculate_K() > 6500:
+                if new.calculate_K2() > 1000:
+                    print(new.trajectories[-1].time, len(new.connections_used))
                     for i in range(len(new.trajectories[-1].stations)):
                         print(new.trajectories[-1].stations[i].station.name, new.trajectories[-1].stations[i].connection.name)
+                        # print(new.trajectories[-1].stations[i].corresponding.station.name, new.trajectories[-1].stations[i].corresponding.connection.name)
                     for i in range(len(new.trajectories[-2].stations)):
                         print(new.trajectories[0].stations[i].station.name, new.trajectories[0].stations[i].connection.name)
                     print(len(new.connections_used))
