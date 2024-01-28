@@ -109,10 +109,19 @@ class Main:
         # let the user know the algorithm is running
         print(f"\nUsing Hill Climber algorithm in {self.region}")
 
-        rail = Hillclimber(self.max, self.region)
-        rail.random_railmap()
-        rail.change_node()
-        rail.compare_K_values()
+        hillclimber_instance = Hillclimber(self.max, self.region)
+        iterations = 10
+        quality_threshold = 7500
+        hillclimber_instance.random_railmap()
+
+        for iteration in range(iterations):
+            hillclimber_instance.change_node()
+            improvement = hillclimber_instance.compare_K_values()
+            
+        # Check for the quality threshold and break if met
+            if hillclimber_instance.original_quality >= quality_threshold:
+                print(f"Quality threshold reached.")
+                break
 
     def beam(self):
         # let the user know the algorithm is running
