@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 sys.path.append('../classes')
 sys.path.append('code/classes')
 
-from stations import Station
-from trajectory import Trajectory
+from code.classes.stations import Station
+from code.classes.trajectory import Trajectory
 from code.classes.load import Load
 from code.classes.schedule import Schedule
 
@@ -27,6 +27,7 @@ class Baseline:
         """
         self.trajectories = []
         self.total_time = 0
+        self.region = region
 
         # load station structures and connections
         load = Load(region)
@@ -71,38 +72,70 @@ class Baseline:
         chosen_connection = random.choice(connections)
 
         # probability that the trajectory stops, add to the total time if yes
-        if random.random() < ((1 / (len(connections)+1)) * (trajectory.time / 120)):
-            self.total_time += trajectory.time
+        # different amount of time and trajectories for Holland and Nederland
+        if self.region == "Holland":
+            if random.random() < ((1 / (len(connections)+1)) * (trajectory.time / 120)):
+                self.total_time += trajectory.time
 
-            # probability that the whole train table stops
-            if random.random() < ((1/7)**(7-len(self.trajectories))):
-                return "stop"
-            
-            # start a new trajectory
-            return "new trajectory"
+                # probability that the whole train table stops
+                if random.random() < ((1/7)**(7-len(self.trajectories))):
+                    return "stop"
+                
+                # start a new trajectory
+                return "new trajectory"
+        else:
+            if random.random() < ((1 / (len(connections)+1)) * (trajectory.time / 180)):
+                self.total_time += trajectory.time
+
+                # probability that the whole train table stops
+                if random.random() < ((1/20)**(20-len(self.trajectories))):
+                    return "stop"
+                
+                # start a new trajectory
+                return "new trajectory"
             
         # find the chosen connection in the dict where it's time is mapped
         time = self.get_time(station, chosen_connection)
 
         # add travel time if it stays under 2hrs, otherwise stop
         # add to total time if t stops
-        if (trajectory.time + time) > 120:
-            self.total_time += trajectory.time
-            
-            # probability that the whole train table stops
-            if random.random() < ((1/7)**(7-len(self.trajectories))):
-                return "stop"
-            
-            # start a new trajectory
-            return "new trajectory"
-        else:
-            # add the travel time to the time of the trajectory
-            trajectory.add_time(time)
+        # different for the regions
+        if self.region == "Holland":
+            if (trajectory.time + time) > 120:
+                self.total_time += trajectory.time
+                
+                # probability that the whole train table stops
+                if random.random() < ((1/7)**(7-len(self.trajectories))):
+                    return "stop"
+                
+                # start a new trajectory
+                return "new trajectory"
+            else:
+                # add the travel time to the time of the trajectory
+                trajectory.add_time(time)
 
-            # add connected station as an object by searching for it by name
-            for item in self.stations:
-                if item.name == chosen_connection:
-                    trajectory.add_connection(item)
+                # add connected station as an object by searching for it by name
+                for item in self.stations:
+                    if item.name == chosen_connection:
+                        trajectory.add_connection(item)
+        else:
+            if (trajectory.time + time) > 180:
+                self.total_time += trajectory.time
+                
+                # probability that the whole train table stops
+                if random.random() < ((1/20)**(20-len(self.trajectories))):
+                    return "stop"
+                
+                # start a new trajectory
+                return "new trajectory"
+            else:
+                # add the travel time to the time of the trajectory
+                trajectory.add_time(time)
+
+                # add connected station as an object by searching for it by name
+                for item in self.stations:
+                    if item.name == chosen_connection:
+                        trajectory.add_connection(item)
 
         # remove connection from connections that have to be used
         # and check if they have all been used
@@ -132,4 +165,4 @@ class Baseline:
         """Calculate the quality of the railmap using Schedule class.
         """        
         S = Schedule(self.trajectories, self.total_connections)
-        return S.calculate_K()
+        return S.calculate_K_simple()
