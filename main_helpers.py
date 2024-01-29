@@ -27,8 +27,8 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        self.algorithm = input("\nWhich algorithm?\n")
-        # self.algorithm = "hill climber"
+        # self.algorithm = input("\nWhich algorithm?\n")
+        self.algorithm = "hill climber"
 
         # choose between all our algorithms
         while self.algorithm not in \
@@ -43,8 +43,8 @@ class Main:
         all\n\n")
             
         # retrieve region
-        self.region = input("\nWhich region?\n")
-        # self.region = "Holland"
+        # self.region = input("\nWhich region?\n")
+        self.region = "Holland"
 
         # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
@@ -52,8 +52,8 @@ class Main:
         input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
         # get max trajectories
-        self.max = int(input("\nWhat is the maximum of trajectories?\n"))
-        # self.max = 7
+        # elf.max = int(input("\nWhat is the maximum of trajectories?\n"))
+        self.max = 7
 
         # must be between 1 and 7
         while self.max < 1 or self.max > 45:
@@ -109,7 +109,7 @@ class Main:
         self.all_K_values.append(self.K_values)
         self.highest_K = 0
 
-    def hill_climber(self):
+    def hill_climber_2(self):
         # reset K's
         self.K_values = []
         # let the user know the algorithm is running
@@ -123,7 +123,7 @@ class Main:
         hillclimber_instance.choose_random_trajectory()
 
         for iteration in range(iterations):
-            hillclimber_instance.change_node()
+            hillclimber_instance.change_node_last()
             quality = hillclimber_instance.compare_K_values()
             self.K_values.append(quality)
             
@@ -138,6 +138,12 @@ class Main:
         # extend the list of all K's and reset highest K
         self.all_K_values.append(self.K_values)
         self.highest_K = 0
+    
+    def hill_climber(self):
+        hillclimber_instance = Hillclimber(self.max, self.region)
+        hillclimber_instance.run()
+        
+        
 
     def beam(self):
         # reset K's

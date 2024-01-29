@@ -31,6 +31,9 @@ class Trajectory:
         self.time += connection.time
         return True
         
+    # def __str__(self) -> str:
+    #     return str(self.stations)
+        
         
         
 

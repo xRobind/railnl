@@ -7,12 +7,14 @@ class Schedule:
         self.connections_used = []
         self.all_connections = all_connections
         self.connections_over = []
-        for i in range(len(self.all_connections)):
-            self.connections_over.append(i + 1)
+        # for i in range(len(self.all_connections)):
+#             self.connections_over.append(i + 1)
         self.score = 0
         self.time = 0
         self.T = 0
         self.p = 0
+        
+        
         
     def calculate_K2(self):
         for trajectory in self.trajectories:
@@ -52,7 +54,7 @@ class Schedule:
         p = len(connections) / self.all_connections
         print("berekening K:")
         print("P = ", p)
-        print("aantal trajectories:", len(self.trajectories))
+        print("AANTAL TRAJ:", len(self.trajectories))
         print("tijd:", self.time)
 
 
@@ -60,4 +62,7 @@ class Schedule:
 
     def add_trajectory(self, trajectory):
         self.trajectories.append(trajectory)
+        
+    def write_output():
+        pass
     

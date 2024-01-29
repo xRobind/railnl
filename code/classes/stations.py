@@ -18,4 +18,7 @@ class Station:
         self.connection_time[connection] = time
         self.connections.append(connection)
         
+    # def __str__(self):
+    #     return self.name
+        
         

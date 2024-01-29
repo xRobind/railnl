@@ -155,7 +155,7 @@ class IDS:
                         
                         
                             # add new trajectory to schedule
-                        if len(new.trajectories) <  number_trajectories and new_trajectory = True:
+                        if len(new.trajectories) <  number_trajectories and new_trajectory == True:
                             new.calculate_K2()
                             for connection_id in new.connections_over:
                                 print("hij maakt nieuwe trajectorie")
