@@ -26,6 +26,7 @@ class IDS:
         self.stack = Stack()
         self.stack2 = Stack()
         self.list_all = []
+        self.time = 120
 
         # load station structures and connections 
         self.load_stations(f"data/Stations{region}.txt")
@@ -120,7 +121,7 @@ class IDS:
                 current.add_first_time()
                 for second_connection in current.stations[-1].connection.connections:
                     new = copy.deepcopy(current)
-                    new.add_connection_and_time(second_connection, 120)
+                    new.add_connection_and_time(second_connection, self.time)
                     new = [new]
                     ## add trajectory to schedule
                     self.stack.push(Schedule(new, self.connection_dict))
@@ -133,29 +134,47 @@ class IDS:
         number_trajectories = 2
         depth = 4
         yeh = False
+        nr_con = 0
         
         for number_trajectories in range(3):
             depth = 4
             while(yeh == False):
                 current = self.stack.pop()
-   
+                nr_con = 0
                 ##get all new connections
                 for next_connection in current.trajectories[-1].stations[-1].connection.connections:
+                    len(current.trajectories[-1].stations[-1].connection.connections)
                     if current.trajectories[-1].stations[-1].corresponding.connection_id != next_connection.connection_id:            
                         new = copy.deepcopy(current)
-                        if new.trajectories[-1].add_connection_and_time(next_connection, 120):
+                        if new.trajectories[-1].add_connection_and_time(next_connection, self.time):
                             if len(new.trajectories[-1].stations) == depth:
                                 new.calculate_K2()
                                 self.list_all.append(new)
                             else:
                                 self.stack.push(new)
+                        else:
+                            nr_con += 1
+                            
+                            
+                        if(len(current.trajectories[-1].stations[-1].connection.connections) == nr_con):
+                            if len(new.trajectories) <  number_trajectories:
+                                new.calculate_K2()
+                                for connection_id in new.connections_over:
+                                    print("hij maakt nieuwe trajectorie")
+                                # print(len(new.connections_over), len(new.connections_used), len(new.all_connections))
+                                    trajectory = Trajectory(self.connection_dict[connection_id])
+                                    trajectory.add_first_time()
+                                    new2 = copy.deepcopy(new)
+                                    new2.add_trajectory(trajectory)
+                                    self.stack.push(new2)
 
+                            
                 # if len(new.trajectories[-1].stations) == depth:
                     # self.list_all.append(new.calculate_K2())
                         
                         
                             # add new trajectory to schedule
-                        if len(new.trajectories) <  number_trajectories and new_trajectory = True:
+                        if len(new.trajectories) <  number_trajectories:
                             new.calculate_K2()
                             for connection_id in new.connections_over:
                                 print("hij maakt nieuwe trajectorie")
@@ -178,8 +197,8 @@ class IDS:
                             for i in range(200, 1, -1):
                                 self.stack.push(self.list_all[-i])
                             print(len(self.stack.items))
-                            depth += 4
-                        if depth > 15:
+                            depth += 2
+                        if depth > 30:
                             yeh = True
                         
                             ##found good result
