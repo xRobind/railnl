@@ -1,10 +1,13 @@
 import copy
+from typing import Any
+
+from code.classes.trajectory import Trajectory
 
 class Schedule:
 
-    def __init__(self, trajectories, all_connections) -> None:
+    def __init__(self, trajectories: list[Trajectory], all_connections: Any) -> None:
         self.trajectories = trajectories
-        self.connections_used = []
+        self.connections_used: list = []
         self.all_connections = all_connections
         self.connections_over = []
         # for i in range(len(self.all_connections)):
@@ -38,7 +41,6 @@ class Schedule:
 
     def calculate_K_simple(self):
         connections = []
-        
 
         for trajectory in self.trajectories:
             self.time += trajectory.time

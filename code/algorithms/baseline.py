@@ -2,9 +2,6 @@ import random
 import sys
 import matplotlib.pyplot as plt
 
-sys.path.append('../classes')
-sys.path.append('code/classes')
-
 from code.classes.stations import Station
 from code.classes.trajectory import Trajectory
 from code.classes.load import Load
