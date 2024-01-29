@@ -115,6 +115,7 @@ class IDS:
         # pick every starting trajectory once
         for connection in self.connections:
                 current = Trajectory(connection)
+                current.add_first_time()
                 for second_connection in current.stations[-1].connection.connections:
                     new = copy.deepcopy(current)
                     new.add_connection_and_time(second_connection, 120)

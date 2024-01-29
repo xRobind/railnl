@@ -8,9 +8,12 @@ class Trajectory:
             self.stations = [start]
         else:
             self.stations = []
-        self.time = start.time
+        self.time = 0
         self.nr_connections = 0
 
+    def add_first_time(self):
+        self.time = self.stations[0].time
+        
     def add_time(self, connection_time):
         self.time += connection_time
 
