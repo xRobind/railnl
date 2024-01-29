@@ -26,7 +26,10 @@ class IDS:
         self.stack = Stack()
         self.stack2 = Stack()
         self.list_all = []
-        self.time = 120
+        if region == "Holland":
+            self.time = 120
+        else:
+            self.time = 180
 
         # load station structures and connections 
         self.load_stations(f"data/Stations{region}.txt")
@@ -131,76 +134,74 @@ class IDS:
 
     def continue_trajectory(self):
         # depth 2
-        number_trajectories = 2
+        number_trajectories = max
         depth = 4
         yeh = False
         nr_con = 0
-        
-        for number_trajectories in range(3):
-            depth = 4
-            while(yeh == False):
+        add_trajectory = False
+
+        while(yeh == False):
+            try:
                 current = self.stack.pop()
-                nr_con = 0
-                ##get all new connections
-                for next_connection in current.trajectories[-1].stations[-1].connection.connections:
-                    len(current.trajectories[-1].stations[-1].connection.connections)
-                    if current.trajectories[-1].stations[-1].corresponding.connection_id != next_connection.connection_id:            
-                        new = copy.deepcopy(current)
-                        if new.trajectories[-1].add_connection_and_time(next_connection, self.time):
-                            if len(new.trajectories[-1].stations) == depth:
-                                new.calculate_K2()
-                                self.list_all.append(new)
-                            else:
-                                self.stack.push(new)
-                        else:
+            except AssertionError:
+                return self.list_all[-1]
+                
+                
+            for next_connection in current.trajectories[-1].stations[-1].connection.connections:
+                len(current.trajectories[-1].stations[-1].connection.connections)
+                if current.trajectories[-1].stations[-1].corresponding.connection_id != next_connection.connection_id: 
+                    new = copy.deepcopy(current)
+                    if new.trajectories[-1].add_connection_and_time(next_connection, self.time):
+                        if len(new.trajectories[-1].stations) == depth:
                             nr_con += 1
+                            new.calculate_K2()
+                            self.list_all.append(new)
+                        else:
+                            self.stack.push(new)
+
+                        
+                    if len(self.stack.items) == 1:
+                        self.list_all.sort(key=lambda x: x.score)
+                        new = self.list_all[-1]
+                        print(new.calculate_K2())
+                        print(new.trajectories[-1].time, len(new.connections_used), len(new.all_connections), len(new.connections_over))
+                        for i in range(len(new.trajectories)):
+                            print("nieuwe")
+                            for j in range(len(new.trajectories[i].stations)):
+                                print(new.trajectories[i].stations[j].station.name, new.trajectories[i].stations[j].connection.name)                           
+                        for i in range(60, 1, -1):
+                            self.stack.push(self.list_all[-i])
+                        print(len(self.stack.items))
                             
-                            
-                        if(len(current.trajectories[-1].stations[-1].connection.connections) == nr_con):
-                            if len(new.trajectories) <  number_trajectories:
-                                new.calculate_K2()
-                                for connection_id in new.connections_over:
-                                    print("hij maakt nieuwe trajectorie")
-                                # print(len(new.connections_over), len(new.connections_used), len(new.all_connections))
+                        if nr_con == 0:
+                            self.list_all.clear()
+                            while len(self.stack.items) > 1:
+                                print("hij gaat hier in")
+                                n = self.stack.pop()
+                                if(self.max_trajectories == len(n.trajectories)):
+                                    return self.list_all[-1]
+                                for connection_id in n.connections_over:
+                                    print("en hij maakt nieuwe")
                                     trajectory = Trajectory(self.connection_dict[connection_id])
                                     trajectory.add_first_time()
-                                    new2 = copy.deepcopy(new)
+                                    new2 = copy.deepcopy(n)
                                     new2.add_trajectory(trajectory)
-                                    self.stack.push(new2)
-
-                            
-                # if len(new.trajectories[-1].stations) == depth:
-                    # self.list_all.append(new.calculate_K2())
-                        
-                        
-                            # add new trajectory to schedule
-
-                        if len(new.trajectories) <  number_trajectories:
-                            new.calculate_K2()
-                            for connection_id in new.connections_over:
-                                print("hij maakt nieuwe trajectorie")
-                            # print(len(new.connections_over), len(new.connections_used), len(new.all_connections))
-                                trajectory = Trajectory(self.connection_dict[connection_id])
-                                trajectory.add_first_time()
-                                new2 = copy.deepcopy(new)
-                                new2.add_trajectory(trajectory)
-                                self.stack.push(new2)
-                        
-                        # self.list_all.append(new.calculate_K2())
-                        if len(self.stack.items) == 1:
+                                    new2.calculate_K2()
+                                    self.list_all.append(new2) 
                             self.list_all.sort(key=lambda x: x.score)
-                            new = self.list_all[-100]
-                            print(new.trajectories[-1].time, len(new.connections_used), len(new.all_connections), len(new.connections_over))
-                            for i in range(len(new.trajectories)):
-                                print("nieuwe")
-                                for j in range(len(new.trajectories[i].stations)):
-                                    print(new.trajectories[i].stations[j].station.name, new.trajectories[i].stations[j].connection.name)                           
-                            for i in range(200, 1, -1):
+                            for i in range(60, 1, -1):
                                 self.stack.push(self.list_all[-i])
-                            print(len(self.stack.items))
-                            depth += 2
-                        if depth > 30:
-                            yeh = True
+                            print(len(self.stack.items), len(self.stack.items[-1].trajectories))                              
+                            depth = 0
+                        nr_con = 0
+                        depth += 2
+                            
+                            
+                    if depth > 30:
+                        yeh = True
+                        
+                        
+
                         
                             ##found good result
                         # if new.calculate_K2() > 4000:
@@ -215,4 +216,3 @@ class IDS:
                                 # for i in range(len(self.stack2.items)):
                                     # self.stack.push(self.stack2.pop)
                                     # yeh = True
-

@@ -35,6 +35,13 @@ class Trajectory:
         self.time += connection.time
         return True
         
+    def no_connections_possible(self, max_time):
+        for next_connection in self.stations[-1].connection.connections:
+            if self.time + next_connection.time < max_time:
+                return False
+        return True
+            
+        
     # def __str__(self) -> str:
     #     return str(self.stations)
         

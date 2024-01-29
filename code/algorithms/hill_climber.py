@@ -27,7 +27,8 @@ class Hillclimber:
         self.stations = load.stations()
         self.connections = load.connections()
         self.total_connections = len(self.connections)
-
+        # save K's for plotting
+        self.K_values = []
 
     def random_railmap(self):
         """Generate a random railmap using the Baseline class."""
@@ -48,6 +49,8 @@ class Hillclimber:
         # Calculate the quality of the generated railmap
         S = Schedule(self.trajectories, self.baseline_instance.total_connections)
         self.original_quality = S.calculate_K_simple()
+        # save K for plotting
+        self.K_values.append(self.original_quality)
         # print(self.original_quality)
         
         #keep track of original trajectory
@@ -84,6 +87,7 @@ class Hillclimber:
 
             S = Schedule(self.trajectories, self.baseline_instance.total_connections)
             self.new_quality = S.calculate_K_simple()
+            self.K_values.append(self.new_quality)
     
     def compare(self):
         improvement = self.new_quality > self.original_quality

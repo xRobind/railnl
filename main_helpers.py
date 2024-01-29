@@ -27,8 +27,9 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        # self.algorithm = input("\nWhich algorithm?\n")
-        self.algorithm = "beam"
+        self.algorithm = input("\nWhich algorithm?\n")
+        # self.algorithm = "beam"
+
 
         # choose between all our algorithms
         while self.algorithm not in \
@@ -44,7 +45,7 @@ class Main:
             
         # retrieve region
         self.region = input("\nWhich region?\n")
-        self.region = "Holland"
+        # self.region = "Holland"
 
         # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
@@ -53,7 +54,7 @@ class Main:
 
         # get max trajectories
         self.max = int(input("\nWhat is the maximum of trajectories?\n"))
-        self.max = 7
+        # self.max = 7
 
         # must be between 1 and 7
         while self.max < 1 or self.max > 45:
@@ -140,10 +141,16 @@ class Main:
         self.highest_K = 0
     
     def hill_climber(self):
+        # reset K's
+        self.K_values = 0
+
         hillclimber_instance = Hillclimber(self.max, self.region)
         hillclimber_instance.run()
         
-        
+        # set variables for visualisation
+        self.trajectories = hillclimber_instance.trajectories
+        self.K_values = hillclimber_instance.K_values
+        self.all_K_values.append(hillclimber_instance.K_values)
 
     def beam(self):
         # reset K's
@@ -153,7 +160,10 @@ class Main:
 
         test = IDS(self.max, self.region)
         test.start_trajectory()
-        test.continue_trajectory()
+        schedule = test.continue_trajectory()
+        
+        
+        #set variables for visualisation
 
     def pool(self):
         # reset K's
