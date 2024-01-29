@@ -46,7 +46,7 @@ class Hillclimber:
 
 
         # Calculate the quality of the generated railmap
-        S = Schedule(self.trajectories, self.connections)
+        S = Schedule(self.trajectories, self.baseline_instance.total_connections)
         self.original_quality = S.calculate_K_simple()
         print(self.original_quality)
         
@@ -54,10 +54,10 @@ class Hillclimber:
         self.original_trajectory = random_network
 
         
-        for trajectory in self.trajectories:
-            print("NEW TRAJECTORY:")
-            for station in trajectory.stations:
-                print(station.name)
+        # or trajectory in self.trajectories:
+#             print("NEW TRAJECTORY:")
+#             for station in trajectory.stations:
+#                 print(station.name)
 
     def choose_random_trajectory(self):
         #randomly select a trajectory from the railmap and remove it from network after creating a copy
@@ -94,14 +94,14 @@ class Hillclimber:
             
             quality = self.baseline_instance.calculate_K()
             
-            for trajectory in self.trajectories:
-                print('NEW TRAJECTORY:')
-                for station in trajectory.stations:
-                    print(station.name)
-            
-            print("AANGEPAST TRAJECTORY")
-            for station in self.changed_trajectory.stations:
-                print(station.name)
+            # for trajectory in self.trajectories:
+#                 print('NEW TRAJECTORY:')
+#                 for station in trajectory.stations:
+#                     print(station.name)
+#
+#             print("AANGEPAST TRAJECTORY")
+#             for station in self.changed_trajectory.stations:
+#                 print(station.name)
 
         
         else:
@@ -130,10 +130,10 @@ class Hillclimber:
             #add new trajectory to network
             self.trajectories.append(self.changed_trajectory)
             
-            for trajectory in self.trajectories:
-                print('new trajectory:')
-                for station in trajectory.stations:
-                    print(station.name)
+            # for trajectory in self.trajectories:
+#                 print('new trajectory:')
+#                 for station in trajectory.stations:
+#                     print(station.name)
             
             
         
@@ -145,7 +145,7 @@ class Hillclimber:
         Compare the K values of the original and changed networks.
         """
         # Calculate the K value with the changed trajectory
-        S = Schedule(self.trajectories, self.connections)
+        S = Schedule(self.trajectories, self.baseline_instance.total_connections)
         changed_quality = S.calculate_K_simple()
         print(changed_quality)
 

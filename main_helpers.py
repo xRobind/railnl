@@ -116,7 +116,7 @@ class Main:
         print(f"\nUsing Hill Climber algorithm in {self.region}")
 
         hillclimber_instance = Hillclimber(self.max, self.region)
-        iterations = 2
+        iterations = 20
         quality_threshold = 7500
         hillclimber_instance.random_railmap()
         self.K_values.append(hillclimber_instance.original_quality)

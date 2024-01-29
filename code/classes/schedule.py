@@ -48,6 +48,10 @@ class Schedule:
         connections = set(connections)
 
         p = len(connections) / self.all_connections
+        print("berekening K:")
+        print("P = ", p)
+        print("aantal trajectories:", len(self.trajectories))
+        print("tijd:", self.time)
 
 
         return p * 10000 - (len(self.trajectories) * 100 + self.time)        
