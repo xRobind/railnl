@@ -75,15 +75,6 @@ class Schedule:
         
             return score
         
-        # for i in range(len(trajectory.stations)):
-            # self.connections_used.append(trajectory.stations[i])
-            # try:
-                # self.time += trajectory.stations[i].time
-            # except(AttributeError):
-                # pass
-        
-        # sometimes self.all_connections is already an integer of the number
-        # of connections
 
 
     def add_trajectory(self, trajectory):
