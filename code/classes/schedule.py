@@ -34,16 +34,16 @@ class Schedule:
         
     
     def calculate_K(self):
-            for trajectory in self.trajectories:
-                self.time += trajectory.time
-            self.T = len(self.trajectories)
-            for i in range(len(trajectory.stations)):
-                self.connections_used.append(trajectory.stations[i])
-                try:
-                    self.time += trajectory.stations[i].time
-                except(AttributeError):
-                    pass
-        
+        for trajectory in self.trajectories:
+            self.time += trajectory.time
+        self.T = len(self.trajectories)
+        for i in range(len(trajectory.stations)):
+            self.connections_used.append(trajectory.stations[i])
+            try:
+                self.time += trajectory.stations[i].time
+            except(AttributeError):
+                pass
+    
         # for i in range(len(trajectory.stations)):
             # self.connections_used.append(trajectory.stations[i])
             # try:
