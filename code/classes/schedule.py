@@ -9,6 +9,7 @@ class Schedule:
         self.connections_over = []
         for i in range(len(self.all_connections)):
             self.connections_over.append(i + 1)
+        self.score = 0
         self.time = 0
         self.T = 0
         self.p = 0
@@ -25,12 +26,12 @@ class Schedule:
                         
         self.T = len(self.trajectories)
         self.p = len(self.connections_used) / len(self.all_connections)
-        score = 10000 * self.p - (self.T * 100 + self.time)
+        self.score = 10000 * self.p - (self.T * 100 + self.time)
         self.time = 0
         self.T = 0
         self.p = 0
         
-        return score        
+        return self.score        
         
     
     def calculate_K(self):
