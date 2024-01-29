@@ -10,8 +10,9 @@ class Schedule:
         self.connections_used: list = []
         self.all_connections = all_connections
         self.connections_over = []
-        # for i in range(len(self.all_connections)):
-        #     self.connections_over.append(i + 1)
+        for i in range(len(self.all_connections)):
+            self.connections_over.append(i + 1)
+        self.score = 0
         self.time = 0
         self.T = 0
         self.p = 0
@@ -28,12 +29,13 @@ class Schedule:
                         
         self.T = len(self.trajectories)
         self.p = len(self.connections_used) / len(self.all_connections)
-        score = 10000 * self.p - (self.T * 100 + self.time)
+        self.score = 10000 * self.p - (self.T * 100 + self.time)
         self.time = 0
         self.T = 0
         self.p = 0
         
-        return score        
+        return self.score        
+      
 
     def calculate_K_simple(self):
         connections = []
@@ -50,6 +52,11 @@ class Schedule:
         connections = set(connections)
 
         p = len(connections) / self.all_connections
+        print("berekening K:")
+        print("P = ", p)
+        print("aantal trajectories:", len(self.trajectories))
+        print("tijd:", self.time)
+
 
         return p * 10000 - (len(self.trajectories) * 100 + self.time)        
 

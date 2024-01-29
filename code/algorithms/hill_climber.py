@@ -21,15 +21,13 @@ class Hillclimber:
         self.baseline_instance = Baseline(max, region)
         self.trajectories = []
         
+        
         # load station structures and connections
         load = Load(region)
         self.stations = load.stations()
         self.connections = load.connections()
         self.total_connections = len(self.connections)
 
-        #deepcopy
-        # self.railmap = copy.deepcopy(railmap)
-        # self.value = railmap.calculate_K()
 
     def random_railmap(self):
         """Generate a random railmap using the Baseline class."""
@@ -48,29 +46,35 @@ class Hillclimber:
 
 
         # Calculate the quality of the generated railmap
-        S = Schedule(self.trajectories, self.connections)
+        S = Schedule(self.trajectories, self.baseline_instance.total_connections)
         self.original_quality = S.calculate_K_simple()
         print(self.original_quality)
         
         #keep track of original trajectory
         self.original_trajectory = random_network
+
+        
+        # or trajectory in self.trajectories:
+#             print("NEW TRAJECTORY:")
+#             for station in trajectory.stations:
+#                 print(station.name)
+
+    def choose_random_trajectory(self):
+        #randomly select a trajectory from the railmap and remove it from network after creating a copy
+        self.random_trajectory = random.choice(self.trajectories)
+        self.changed_trajectory = copy.deepcopy(self.random_trajectory)
+        self.trajectories.remove(self.random_trajectory)
         
         
     def change_node(self):
         """Change a node/connection in the current trajectory."""
-        #randomly select a trajectory from the railmap and remove it from network after creating a copy
-        random_trajectory = random.choice(self.trajectories)
-        changed_trajectory = copy.deepcopy(random_trajectory)
-        self.trajectories.remove(random_trajectory)
-        
         #decide if the first or the last connection will be replaced
-        if random.random() < 0.5:
+        if random.random() < 0.999:
             #select last connection from random trajectory 
-            last_station = random_trajectory.stations[-2]
+            last_station = self.random_trajectory.stations[-2]
             
             # get available connections 
             connections = last_station.connections
-            print(connections)
         
             #randomly choose new connection
             new_connection = random.choice(connections)
@@ -80,20 +84,29 @@ class Hillclimber:
                     new_station = station
 
             # remove the last connection from the current trajectory
-            changed_trajectory.stations.pop()
+            self.changed_trajectory.stations.pop()
 
             # add the new connection to the trajectory
-            changed_trajectory.stations.append(new_station)
+            self.changed_trajectory.stations.append(new_station)
             
             #add new trajectory to network
-            self.trajectories.append(changed_trajectory)
+            self.trajectories.append(self.changed_trajectory)
             
             quality = self.baseline_instance.calculate_K()
+            
+            # for trajectory in self.trajectories:
+#                 print('NEW TRAJECTORY:')
+#                 for station in trajectory.stations:
+#                     print(station.name)
+#
+#             print("AANGEPAST TRAJECTORY")
+#             for station in self.changed_trajectory.stations:
+#                 print(station.name)
 
         
         else:
             #select first connection from random trajectory
-            first_station = random_trajectory.stations[1]
+            first_station = self.random_trajectory.stations[1]
             
             #get available connections 
             connections = first_station.connections
@@ -106,7 +119,7 @@ class Hillclimber:
                     new_station = station
             
             # create a copy of the current trajectory to make changes
-            changed_trajectory = copy.deepcopy(random_trajectory)
+            changed_trajectory = copy.deepcopy(self.random_trajectory)
 
             # remove the first connection from the current trajectory
             changed_trajectory.stations.pop(0)
@@ -115,7 +128,14 @@ class Hillclimber:
             changed_trajectory.stations.insert(0,new_connection)
             
             #add new trajectory to network
-            self.trajectories.append(changed_trajectory)
+            self.trajectories.append(self.changed_trajectory)
+            
+            # for trajectory in self.trajectories:
+#                 print('new trajectory:')
+#                 for station in trajectory.stations:
+#                     print(station.name)
+            
+            
         
         return    
         
@@ -125,9 +145,10 @@ class Hillclimber:
         Compare the K values of the original and changed networks.
         """
         # Calculate the K value with the changed trajectory
-        S = Schedule(self.trajectories, self.connections)
+        S = Schedule(self.trajectories, self.baseline_instance.total_connections)
         changed_quality = S.calculate_K_simple()
         print(changed_quality)
+
 
         # Compare the K values and determine if there is an improvement
         improvement = changed_quality > self.original_quality
