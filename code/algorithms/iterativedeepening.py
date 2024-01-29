@@ -143,20 +143,24 @@ class IDS:
                         # print(new.calculate_K2())
                 elif len(new.trajectories) <  number_trajectories:
                     new.calculate_K2()
-                    print(len(new.connections_over), len(new.connections_used), len(new.all_connections))
+                    # for i in range(len(new.trajectories[-1].stations)):
+                        # print(new.trajectories[-1].stations[i].connection_id, new.trajectories[-1].stations[i].corresponding.connection_id)                     
+                        # print(new.trajectories[-1].stations[i].station.name, new.trajectories[-1].stations[i].connection.name)
+                        # print(new.connections_over)
                     for connection_id in new.connections_over:
                         # print(len(new.connections_over), len(new.connections_used), len(new.all_connections))
-                        trajectory = Trajectory(new.connections_over[connection_id])
+                        trajectory = Trajectory(self.connection_dict[connection_id])
                         new2 = copy.deepcopy(new)
                         new2.add_trajectory(trajectory)
                         self.stack.push(new2)
-                if new.calculate_K2() > 1000:
-                    print(new.trajectories[-1].time, len(new.connections_used))
+                if new.calculate_K2() > 2000:
+                    print(new.trajectories[-1].time, len(new.connections_used), len(new.all_connections), len(new.connections_over))
                     for i in range(len(new.trajectories[-1].stations)):
                         print(new.trajectories[-1].stations[i].station.name, new.trajectories[-1].stations[i].connection.name)
-                        # print(new.trajectories[-1].stations[i].corresponding.station.name, new.trajectories[-1].stations[i].corresponding.connection.name)
-                    for i in range(len(new.trajectories[-2].stations)):
+                        print(new.trajectories[-1].stations[i].corresponding.station.name, new.trajectories[-1].stations[i].corresponding.connection.name)
+                    for i in range(len(new.trajectories[0].stations)):
                         print(new.trajectories[0].stations[i].station.name, new.trajectories[0].stations[i].connection.name)
+                        print(new.trajectories[0].time)
                     print(len(new.connections_used))
                     yeh = True
 

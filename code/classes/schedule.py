@@ -4,9 +4,11 @@ class Schedule:
 
     def __init__(self, trajectories, all_connections) -> None:
         self.trajectories = trajectories
-        self.connections_used = {}
-        self.all_connections = copy.deepcopy(all_connections)
-        self.connections_over = copy.deepcopy(all_connections)
+        self.connections_used = []
+        self.all_connections = all_connections
+        self.connections_over = []
+        for i in range(len(self.all_connections)):
+            self.connections_over.append(i + 1)
         self.time = 0
         self.T = 0
         self.p = 0
@@ -15,11 +17,11 @@ class Schedule:
         for trajectory in self.trajectories:
             self.time += trajectory.time
             for connection in trajectory.stations:
-                if connection.connection_id not in self.connections_used:
-                    self.connections_used[connection.connection_id] = connection
-                    self.connections_used[connection.corresponding.connection_id] = connection.corresponding
-                    del self.connections_over[connection.connection_id]
-                    del self.connections_over[connection.corresponding.connection_id]
+                if connection.connection_id in self.connections_over:
+                    self.connections_used.append(connection.connection_id)
+                    self.connections_used.append(connection.corresponding.connection_id)
+                    self.connections_over.remove(connection.connection_id)
+                    self.connections_over.remove(connection.corresponding.connection_id)
                         
         self.T = len(self.trajectories)
         self.p = len(self.connections_used) / len(self.all_connections)
