@@ -16,6 +16,7 @@ if __name__ == "__main__":
         #initialise and run hill climber algorithm 
         main.hill_climber()
         main.visualisation()
+
     elif main.algorithm == "beam":
         #testen
         main.beam()
@@ -26,9 +27,10 @@ if __name__ == "__main__":
 
     elif main.algorithm == "all":
         main.baseline()
-        main.hill_climber()
-        main.beam()
-        main.visualisation
+        # main.hill_climber()
+        # main.beam()
+        main.pool()
+        main.visualisation()
     
 
     

@@ -22,15 +22,14 @@ class Pool:
         self.K = -10000
 
         self.create_trajectories(amount)
-        self.create_train_table()
+        self.create_network()
 
     def create_trajectories(self, amount):
         """Create a number trajectories.
         """
         for i in range(0, amount):
-            # empty lists and start again
+            # empty list and start again
             self.B.trajectories = []
-            self.B.connections = []
             trajectory = self.B.start_trajectory()
             
             # continue a trajectory until a stopping condition is met
@@ -41,33 +40,33 @@ class Pool:
                 if result == "stop" or result == "new trajectory":
                     self.all_trajectories.append(trajectory)
                     break
-        
-    def create_train_table(self):
+
+    def create_network(self):
         """Create a train table with the maximum amount of trajectories.
         """        
-        self.train_table = []
+        self.network = []
 
         # randomly choose a trajectory to add to the train table
         for i in range(0, self.B.max_trajectories):
-            self.train_table.append(r.choice(self.all_trajectories))
+            self.network.append(r.choice(self.all_trajectories))
 
-    def change_trajectory(self):
-        """Randomly change one of the trajectories in the train table,
+    def change_network(self):
+        """Randomly change the network by picking 7 random trajectories,
         and calculate the K after. If it is better: keep the change,
         otherwise discard it.
         """
         # create a new train table and calculate it's K
-        self.create_train_table()
+        self.create_network()
         k = self.calculate_K()
 
         # update if it is better or the same, 
         # otherwise revert back to old train table
         if k >= self.K:
             self.K = k
-            self.best_train_table = self.train_table
+            self.best_network = self.network
 
     def calculate_K(self):
         """calculate the quality of the train table using Schedule class.
-        """        
-        S = Schedule(self.train_table, self.B.connections)
-        return S.calculate_K()
+        """
+        S = Schedule(self.network, self.B.total_connections)
+        return S.calculate_K_simple()

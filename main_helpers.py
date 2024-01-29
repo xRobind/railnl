@@ -19,7 +19,7 @@ class Main:
         self.K_values = []
         self.all_K_values = []
         self.highest_K = 0
-        self.iterations = 1000
+        self.iterations = 100
         self.trajectories = None
 
     def user_input(self):
@@ -61,6 +61,8 @@ class Main:
         int(input("\nMaximum number of trajectories must be between 1 and 45.\n"))
 
     def baseline(self):
+        # reset K's
+        self.K_values = []
         """This method carries out the baseline algorithm
         """
         # let the user know the algorithm is running
@@ -102,10 +104,14 @@ class Main:
                 # stop if a stopping condition is met
                 if run == "stop":
                     break
-    
-        self.all_K_values.extend(self.K_values)
+
+        # extend the list of all K's and reset highest K
+        self.all_K_values.append(self.K_values)
+        self.highest_K = 0
 
     def hill_climber(self):
+        # reset K's
+        self.K_values = []
         # let the user know the algorithm is running
         print(f"\nUsing Hill Climber algorithm in {self.region}")
 
@@ -126,10 +132,16 @@ class Main:
                 print(f"Quality threshold reached.")
                 break
 
+        # set the best railmap to self.trajectories for visualisation
         self.trajectories = hillclimber_instance.trajectories
-        self.all_K_values.extend(self.K_values)
+
+        # extend the list of all K's and reset highest K
+        self.all_K_values.append(self.K_values)
+        self.highest_K = 0
 
     def beam(self):
+        # reset K's
+        self.K_values = []
         # let the user know the algorithm is running
         print(f"\nUsing Iterative Deepening algorithm in {self.region}")
 
@@ -138,24 +150,37 @@ class Main:
         test.continue_trajectory()
 
     def pool(self):
+        # reset K's
+        self.K_values = []
+
         amount = \
-    int(input("\nHow many random trajectories do you want to create?\n"))
+    int(input("\nFor Pool algorithm:\n\
+              How many random trajectories do you want to create?\n"))
         
         changes = \
-    int(input("\nHow many times do you want to update the train table?\n"))
+    int(input("\nAnd how many times do you want to recreate the railmap?\n"))
         
         # let the user know the algorithm is running
-        print(f"\nUsing Random algorithm in {self.region} {changes} times...")
+        print\
+        (f"\nUsing Random algorithm in {self.region} {self.iterations} times...")
         
-        # initiate the algorithm
-        rail = Pool(self.max, self.region, amount)
+        for i in range(0, self.iterations):
+            # initiate the algorithm
+            rail = Pool(self.max, self.region, amount)
 
-        for i in range(0, changes):
-            rail.change_trajectory(self.random_trajectory, self.changed_trajectory)
+            # run the algorithm
+            for i in range(0, changes):
+                rail.change_network()
 
-        self.trajectories = rail.train_table
-        self.K_values = rail.K
-        self.all_K_values.extend([rail.K])
+            self.K_values.append(rail.K)
+
+            if rail.K > self.highest_K:
+                self.trajectories = rail.network
+                self.highest_K = rail.K
+
+        # extend the list of all K's and reset highest K
+        self.all_K_values.append(self.K_values)
+        self.highest_K = 0
 
     def visualisation(self):
         """This method carries out the visualisation.

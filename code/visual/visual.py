@@ -140,12 +140,13 @@ class Visualisation:
         """plot the K's of all algorithms and their averages next to eachother
         for comparison reasons.
         """
-        if len(all_K_values) == 3:
+        print(all_K_values)
+        try:
             plt.title("K's of our algorithms")
-            plt.boxplot(all_K_values, showfliers=True, labels=["baseline", "hill_climber", "beam"])
+            plt.boxplot(all_K_values, showfliers=True, labels=["baseline", "pool"])
             # plt.savefig(f"boxplot_{self.region}")
             plt.show()
-        else:
+        except(ValueError):
             plt.title("K's of our baseline algorithm")
             plt.boxplot(all_K_values, showfliers=True)
             # plt.savefig(f"boxplot_{self.region}")
