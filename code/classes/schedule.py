@@ -7,8 +7,8 @@ class Schedule:
         self.connections_used = []
         self.all_connections = all_connections
         self.connections_over = []
-        for i in range(len(self.all_connections)):
-            self.connections_over.append(i + 1)
+        # for i in range(len(self.all_connections)):
+        #     self.connections_over.append(i + 1)
         self.time = 0
         self.T = 0
         self.p = 0
@@ -34,25 +34,15 @@ class Schedule:
         
     
     def calculate_K(self):
-        for trajectory in self.trajectories:
-            self.time += trajectory.time
-        self.T = len(self.trajectories)
-        for i in range(len(trajectory.stations)):
-            self.connections_used.append(trajectory.stations[i])
-            try:
-                self.time += trajectory.stations[i].time
-            except(AttributeError):
-                pass
-        
-        try:
-            self.p = 2 * len(self.connections_used) / len(self.all_connections)
-        except(TypeError):
-            self.p = 2 * len(self.connections_used) / self.all_connections
-
-        return 10000 * self.p - (self.T * 100 + self.time)
-            
-            
-        self.T = len(self.trajectories)
+            for trajectory in self.trajectories:
+                self.time += trajectory.time
+            self.T = len(self.trajectories)
+            for i in range(len(trajectory.stations)):
+                self.connections_used.append(trajectory.stations[i])
+                try:
+                    self.time += trajectory.stations[i].time
+                except(AttributeError):
+                    pass
         
         # for i in range(len(trajectory.stations)):
             # self.connections_used.append(trajectory.stations[i])
