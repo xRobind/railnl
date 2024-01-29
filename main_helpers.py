@@ -113,15 +113,20 @@ class Main:
         iterations = 10
         quality_threshold = 7500
         hillclimber_instance.random_railmap()
+        self.K_values.append(hillclimber_instance.original_quality)
 
         for iteration in range(iterations):
             hillclimber_instance.change_node()
-            improvement = hillclimber_instance.compare_K_values()
+            quality = hillclimber_instance.compare_K_values()
+            self.K_values.append(quality)
             
         # Check for the quality threshold and break if met
             if hillclimber_instance.original_quality >= quality_threshold:
                 print(f"Quality threshold reached.")
                 break
+
+        self.trajectories = hillclimber_instance.trajectories
+        self.all_K_values.extend(self.K_values)
 
     def beam(self):
         # let the user know the algorithm is running
@@ -142,7 +147,7 @@ class Main:
         print(f"\nUsing Random algorithm in {self.region} {changes} times...")
         
         # initiate the algorithm
-        rail = pool(self.max, self.region, amount)
+        rail = Pool(self.max, self.region, amount)
 
         for i in range(0, changes):
             rail.change_trajectory(self.random_trajectory, self.changed_trajectory)

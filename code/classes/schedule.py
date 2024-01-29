@@ -84,18 +84,8 @@ class Schedule:
         
         # sometimes self.all_connections is already an integer of the number
         # of connections
-        # try:
- #            self.p = len(self.connections_used) / len(self.all_connections)
- #        except(TypeError):
- #            self.p = len(self.connections_used) / self.all_connections
- #
- #        score = 10000 * self.p - (self.T * 100 + self.time)
- #        self.time = 0
- #        self.T = 0
- #        self.p = 0
- #
- #        return score
-        
+
+
     def add_trajectory(self, trajectory):
         self.trajectories.append(trajectory)
     
