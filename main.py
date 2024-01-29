@@ -15,7 +15,7 @@ if __name__ == "__main__":
     elif main.algorithm == "hill climber":
         #initialise and run hill climber algorithm 
         main.hill_climber()
-        main.visualisation()
+
     elif main.algorithm == "beam":
         #testen
         main.beam()
