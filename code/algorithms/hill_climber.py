@@ -70,6 +70,7 @@ class Hillclimber:
             
             # get available connections 
             connections = last_station.connections
+            print(connections)
         
             #randomly choose new connection
             new_connection = random.choice(connections)
@@ -118,12 +119,6 @@ class Hillclimber:
         
         return    
         
-    def undo_change_node(self, random_trajectory, changed_trajectory):
-          """
-          Undo the changes made to the network during the change_node function.
-          """
-          self.trajectories.remove(changed_trajectory)
-          self.trajectories.append(random_trajectory)
 
     def compare_K_values(self):
         """
@@ -145,5 +140,4 @@ class Hillclimber:
             self.original_quality = changed_quality
 
         return changed_quality
-
 
