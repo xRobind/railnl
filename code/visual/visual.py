@@ -143,11 +143,11 @@ class Visualisation:
         print(all_K_values)
         try:
             plt.title("K's of our algorithms")
-            plt.boxplot(all_K_values, showfliers=True, labels=["baseline", "pool"])
-            # plt.savefig(f"boxplot_{self.region}")
+            plt.boxplot(all_K_values, showfliers=True, labels=["baseline", "hill climber", "pool"])
+            # plt.savefig(f"boxplot_compare_{self.region}")
             plt.show()
         except(ValueError):
-            plt.title("K's of our baseline algorithm")
+            plt.title("K-values")
             plt.boxplot(all_K_values, showfliers=True)
             # plt.savefig(f"boxplot_{self.region}")
             plt.show()
