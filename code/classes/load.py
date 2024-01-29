@@ -5,14 +5,14 @@ class Load:
     connections and saves them in lists.
     """
 
-    def __init__(self, region) -> None:
+    def __init__(self, region: str) -> None:
         """Initialises the needed lists and variables.
         """
-        self.stations_list = []
-        self.connections_list = []
+        self.stations_list: list[Station] = []
+        self.connections_list: list[tuple[str, str]] = []
         self.region = region
 
-    def stations(self):
+    def stations(self) -> list[Station]:
         """Open file, read the lines and split into the three parts and save.
         """
         with open(f"data/Stations{self.region}.txt") as f:
@@ -40,7 +40,7 @@ class Load:
 
         return self.stations_list
     
-    def connections(self):
+    def connections(self) -> list[tuple[str, str]]:
         """Open file, read the lines and split into the three parts and save.
         """
         with open(f"data/Connecties{self.region}.txt") as f:
