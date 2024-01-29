@@ -19,7 +19,6 @@ class Hillclimber:
 
     def __init__(self, max, region) -> None:
         self.baseline_instance = Baseline(max, region)
-        self.network = []
         self.trajectories = []
         
         # load station structures and connections
@@ -127,21 +126,24 @@ class Hillclimber:
           self.trajectories.append(random_trajectory)
 
     def compare_K_values(self):
-            """
-            Compare the K values of the original and changed networks.
-            """
-            # Calculate the K value with the changed trajectory
-            S = Schedule(self.trajectories, self.connections)
-            changed_quality = S.calculate_K()
-            print(changed_quality)
+        """
+        Compare the K values of the original and changed networks.
+        """
+        # Calculate the K value with the changed trajectory
+        S = Schedule(self.trajectories, self.connections)
+        changed_quality = S.calculate_K()
+        print(changed_quality)
 
-            # Compare the K values and determine if there is an improvement
-            improvement = changed_quality > self.original_quality
-            print("Improvement:", improvement)
-            if not improvement:
-                #undo the change 
-                self.trajectories.pop()
-                self.trajectories.append(self.original_trajectory)
-            else:
-                self.original_quality = changed_quality
+        # Compare the K values and determine if there is an improvement
+        improvement = changed_quality > self.original_quality
+        print("Improvement:", improvement)
+        if not improvement:
+            #undo the change 
+            self.trajectories.pop()
+            self.trajectories.append(self.original_trajectory)
+        else:
+            self.original_quality = changed_quality
+
+        return changed_quality
+
 
