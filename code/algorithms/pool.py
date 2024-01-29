@@ -1,8 +1,7 @@
 import random as r
 
-
 from code.algorithms.baseline import Baseline
-
+from code.classes.trajectory import Trajectory
 from code.classes.schedule import Schedule
 
 
@@ -12,13 +11,13 @@ class Pool:
     while keeping track of which combination returns the highest K-value.
     """
 
-    def __init__(self, max, region, amount) -> None:
+    def __init__(self, max: int, region: str, amount: int) -> None:
         """Initialises a baseline instance for creating trajectories,
         a list to save the trajectories in, and a variable to save the
         highest K.
         """
         self.B = Baseline(max, region)
-        self.all_trajectories = []
+        self.all_trajectories: list[Trajectory] = []
         self.K = -10000
 
         self.create_trajectories(amount)

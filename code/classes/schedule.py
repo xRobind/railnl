@@ -9,15 +9,18 @@ class Schedule:
         self.trajectories = trajectories
         self.connections_used: list = []
         self.all_connections = all_connections
-        self.connections_over = []
-        for i in range(len(self.all_connections)):
-            self.connections_over.append(i + 1)
-        self.score = 0
+        self.connections_over: list = []
+        try:
+            for i in range(len(self.all_connections)):
+                self.connections_over.append(i + 1)
+        except(TypeError):
+            pass
+        self.score: float = 0
         self.time = 0
         self.T = 0
-        self.p = 0
+        self.p: float = 0
         
-    def calculate_K2(self):
+    def calculate_K2(self) -> float:
         for trajectory in self.trajectories:
             self.time += trajectory.time
             for connection in trajectory.stations:
@@ -34,10 +37,9 @@ class Schedule:
         self.T = 0
         self.p = 0
         
-        return self.score        
-      
+        return self.score
 
-    def calculate_K_simple(self):
+    def calculate_K_simple(self) -> float:
         connections = []
 
         for trajectory in self.trajectories:
@@ -52,14 +54,13 @@ class Schedule:
         connections = set(connections)
 
         p = len(connections) / self.all_connections
-        print("berekening K:")
+        print("\nberekening K:")
         print("P = ", p)
         print("aantal trajectories:", len(self.trajectories))
         print("tijd:", self.time)
 
-
         return p * 10000 - (len(self.trajectories) * 100 + self.time)        
 
-    def add_trajectory(self, trajectory):
+    def add_trajectory(self, trajectory) -> None:
         self.trajectories.append(trajectory)
     

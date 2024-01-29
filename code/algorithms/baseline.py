@@ -1,6 +1,7 @@
 import random
 import sys
 import matplotlib.pyplot as plt
+from typing import Any
 
 from code.classes.stations import Station
 from code.classes.trajectory import Trajectory
@@ -17,12 +18,12 @@ class Baseline:
     quality of the lines will end up the closest to the number 10000.
     """    
 
-    def __init__(self, max, region) -> None:
+    def __init__(self, max: int, region: str) -> None:
         """initialise lists that contain stations as objects of the class,
         connections as a dict that links the connection to the time,
         and trajectories made and time spent
         """
-        self.trajectories = []
+        self.trajectories: list[Trajectory] = []
         self.total_time = 0
         self.region = region
 
@@ -35,7 +36,7 @@ class Baseline:
         #set maximum of trajectories
         self.max_trajectories = max
 
-    def start_trajectory(self):
+    def start_trajectory(self) -> Any:
         """initialize a trajectory with a starting station and amount of stops
         that it will make
         """
@@ -52,7 +53,7 @@ class Baseline:
 
         return trajectory
     
-    def continue_trajectory(self, trajectory):
+    def continue_trajectory(self, trajectory: Trajectory) -> str:
         """continue a trajectory by choosing between available connections
         of the current station and updating the current one to the next one,
         except if we've reached the end.
@@ -63,7 +64,7 @@ class Baseline:
         used and the goal has been reached.
         """
         # get available connections
-        station = trajectory.stations[-1]
+        station: Station = trajectory.stations[-1]
         connections = station.connections
         # choose a random connection
         chosen_connection = random.choice(connections)
@@ -150,15 +151,17 @@ class Baseline:
 
         return "continue"
     
-    def get_time(self, station, chosen_connection):
+    def get_time(self, station: Station, chosen_connection: str) -> int:
         """Get the travel time by finding the chosen connection
         in the dict where it's time is mapped.
         """        
         for connection in station.connection_time:
             if connection == chosen_connection:
                 return station.connection_time[connection]
+        
+        return 0
 
-    def calculate_K(self):
+    def calculate_K(self) -> float:
         """Calculate the quality of the railmap using Schedule class.
         """        
         S = Schedule(self.trajectories, self.total_connections)

@@ -27,8 +27,8 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        self.algorithm = input("\nWhich algorithm?\n")
-        # self.algorithm = "hill climber"
+        # self.algorithm = input("\nWhich algorithm?\n")
+        self.algorithm = "hill climber"
 
         # choose between all our algorithms
         while self.algorithm not in \
@@ -43,8 +43,8 @@ class Main:
         all\n\n")
             
         # retrieve region
-        self.region = input("\nWhich region?\n")
-        # self.region = "Holland"
+        # self.region = input("\nWhich region?\n")
+        self.region = "Holland"
 
         # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
@@ -52,8 +52,8 @@ class Main:
         input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
         # get max trajectories
-        self.max = int(input("\nWhat is the maximum of trajectories?\n"))
-        # self.max = 7
+        # self.max = int(input("\nWhat is the maximum of trajectories?\n"))
+        self.max = 7
 
         # must be between 1 and 7
         while self.max < 1 or self.max > 45:
