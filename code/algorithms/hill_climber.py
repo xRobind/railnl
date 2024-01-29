@@ -49,7 +49,7 @@ class Hillclimber:
 
         # Calculate the quality of the generated railmap
         S = Schedule(self.trajectories, self.connections)
-        self.original_quality = S.calculate_K()
+        self.original_quality = S.calculate_K_simple()
         print(self.original_quality)
         
         #keep track of original trajectory
@@ -126,7 +126,7 @@ class Hillclimber:
         """
         # Calculate the K value with the changed trajectory
         S = Schedule(self.trajectories, self.connections)
-        changed_quality = S.calculate_K()
+        changed_quality = S.calculate_K_simple()
         print(changed_quality)
 
         # Compare the K values and determine if there is an improvement

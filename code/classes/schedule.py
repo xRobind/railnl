@@ -85,6 +85,22 @@ class Schedule:
         # sometimes self.all_connections is already an integer of the number
         # of connections
 
+    def calculate_K_simple(self):
+        connections = []
+        for trajectory in self.trajectories:
+            self.time += trajectory.time
+
+            for i in range(0, len(trajectory.stations) - 1):
+                if (trajectory.stations[i + 1], trajectory.stations[i])\
+                not in connections:
+                    connections.append((trajectory.stations[i],
+                                    trajectory.stations[i + 1]))
+        
+        connections = set(connections)
+
+        p = len(connections) / self.all_connections
+
+        return p * 10000 - (len(self.trajectories) * 100 + self.time)        
 
     def add_trajectory(self, trajectory):
         self.trajectories.append(trajectory)
