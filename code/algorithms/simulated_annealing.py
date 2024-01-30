@@ -93,7 +93,7 @@ class Simulated_annealing:
             self.K_values.append(self.new_quality)
     
     def calculate_temperature(self):
-        t_start = 1000000
+        t_start = 100000
         temperature = t_start - (t_start/self.iterations)*self.iteration
         try:
             self.acceptance_prob = 2**((self.original_quality - self.new_quality)/temperature)
