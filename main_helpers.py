@@ -160,7 +160,20 @@ class Main:
 
         test = IDS(self.max, self.region)
         test.start_trajectory()
-        schedule = test.continue_trajectory()
+        schedule, k = test.continue_trajectory()
+    
+        for i in range(len(schedule.trajectories)):
+            stations1 = []
+            for j in range(len(schedule.trajectories[i].stations)):
+                if j == 0:
+                    stations1.append(schedule.trajectories[i].stations[j].station)
+                stations1.append(schedule.trajectories[i].stations[j].connection)
+            schedule.trajectories[i].stations = stations1
+        
+        self.trajectories = schedule.trajectories
+        self.K_values.append(k)
+        self.all_K_values.append(k)
+        
         
         
         #set variables for visualisation

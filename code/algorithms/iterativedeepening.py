@@ -28,8 +28,10 @@ class IDS:
         self.list_all = []
         if region == "Holland":
             self.time = 120
+            self.goal = 8800
         else:
             self.time = 180
+            self.goal = 5000
 
         # load station structures and connections 
         self.load_stations(f"data/Stations{region}.txt")
@@ -65,6 +67,7 @@ class IDS:
 
                 # read new line
                 line = f.readline()
+                   
 
     def load_connections(self, filename):
         """open file, read the lines and split into the three parts
@@ -113,6 +116,9 @@ class IDS:
                 # read new line
                 line = f.readline()
                 
+        for station in self.stations:
+            station.nmbr()    
+            
     def start_trajectory(self):
         """initialize a trajectory with a starting station and amount of stops
         that it will make
@@ -143,8 +149,9 @@ class IDS:
         while(yeh == False):
             try:
                 current = self.stack.pop()
-            except AssertionError:
-                return self.list_all[-1]
+                print("hij doet nog poppen")
+            except AssertionError:         
+                return self.list_all[-1], self.list_all[-1].calculate_K2()
                 
                 
             for next_connection in current.trajectories[-1].stations[-1].connection.connections:
@@ -164,6 +171,9 @@ class IDS:
                         self.list_all.sort(key=lambda x: x.score)
                         new = self.list_all[-1]
                         print(new.calculate_K2())
+                        if(new.calculate_K2() > self.goal):
+                            return new, new.calculate_K2()
+                            
                         print(new.trajectories[-1].time, len(new.connections_used), len(new.all_connections), len(new.connections_over))
                         for i in range(len(new.trajectories)):
                             print("nieuwe")
@@ -171,7 +181,6 @@ class IDS:
                                 print(new.trajectories[i].stations[j].station.name, new.trajectories[i].stations[j].connection.name)                           
                         for i in range(60, 1, -1):
                             self.stack.push(self.list_all[-i])
-                        print(len(self.stack.items))
                             
                         if nr_con == 0:
                             self.list_all.clear()
@@ -179,9 +188,11 @@ class IDS:
                                 print("hij gaat hier in")
                                 n = self.stack.pop()
                                 if(self.max_trajectories == len(n.trajectories)):
-                                    return self.list_all[-1]
-                                for connection_id in n.connections_over:
-                                    print("en hij maakt nieuwe")
+                                    return self.list_all[-1], self.list_all[-1].calculate_K2()
+                                
+                                n.connections_over.sort(key = lambda x: self.connection_dict[x].station.nmbr_connections)
+                                
+                                for connection_id in n.connections_over[:30]:
                                     trajectory = Trajectory(self.connection_dict[connection_id])
                                     trajectory.add_first_time()
                                     new2 = copy.deepcopy(n)
@@ -195,24 +206,5 @@ class IDS:
                             depth = 0
                         nr_con = 0
                         depth += 2
-                            
-                            
-                    if depth > 30:
-                        yeh = True
+                           
                         
-                        
-
-                        
-                            ##found good result
-                        # if new.calculate_K2() > 4000:
-                            # print(new.trajectories[-1].time, len(new.connections_used), len(new.all_connections), len(new.connections_over))
-                            # for i in range(len(new.trajectories)):
-                                # print("nieuwe")
-                                # for j in range(len(new.trajectories[i].stations)):
-                                    # print(new.trajectories[i].stations[j].station.name, new.trajectories[i].stations[j].connection.name)
-                            # self.stack2.push(new)
-                            # if len(self.stack2.items) == 100:
-                                # self.stack.items.clear()
-                                # for i in range(len(self.stack2.items)):
-                                    # self.stack.push(self.stack2.pop)
-                                    # yeh = True

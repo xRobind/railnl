@@ -7,6 +7,7 @@ class Station:
         self.name: str = name
         self.y: str = y
         self.x: str = x
+        self.nmbr_connections = 0
 
         # make a dict that maps connections to their travel time
         # and a list that just has the connections
@@ -21,4 +22,8 @@ class Station:
     # def __str__(self):
     #     return self.name
         
+    def nmbr(self):
+        self.nmbr_connections = len(self.connections)
+        
+    
         
