@@ -140,7 +140,6 @@ class Visualisation:
         """plot the K's of all algorithms and their averages next to eachother
         for comparison reasons.
         """
-        print(all_K_values)
         try:
             plt.title("K's of our algorithms")
             plt.boxplot(all_K_values, showfliers=True, labels=["baseline", "hill climber", "pool", "simulated annealing"])

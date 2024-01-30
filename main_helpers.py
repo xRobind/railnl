@@ -24,6 +24,8 @@ class Main:
         self.iterations = 100
         self.trajectories = None
 
+        self.K_value_output = 0
+
     def user_input(self):
         """This method asks the user to fill in the algorithm, region,
         and the max trajectories to be used in a railmap
@@ -31,6 +33,7 @@ class Main:
         # retrieve existing algorithm
         self.algorithm = input("\nWhich algorithm?\n")
         # self.algorithm = "simulated annealing"
+
 
 
         # choose between all our algorithms
@@ -47,8 +50,8 @@ class Main:
         all\n\n")
             
         # retrieve region
-        # self.region = input("\nWhich region?\n")
-        self.region = "Holland"
+        self.region = input("\nWhich region?\n")
+        # self.region = "Holland"
 
         # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
@@ -56,8 +59,8 @@ class Main:
         input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
         # get max trajectories
-        # self.max = int(input("\nWhat is the maximum of trajectories?\n"))
-        self.max = 7
+        self.max = int(input("\nWhat is the maximum of trajectories?\n"))
+        # self.max = 20
 
         # must be between 1 and 7
         while self.max < 1 or self.max > 45:
@@ -104,6 +107,7 @@ class Main:
                 if self.highest_K < K_value:
                     self.highest_K = K_value
                     self.trajectories = rail.trajectories
+                    self.K_value_output = self.highest_K
 
 
                 # stop if a stopping condition is met
@@ -153,6 +157,7 @@ class Main:
         
         # set variables for visualisation
         self.trajectories = hillclimber_instance.trajectories
+        self.K_value_output = hillclimber_instance.K_values[-1]
         self.K_values = hillclimber_instance.K_values
         self.all_K_values.append(hillclimber_instance.K_values)
 
@@ -175,6 +180,7 @@ class Main:
             schedule.trajectories[i].stations = stations1
         
         self.trajectories = schedule.trajectories
+        print(k)
         self.K_values.append(k)
         self.all_K_values.append(k)
         
@@ -210,6 +216,7 @@ class Main:
             if rail.K > self.highest_K:
                 self.trajectories = rail.network
                 self.highest_K = rail.K
+                self.K_value_output = self.highest_K
 
         # extend the list of all K's and reset highest K
         self.all_K_values.append(self.K_values)
@@ -223,6 +230,7 @@ class Main:
         simulated_annealing_instance.run()
 
         # for visualisation
+        self.K_value_output = simulated_annealing_instance.K_values[-1]
         self.trajectories = simulated_annealing_instance.trajectories
         self.K_values = simulated_annealing_instance.K_values
         self.all_K_values.append(simulated_annealing_instance.K_values)
@@ -265,7 +273,8 @@ class Main:
         rows = []
 
         for i in range(0, len(all_stations)):
-            rows.append([f"train_{i + 1}", f"{all_stations[i]}"])
+            row = f"train_{i + 1}", "[" + ", ".join(all_stations[i]) + "]"
+            rows.append(row)
 
         filename = "output.csv"
 
@@ -279,6 +288,10 @@ class Main:
         
             # writing the data rows
             csvwriter.writerows(rows)
+
+            last_row = ["score", f"{self.K_value_output}"]
+            # write score
+            csvwriter.writerow(last_row)
 
 
         

@@ -75,11 +75,11 @@ class Simulated_annealing:
     def new_trajectory(self):
         baseline = Baseline(self.max, self.region)
         self.new_traj = baseline.start_trajectory()
-        print(self.new_traj)
-        print("nieuw traject")
-        for station in self.new_traj.stations:
-            print(station.name)
-        print()
+        # print(self.new_traj)
+#         print("nieuw traject")
+#         for station in self.new_traj.stations:
+#             print(station.name)
+#         print()
         # Continue the trajectory until a stopping condition is met
         while True:
             result = self.baseline_instance.continue_trajectory(self.new_traj)
@@ -88,28 +88,34 @@ class Simulated_annealing:
                 self.trajectories.append(self.new_traj)
                 break
 
-            S = Schedule(self.trajectories, self.baseline_instance.total_connections)
-            self.new_quality = S.calculate_K_simple()
-            self.K_values.append(self.new_quality)
+        S = Schedule(self.trajectories, self.baseline_instance.total_connections)
+        self.new_quality = S.calculate_K_simple()
+        self.K_values.append(self.new_quality)
     
     def calculate_temperature(self):
-        t_start = 100000
+        t_start = 10000
         temperature = t_start - (t_start/self.iterations)*self.iteration
         try:
-            self.acceptance_prob = 2**((self.original_quality - self.new_quality)/temperature)
+            self.reject_prob = 2**((self.original_quality - self.new_quality)/temperature)
         except(ZeroDivisionError):
-            self.acceptance_prob = 1
+            self.reject_prob = 1
         print(temperature)
         print(self.iteration)
-        print("acceptatie kans:", self.acceptance_prob)
+        print("ACCEPTATIEKANS:", self.reject_prob)
         
         
         
     def compare_values(self):
-        replace = self.acceptance_prob < random.random()
+        improvement = self.original_quality < self.new_quality
+        replace = self.reject_prob < random.random()
         print("nieuw:",self.new_quality)
         print("oud", self.original_quality)
-        if replace: 
+        if improvement:
+            self.original_trajectory = self.trajectories
+            self.original_quality = self.new_quality
+            print("accepted")
+            
+        elif replace: 
             self.original_trajectory = self.trajectories
             self.original_quality = self.new_quality
             print("accepted")
