@@ -1,10 +1,12 @@
 # this file contains functions that retrieves input from a user,
 # and handles our different algorithms
+import csv
 
 from code.algorithms.baseline import Baseline
 from code.algorithms.hill_climber import Hillclimber
 from code.algorithms.iterativedeepening import IDS
 from code.algorithms.pool import Pool
+from code.algorithms.simulated_annealing import Simulated_annealing
 
 from code.visual.visual import Visualisation
 
@@ -27,13 +29,13 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        self.algorithm = input("\nWhich algorithm?\n")
-        # self.algorithm = "beam"
+        # self.algorithm = input("\nWhich algorithm?\n")
+        self.algorithm = "simulated annealing"
 
 
         # choose between all our algorithms
         while self.algorithm not in \
-                    ["baseline", "hill climber", "beam", "pool", "all"]:
+                    ["baseline", "hill climber", "beam", "pool","simulated annealing", "all"]:
             self.algorithm = \
             input("Please provide an algortihm in the command line.\n\
         Options:\n\
@@ -41,11 +43,12 @@ class Main:
         hill climber\n\
         beam\n\
         pool\n\
+        simulated annealing\n\
         all\n\n")
             
         # retrieve region
-        self.region = input("\nWhich region?\n")
-        # self.region = "Holland"
+        # self.region = input("\nWhich region?\n")
+        self.region = "Holland"
 
         # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
@@ -53,8 +56,8 @@ class Main:
         input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
         # get max trajectories
-        self.max = int(input("\nWhat is the maximum of trajectories?\n"))
-        # self.max = 7
+        # self.max = int(input("\nWhat is the maximum of trajectories?\n"))
+        self.max = 7
 
         # must be between 1 and 7
         while self.max < 1 or self.max > 45:
@@ -101,6 +104,7 @@ class Main:
                 if self.highest_K < K_value:
                     self.highest_K = K_value
                     self.trajectories = rail.trajectories
+
 
                 # stop if a stopping condition is met
                 if run == "stop":
@@ -210,6 +214,19 @@ class Main:
         # extend the list of all K's and reset highest K
         self.all_K_values.append(self.K_values)
         self.highest_K = 0
+    
+    def simulated_annealing(self):
+        # reset K's
+        self.K_values = []
+
+        simulated_annealing_instance = Simulated_annealing(self.max, self.region)
+        simulated_annealing_instance.run()
+
+        # for visualisation
+        self.trajectories = simulated_annealing_instance.trajectories
+        self.K_values = simulated_annealing_instance.K_values
+        self.all_K_values.append(simulated_annealing_instance.K_values)
+        
 
     def visualisation(self):
         """This method carries out the visualisation.
@@ -231,6 +248,37 @@ class Main:
         # plot all K's next to eachother from all algorithms
         v.boxplot(self.all_K_values)
 
+    def output(self, algorithm):
+        # set column names
+        fields = ["train", "stations"]
+
+        # lists to store stations in
+        all_stations = []
+
+        # loop through every trajectory and add every station
+        for trajectory in self.trajectories:
+            stations = []
+            for station in trajectory.stations:
+                stations.append(station.name)
+            all_stations.append(stations)
+
+        rows = []
+
+        for i in range(0, len(all_stations)):
+            rows.append([f"train_{i + 1}", f"{all_stations[i]}"])
+
+        filename = "output.csv"
+
+        # writing to csv file
+        with open(filename, 'w') as csvfile:
+            # creating a csv writer object
+            csvwriter = csv.writer(csvfile)
+        
+            # writing the fields
+            csvwriter.writerow(fields)
+        
+            # writing the data rows
+            csvwriter.writerows(rows)
 
 
         

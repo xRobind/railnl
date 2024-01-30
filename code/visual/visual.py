@@ -117,7 +117,7 @@ class Visualisation:
             station, connection = line
             self.x_values = [self.x_station[station], self.x_station[connection]]
             self.y_values = [self.y_station[station], self.y_station[connection]]
-            plt.plot(self.x_values, self.y_values, '-', c=np.random.rand(3,), alpha=0.33)
+            plt.plot(self.x_values, self.y_values, '-', c="b", alpha=0.33)
             # draw the connections
             plt.draw()
             plt.pause(.1)
@@ -143,7 +143,7 @@ class Visualisation:
         print(all_K_values)
         try:
             plt.title("K's of our algorithms")
-            plt.boxplot(all_K_values, showfliers=True, labels=["baseline", "hill climber", "pool"])
+            plt.boxplot(all_K_values, showfliers=True, labels=["baseline", "hill climber", "pool", "simulated annealing"])
             # plt.savefig(f"boxplot_compare_{self.region}")
             plt.show()
         except(ValueError):
