@@ -64,7 +64,6 @@ class Baseline:
         used and the goal has been reached.
         """
         # get available connections
-        print(trajectory)
         station: Station = trajectory.stations[-1]
         connections = station.connections
         # choose a random connection
