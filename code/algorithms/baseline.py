@@ -50,7 +50,7 @@ class Baseline:
         # create trajectory with starting station, add to the Trajectory class
         trajectory = Trajectory(starting_station)
         self.trajectories.append(trajectory)
-
+        print(trajectory)
         return trajectory
     
     def continue_trajectory(self, trajectory: Trajectory) -> str:
@@ -64,8 +64,10 @@ class Baseline:
         used and the goal has been reached.
         """
         # get available connections
-        print(trajectory)
-        station: Station = trajectory.stations[-1]
+        try:
+            station: Station = trajectory.stations[-1]
+        except(AttributeError):
+            return "stop"
         connections = station.connections
         # choose a random connection
         chosen_connection = random.choice(connections)
