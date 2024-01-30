@@ -88,9 +88,9 @@ class Simulated_annealing:
                 self.trajectories.append(self.new_traj)
                 break
 
-            S = Schedule(self.trajectories, self.baseline_instance.total_connections)
-            self.new_quality = S.calculate_K_simple()
-            self.K_values.append(self.new_quality)
+        S = Schedule(self.trajectories, self.baseline_instance.total_connections)
+        self.new_quality = S.calculate_K_simple()
+        self.K_values.append(self.new_quality)
     
     def calculate_temperature(self):
         t_start = 1000000
