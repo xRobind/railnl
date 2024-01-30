@@ -2,6 +2,7 @@ import random
 import sys
 import matplotlib.pyplot as plt
 import copy
+import gc
 
 sys.path.append('../classes')
 sys.path.append('code/classes')
@@ -149,7 +150,6 @@ class IDS:
         while(yeh == False):
             try:
                 current = self.stack.pop()
-                print("hij doet nog poppen")
             except AssertionError:         
                 return self.list_all[-1], self.list_all[-1].calculate_K2()
                 
@@ -183,9 +183,10 @@ class IDS:
                             self.stack.push(self.list_all[-i])
                             
                         if nr_con == 0:
+                            print(len(self.list_all))
                             self.list_all.clear()
+                            
                             while len(self.stack.items) > 1:
-                                print("hij gaat hier in")
                                 n = self.stack.pop()
                                 if(self.max_trajectories == len(n.trajectories)):
                                     return self.list_all[-1], self.list_all[-1].calculate_K2()
