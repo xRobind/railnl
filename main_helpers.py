@@ -31,8 +31,8 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        self.algorithm = input("\nWhich algorithm?\n")
-        # self.algorithm = "simulated annealing"
+        # self.algorithm = input("\nWhich algorithm?\n")
+        self.algorithm = "hill climber"
 
 
         # choose between all our algorithms
