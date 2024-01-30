@@ -81,7 +81,7 @@ class Simulated_annealing:
         self.K_values.append(self.new_quality)
     
     def calculate_temperature(self):
-        t_start = 100
+        t_start = 500
         temperature = t_start - (t_start/self.iterations)*self.iteration
         try:
             self.reject_prob = 2**(( self.new_quality - self.original_quality)/temperature)
@@ -102,9 +102,9 @@ class Simulated_annealing:
             
     def run(self):
         self.random_railmap()
-        self.iterations = 100
+        self.iterations = 1000
         
-        for i in range(100):
+        for i in range(self.iterations):
 
             self.choose_random_trajectory()
             self.new_trajectory()
