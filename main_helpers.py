@@ -25,7 +25,7 @@ class Main:
         self.highest_K = 0
         self.iterations = 1000
         self.trajectories = None
-        self.runtime = 30
+        self.runtime = 300
         self.K_value_output = 0
 
     def user_input(self):
@@ -33,8 +33,8 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        # self.algorithm = input("\nWhich algorithm?\n")
-        self.algorithm = "simulated annealing"
+        self.algorithm = input("\nWhich algorithm?\n")
+        # self.algorithm = "simulated annealing"
 
         # choose between all our algorithms
         while self.algorithm not in \
@@ -51,7 +51,7 @@ class Main:
             
         # retrieve region
         # self.region = input("\nWhich region?\n")
-        self.region = "Holland"
+        self.region = "Nederland"
 
         # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
@@ -60,7 +60,7 @@ class Main:
 
         # get max trajectories
         # self.max = int(input("\nWhat is the maximum of trajectories?\n"))
-        self.max = 7
+        self.max = 20
 
         # must be between 1 and 7
         while self.max < 1 or self.max > 45:
@@ -84,7 +84,7 @@ for {self.runtime} seconds...")
         n_runs = 0
 
         # csv file to store K's
-        filename = f"baseline_K_{self.runtime}s.csv"
+        filename = f"baseline_K_{self.runtime}s_{self.region}.csv"
         # writing to csv file
         with open(filename, 'w') as csvfile:
             # creating a csv writer object
@@ -152,7 +152,7 @@ for {self.runtime} seconds..")
         n_runs = 0
 
         # csv file to store K's
-        filename = f"hillclimber_K_{self.runtime}s.csv"
+        filename = f"hillclimber_K_{self.runtime}s_{self.region}.csv"
         # writing to csv file
         with open(filename, 'w') as csvfile:
             # creating a csv writer object
@@ -214,7 +214,7 @@ for {self.runtime} seconds..")
         n_runs = 0
 
         # csv file to store K's
-        filename = f"pool_K_{self.runtime}s.csv"
+        filename = f"pool_K_{self.runtime}s_{self.region}.csv"
         # writing to csv file
         with open(filename, 'w') as csvfile:
             # creating a csv writer object
@@ -254,7 +254,7 @@ for {self.runtime} seconds..")
         self.K_values = []
 
         # let the user know the algorithm is running
-        print(f"\nUsing Simulaed annealing algorithm in {self.region} \
+        print(f"\nUsing Simulated annealing algorithm in {self.region} \
 for {self.runtime} seconds..")
 
         # use time to run the algorithm for a given time
@@ -262,7 +262,7 @@ for {self.runtime} seconds..")
         n_runs = 0
 
         # csv file to store K's
-        filename = f"SimAn_K_{self.runtime}s.csv"
+        filename = f"SimAn_K_{self.runtime}s_{self.region}.csv"
         # writing to csv file
         with open(filename, 'w') as csvfile:
             # creating a csv writer object

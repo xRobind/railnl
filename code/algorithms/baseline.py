@@ -50,7 +50,6 @@ class Baseline:
         # create trajectory with starting station, add to the Trajectory class
         trajectory = Trajectory(starting_station)
         self.trajectories.append(trajectory)
-        print(trajectory)
         return trajectory
     
     def continue_trajectory(self, trajectory: Trajectory) -> str:
@@ -162,7 +161,7 @@ class Baseline:
             if connection == chosen_connection:
                 return station.connection_time[connection]
         
-        return 0
+        return 180
 
     def calculate_K(self) -> float:
         """Calculate the quality of the railmap using Schedule class.
