@@ -85,7 +85,7 @@ class Simulated_annealing:
         temperature = t_start - (t_start/self.iterations)*self.iteration
         try:
             self.reject_prob = 2**(( self.new_quality - self.original_quality)/temperature)
-        except(ZeroDivisionError):
+        except(ZeroDivisionError,OverflowError):
             self.reject_prob = 1
 
     def compare_values(self):
