@@ -33,7 +33,12 @@ class Hillclimber:
     def random_railmap(self):
         """Generate a random railmap using the Baseline class."""
         # Start with a random trajectory from the baseline
-        random_network = self.baseline_instance.start_trajectory()
+        try:
+            random_network = self.baseline_instance.start_trajectory() 
+        except(AttributeError):
+            return
+
+            
         # Continue the trajectory until a stopping condition is met
         while True:
             result = self.baseline_instance.continue_trajectory(random_network)

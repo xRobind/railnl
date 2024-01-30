@@ -11,6 +11,7 @@ if __name__ == "__main__":
         main.baseline()
         # main.visualisation()
         main.output("baseline")
+        main.visualisation()
     
     # execution of hill climber algorrithm
     elif main.algorithm == "hill climber":
