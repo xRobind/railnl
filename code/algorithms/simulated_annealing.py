@@ -72,7 +72,7 @@ class Simulated_annealing:
         while True:
             result = self.baseline_instance.continue_trajectory(self.new_traj)
 
-            if result == "stop":
+            if result == "stop" or result == "new trajectory":
                 self.trajectories.append(self.new_traj)
                 break
 
@@ -101,10 +101,11 @@ class Simulated_annealing:
             self.original_quality = self.new_quality
             
     def run(self):
-        self.iterations = 100
         self.random_railmap()
+        self.iterations = 100
         
         for i in range(100):
+
             self.choose_random_trajectory()
             self.new_trajectory()
             self.calculate_temperature()

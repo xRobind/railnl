@@ -43,10 +43,16 @@ class Hillclimber:
         while True:
             result = self.baseline_instance.continue_trajectory(random_network)
 
-            if result == "stop":
+            if result == "stop" and random_network != "stop":
+                print("123")
+                print(random_network)
                 self.trajectories.append(random_network)
                 break
+            elif result == "stop" and random_network == "stop":
+                print("456")
+                break
             elif result == "new trajectory":
+                print("789")
                 self.trajectories.append(random_network)
                 random_network = self.baseline_instance.start_trajectory()
 
@@ -67,18 +73,20 @@ class Hillclimber:
         
     
     def new_trajectory(self):
-        baseline = Baseline(self.max, self.region)
-        self.new_traj = baseline.start_trajectory()
+        self.baseline = Baseline(self.max, self.region)
+        self.new_traj = self.baseline.start_trajectory()
 
         # Continue the trajectory until a stopping condition is met
         while True:
-            result = self.baseline_instance.continue_trajectory(self.new_traj)
+            result = self.baseline.continue_trajectory(self.new_traj)
+            print(result)
 
-            if result == "stop":
+            if result == "stop" or result == "new trajectory":
+                print(result)
                 self.trajectories.append(self.new_traj)
                 break
 
-        S = Schedule(self.trajectories, self.baseline_instance.total_connections)
+        S = Schedule(self.trajectories, self.baseline.total_connections)
         self.new_quality = S.calculate_K_simple()
         self.K_values.append(self.new_quality)
     
