@@ -111,6 +111,7 @@ class Simulated_annealing:
             print("accepted")
             
         elif replace: 
+            self.calculate_temperature()
             self.original_trajectory = self.trajectories
             self.original_quality = self.new_quality
             print("accepted")
@@ -122,7 +123,6 @@ class Simulated_annealing:
         for i in range(100):
             self.choose_random_trajectory()
             self.new_trajectory()
-            self.calculate_temperature()
             self.compare_values()
             self.iteration += 1
         print(self.original_quality)
