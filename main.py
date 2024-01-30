@@ -24,6 +24,10 @@ if __name__ == "__main__":
     elif main.algorithm == "pool":
         main.pool()
         main.visualisation()
+        
+    elif main.algorithm == "simulated annealing":
+        main.simulated_annealing()
+        # main.visualisation()
 
     elif main.algorithm == "all":
         main.baseline()

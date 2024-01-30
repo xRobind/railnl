@@ -14,7 +14,7 @@ from code.classes.load import Load
 from code.algorithms.baseline import Baseline
 
 
-class Hillclimber:
+class Hill:
     """ this class......."""
 
     def __init__(self, max, region) -> None:

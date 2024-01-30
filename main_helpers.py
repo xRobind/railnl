@@ -5,6 +5,7 @@ from code.algorithms.baseline import Baseline
 from code.algorithms.hill_climber import Hillclimber
 from code.algorithms.iterativedeepening import IDS
 from code.algorithms.pool import Pool
+from code.algorithms.simulated_annealing import Simulated_annealing
 
 from code.visual.visual import Visualisation
 
@@ -27,13 +28,13 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        self.algorithm = input("\nWhich algorithm?\n")
-        # self.algorithm = "beam"
+        # self.algorithm = input("\nWhich algorithm?\n")
+        self.algorithm = "simulated annealing"
 
 
         # choose between all our algorithms
         while self.algorithm not in \
-                    ["baseline", "hill climber", "beam", "pool", "all"]:
+                    ["baseline", "hill climber", "beam", "pool","simulated annealing", "all"]:
             self.algorithm = \
             input("Please provide an algortihm in the command line.\n\
         Options:\n\
@@ -41,11 +42,12 @@ class Main:
         hill climber\n\
         beam\n\
         pool\n\
+        simulated annealing\n\
         all\n\n")
             
         # retrieve region
-        self.region = input("\nWhich region?\n")
-        # self.region = "Holland"
+        # self.region = input("\nWhich region?\n")
+        self.region = "Holland"
 
         # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
@@ -53,8 +55,8 @@ class Main:
         input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
         # get max trajectories
-        self.max = int(input("\nWhat is the maximum of trajectories?\n"))
-        # self.max = 7
+        # self.max = int(input("\nWhat is the maximum of trajectories?\n"))
+        self.max = 7
 
         # must be between 1 and 7
         while self.max < 1 or self.max > 45:
@@ -197,6 +199,11 @@ class Main:
         # extend the list of all K's and reset highest K
         self.all_K_values.append(self.K_values)
         self.highest_K = 0
+    
+    def simulated_annealing(self):
+        simulated_annealing_instance = Simulated_annealing(self.max, self.region)
+        simulated_annealing_instance.run()
+        
 
     def visualisation(self):
         """This method carries out the visualisation.
