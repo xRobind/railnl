@@ -1,6 +1,7 @@
 # this file contains functions that retrieves input from a user,
 # and handles our different algorithms
 import csv
+import time
 import copy
 
 from code.algorithms.baseline import Baseline
@@ -24,7 +25,7 @@ class Main:
         self.highest_K = 0
         self.iterations = 1000
         self.trajectories = None
-
+        self.runtime = 30
         self.K_value_output = 0
 
     def user_input(self):
@@ -34,7 +35,6 @@ class Main:
         # retrieve existing algorithm
         self.algorithm = input("\nWhich algorithm?\n")
         # self.algorithm = "hill climber"
-
 
         # choose between all our algorithms
         while self.algorithm not in \
@@ -74,61 +74,112 @@ class Main:
         """
         # let the user know the algorithm is running
         print(f"\nUsing Baseline algorithm in {self.region} \
-{self.iterations} times...")
+for {self.runtime} seconds...")
         
         # initialise baseline algorithm
         rail = Baseline(self.max, self.region)
 
-        # repeat a specified number of times
-        for i in range(0, self.iterations):
-            # empty railmap info
-            rail.trajectories = []
-            rail.total_time = 0
+        # use time to run the algorithm for a given time
+        start = time.time()
+        n_runs = 0
 
-            # continue trajectories until it doesn't create a new
-            while True:
-                # create new trajectory
-                trajectory = rail.start_trajectory()
+        # csv file to store K's
+        filename = f"baseline_K_{self.runtime}s.csv"
+        # writing to csv file
+        with open(filename, 'w') as csvfile:
+            # creating a csv writer object
+            csvwriter = csv.writer(csvfile)
+        
+            # write the field
+            csvwriter.writerow(["K values"])
 
-                # check for maximum of trajectories
-                if trajectory == "stop":
-                    break
+        while time.time() - start < self.runtime:
+            n_runs += 1
 
-                # continue a trajectory
-                run = rail.continue_trajectory(trajectory)
-                while run == "continue":
+            # repeat a specified number of times
+            for i in range(0, self.iterations):
+                # empty railmap info
+                rail.trajectories = []
+                rail.total_time = 0
+
+                # continue trajectories until it doesn't create a new
+                while True:
+                    # create new trajectory
+                    trajectory = rail.start_trajectory()
+
+                    # check for maximum of trajectories
+                    if trajectory == "stop":
+                        break
+
+                    # continue a trajectory
                     run = rail.continue_trajectory(trajectory)
+                    while run == "continue":
+                        run = rail.continue_trajectory(trajectory)
 
-                # calculate K and add it to list of all K's
-                K_value = rail.calculate_K()
-                self.K_values.append(K_value)
+                    # calculate K and add it to list of all K's
+                    K_value = rail.calculate_K()
+                    self.K_values.append(K_value)
 
-                # save the rail with highest K
-                if self.highest_K < K_value:
-                    self.highest_K = K_value
-                    self.trajectories = rail.trajectories
-                    self.K_value_output = self.highest_K
+                    # write K to the data row
+                    with open(filename, 'a') as csvfile:
+                        csvwriter = csv.writer(csvfile)
+                        csvwriter.writerow([int(K_value)])
 
-                # stop if a stopping condition is met
-                if run == "stop":
-                    break
+                    # save the rail with highest K
+                    if self.highest_K < K_value:
+                        self.highest_K = K_value
+                        self.trajectories = rail.trajectories
+                        self.K_value_output = self.highest_K
 
-        # extend the list of all K's and reset highest K
+                    # stop if a stopping condition is met
+                    if run == "stop":
+                        break
+
+        # add to the list of all K's and reset highest K
         self.all_K_values.append(self.K_values)
         self.highest_K = 0
     
     def hill_climber(self):
         # reset K's
-        self.K_values = 0
+        self.K_values = []
 
-        hillclimber_instance = Hillclimber(self.max, self.region)
-        hillclimber_instance.run(self.iterations)
+        # let the user know the algorithm is running
+        print(f"\nUsing Hill climber algorithm in {self.region} \
+for {self.runtime} seconds..")
+        
+        # use time to run the algorithm for a given time
+        start = time.time()
+        n_runs = 0
+
+        # csv file to store K's
+        filename = f"hillclimber_K_{self.runtime}s.csv"
+        # writing to csv file
+        with open(filename, 'w') as csvfile:
+            # creating a csv writer object
+            csvwriter = csv.writer(csvfile)
+            # write the field
+            csvwriter.writerow(["K values"])
+
+        while time.time() - start < self.runtime:
+            n_runs += 1
+
+            # run the hill climber algorithm and add the found K
+            hillclimber_instance = Hillclimber(self.max, self.region)
+            hillclimber_instance.run(self.iterations)
+            self.K_values.append(hillclimber_instance.original_quality)
+
+            # write K to the data row
+            with open(filename, 'a') as csvfile:
+                csvwriter = csv.writer(csvfile)
+                csvwriter.writerow([hillclimber_instance.original_quality])
+    
+        # add to the list of all K values
+        self.all_K_values.append(self.K_values)
         
         # set variables for visualisation
-        self.trajectories = hillclimber_instance.trajectories
-        self.K_value_output = hillclimber_instance.K_values[-1]
-        self.K_values = hillclimber_instance.K_values
-        self.all_K_values.append(hillclimber_instance.K_values)
+        self.K_value_output = hillclimber_instance.original_quality
+        self.trajectories = hillclimber_instance.original_trajectories
+
 
     def beam(self):
         # reset K's
@@ -156,19 +207,41 @@ class Main:
         
         # let the user know the algorithm is running
         print\
-        (f"\nUsing Pool algorithm in {self.region} {self.iterations} times...")
+        (f"\nUsing Pool algorithm in {self.region} for {self.runtime} seconds..")
+
+        # use time to run the algorithm for a given time
+        start = time.time()
+        n_runs = 0
+
+        # csv file to store K's
+        filename = f"pool_K_{self.runtime}s.csv"
+        # writing to csv file
+        with open(filename, 'w') as csvfile:
+            # creating a csv writer object
+            csvwriter = csv.writer(csvfile)
         
-        for i in range(0, self.iterations):
-            # initiate the algorithm
-            rail = Pool(self.max, self.region, amount)
+            # write the field
+            csvwriter.writerow(["K values"])
 
-            # run the algorithm
-            for i in range(0, changes):
-                rail.change_network()
+        while time.time() - start < self.runtime:
+            n_runs += 1
 
-            self.K_values.append(rail.K)
+            for i in range(0, self.iterations):
+                # initiate the algorithm
+                rail = Pool(self.max, self.region, amount)
 
-        # for csv file
+                # run the algorithm
+                for i in range(0, changes):
+                    rail.change_network()
+
+                self.K_values.append(rail.K)
+
+                # write K to the data row
+                with open(filename, 'a') as csvfile:
+                    csvwriter = csv.writer(csvfile)
+                    csvwriter.writerow([rail.K])
+
+        # for checking K calculation
         self.trajectories = rail.network
         self.K_value_output = rail.K
 
@@ -180,13 +253,39 @@ class Main:
         # reset K's
         self.K_values = []
 
-        simulated_annealing_instance = Simulated_annealing(self.max, self.region)
-        simulated_annealing_instance.run()
+        # let the user know the algorithm is running
+        print(f"\nUsing Simulaed annealing algorithm in {self.region} \
+for {self.runtime} seconds..")
 
-        # for visualisation
+        # use time to run the algorithm for a given time
+        start = time.time()
+        n_runs = 0
+
+        # csv file to store K's
+        filename = f"SimAn_K_{self.runtime}s.csv"
+        # writing to csv file
+        with open(filename, 'w') as csvfile:
+            # creating a csv writer object
+            csvwriter = csv.writer(csvfile)
+        
+            # write the field
+            csvwriter.writerow(["K values"])
+
+        while time.time() - start < self.runtime:
+            n_runs += 1
+
+            simulated_annealing_instance = Simulated_annealing(self.max, self.region)
+            simulated_annealing_instance.run()
+            self.K_values.append(simulated_annealing_instance.original_quality)
+
+            # write K to the data row
+            with open(filename, 'a') as csvfile:
+                csvwriter = csv.writer(csvfile)
+                csvwriter.writerow([simulated_annealing_instance.original_quality])
+
+        # for visualisation and checking K calculation
         self.K_value_output = simulated_annealing_instance.K_values[-1]
-        self.trajectories = simulated_annealing_instance.trajectories
-        self.K_values = simulated_annealing_instance.K_values
+        self.trajectories = simulated_annealing_instance.original_trajectories
         self.all_K_values.append(simulated_annealing_instance.K_values)
         
 
@@ -217,6 +316,9 @@ class Main:
         return
 
     def output(self, algorithm):
+        """This method was used to check if the K's are calculated correctly,
+        by using check50.
+        """
         # set column names
         fields = ["train", "stations"]
 

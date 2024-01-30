@@ -53,7 +53,7 @@ class Hillclimber:
         self.K_values.append(self.original_quality)
         
         #keep track of original trajectory
-        self.original_trajectory = random_network
+        self.original_trajectories = random_network
 
     def choose_random_trajectory(self):
         #randomly select a trajectory from the railmap and remove it from network after creating a copy
@@ -81,7 +81,7 @@ class Hillclimber:
         improvement = self.new_quality > self.original_quality
 
         if improvement: 
-            self.original_trajectory = self.trajectories
+            self.original_trajectories = copy.deepcopy(self.trajectories)
             self.original_quality = self.new_quality
             
     def run(self, iterations):
