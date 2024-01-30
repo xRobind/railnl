@@ -10,6 +10,7 @@ if __name__ == "__main__":
         main.baseline()
         main.visualisation()
         main.output("baseline")
+        main.visualisation()
     
     elif main.algorithm == "hill climber":
         main.hill_climber()
