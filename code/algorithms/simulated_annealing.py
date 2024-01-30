@@ -99,12 +99,7 @@ class Simulated_annealing:
             self.reject_prob = 2**(( self.new_quality - self.original_quality)/temperature)
         except(ZeroDivisionError):
             self.reject_prob = 1
-        print(temperature)
-        print(self.iteration)
-        print("ACCEPTATIEKANS:", self.reject_prob)
-        
-        
-        
+
     def compare_values(self):
         improvement = self.original_quality < self.new_quality
         replace = self.reject_prob < random.random()
