@@ -33,8 +33,8 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        # self.algorithm = input("\nWhich algorithm?\n")
-        self.algorithm = "simulated annealing"
+        self.algorithm = input("\nWhich algorithm?\n")
+        # self.algorithm = "simulated annealing"
 
         # choose between all our algorithms
         while self.algorithm not in \
@@ -50,8 +50,8 @@ class Main:
         all\n\n")
             
         # retrieve region
-        # self.region = input("\nWhich region?\n")
-        self.region = "Nederland"
+        self.region = input("\nWhich region?\n")
+        # self.region = "Holland"
 
         # Holland or Nederland
         while self.region != "Holland" and self.region != "Nederland":
@@ -59,8 +59,9 @@ class Main:
         input("\nChoose a region: Holland or Nederland (case-sensitive).\n")
 
         # get max trajectories
-        # self.max = int(input("\nWhat is the maximum of trajectories?\n"))
-        self.max = 20
+        self.max = int(input("\nWhat is the maximum of trajectories?\n"))
+        # self.max = 20
+
 
         # must be between 1 and 7
         while self.max < 1 or self.max > 45:
@@ -189,7 +190,21 @@ for {self.runtime} seconds...")
 
         test = IDS(self.max, self.region)
         test.start_trajectory()
-        schedule = test.continue_trajectory()
+        schedule, k = test.continue_trajectory()
+    
+        for i in range(len(schedule.trajectories)):
+            stations1 = []
+            for j in range(len(schedule.trajectories[i].stations)):
+                if j == 0:
+                    stations1.append(schedule.trajectories[i].stations[j].station)
+                stations1.append(schedule.trajectories[i].stations[j].connection)
+            schedule.trajectories[i].stations = stations1
+        
+        self.trajectories = schedule.trajectories
+        print(k)
+        self.K_values.append(k)
+        self.all_K_values.append(k)
+        
         
         
         #set variables for visualisation
