@@ -20,6 +20,7 @@ if __name__ == "__main__":
     elif main.algorithm == "beam":
         #testen
         main.beam()
+        main.visualisation()
 
     elif main.algorithm == "pool":
         main.pool()
@@ -28,7 +29,7 @@ if __name__ == "__main__":
         
     elif main.algorithm == "simulated annealing":
         main.simulated_annealing()
-        main.visualisation()
+        main.visualisation(500)
         main.output("simulated_annealing")
 
     elif main.algorithm == "all":
