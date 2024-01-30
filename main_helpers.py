@@ -105,6 +105,7 @@ class Main:
                     self.highest_K = K_value
                     self.trajectories = rail.trajectories
 
+
                 # stop if a stopping condition is met
                 if run == "stop":
                     break
@@ -234,16 +235,16 @@ class Main:
         # plot all K's next to eachother from all algorithms
         v.boxplot(self.all_K_values)
 
-    def output(self):
+    def output(self, algorithm):
         # set column names
         fields = ["train", "stations"]
 
         # lists to store stations in
-        stations = []
         all_stations = []
 
         # loop through every trajectory and add every station
         for trajectory in self.trajectories:
+            stations = []
             for station in trajectory.stations:
                 stations.append(station.name)
             all_stations.append(stations)
