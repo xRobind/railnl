@@ -1,6 +1,7 @@
 # this file contains functions that retrieves input from a user,
 # and handles our different algorithms
 import csv
+import copy
 
 from code.algorithms.baseline import Baseline
 from code.algorithms.hill_climber import Hillclimber
@@ -21,7 +22,7 @@ class Main:
         self.K_values = []
         self.all_K_values = []
         self.highest_K = 0
-        self.iterations = 100
+        self.iterations = 1000
         self.trajectories = None
 
         self.K_value_output = 0
@@ -31,8 +32,8 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        # self.algorithm = input("\nWhich algorithm?\n")
-        self.algorithm = "hill climber"
+        self.algorithm = input("\nWhich algorithm?\n")
+        # self.algorithm = "hill climber"
 
 
         # choose between all our algorithms
@@ -108,40 +109,9 @@ class Main:
                     self.trajectories = rail.trajectories
                     self.K_value_output = self.highest_K
 
-
                 # stop if a stopping condition is met
                 if run == "stop":
                     break
-
-        # extend the list of all K's and reset highest K
-        self.all_K_values.append(self.K_values)
-        self.highest_K = 0
-
-    def hill_climber_2(self):
-        # reset K's
-        self.K_values = []
-        # let the user know the algorithm is running
-        print(f"\nUsing Hill Climber algorithm in {self.region}")
-
-        hillclimber_instance = Hillclimber(self.max, self.region)
-        iterations = 20
-        quality_threshold = 7500
-        hillclimber_instance.random_railmap()
-        self.K_values.append(hillclimber_instance.original_quality)
-        hillclimber_instance.choose_random_trajectory()
-
-        for iteration in range(iterations):
-            hillclimber_instance.change_node_last()
-            quality = hillclimber_instance.compare_K_values()
-            self.K_values.append(quality)
-            
-        # Check for the quality threshold and break if met
-            if hillclimber_instance.original_quality >= quality_threshold:
-                print(f"Quality threshold reached.")
-                break
-
-        # set the best railmap to self.trajectories for visualisation
-        self.trajectories = hillclimber_instance.trajectories
 
         # extend the list of all K's and reset highest K
         self.all_K_values.append(self.K_values)
@@ -152,7 +122,7 @@ class Main:
         self.K_values = 0
 
         hillclimber_instance = Hillclimber(self.max, self.region)
-        hillclimber_instance.run()
+        hillclimber_instance.run(self.iterations)
         
         # set variables for visualisation
         self.trajectories = hillclimber_instance.trajectories
@@ -186,7 +156,7 @@ class Main:
         
         # let the user know the algorithm is running
         print\
-        (f"\nUsing Random algorithm in {self.region} {self.iterations} times...")
+        (f"\nUsing Pool algorithm in {self.region} {self.iterations} times...")
         
         for i in range(0, self.iterations):
             # initiate the algorithm
@@ -198,10 +168,9 @@ class Main:
 
             self.K_values.append(rail.K)
 
-            if rail.K > self.highest_K:
-                self.trajectories = rail.network
-                self.highest_K = rail.K
-                self.K_value_output = self.highest_K
+        # for csv file
+        self.trajectories = rail.network
+        self.K_value_output = rail.K
 
         # extend the list of all K's and reset highest K
         self.all_K_values.append(self.K_values)
@@ -227,9 +196,13 @@ class Main:
         assert self.trajectories is not None,\
             "\n\nYou need to set the trajectories made to self.trajectories.\
             Check the end of baseline method in class Main for example.\n"
-            
         # plot rails of best_rail
         v = Visualisation(self.region, self.trajectories)
+
+        # stop visualising when we only want boxplots
+        if v.boxplot(self.all_K_values) == True:
+            return
+        
         v.load_stations()
         v.load_sizes()
         v.get_connections()
@@ -240,6 +213,8 @@ class Main:
         v.histogram(self.K_values, self.iterations)
         # plot all K's next to eachother from all algorithms
         v.boxplot(self.all_K_values)
+
+        return
 
     def output(self, algorithm):
         # set column names

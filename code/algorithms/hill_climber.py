@@ -51,16 +51,9 @@ class Hillclimber:
         self.original_quality = S.calculate_K_simple()
         # save K for plotting
         self.K_values.append(self.original_quality)
-        # print(self.original_quality)
         
         #keep track of original trajectory
         self.original_trajectory = random_network
-
-        
-        # or trajectory in self.trajectories:
-#             print("NEW TRAJECTORY:")
-#             for station in trajectory.stations:
-#                 print(station.name)
 
     def choose_random_trajectory(self):
         #randomly select a trajectory from the railmap and remove it from network after creating a copy
@@ -71,10 +64,7 @@ class Hillclimber:
     def new_trajectory(self):
         baseline = Baseline(self.max, self.region)
         self.new_traj = baseline.start_trajectory()
-        print("nieuw traject")
-        for station in self.new_traj.stations:
-            print(station.name)
-        print()
+
         # Continue the trajectory until a stopping condition is met
         while True:
             result = self.baseline_instance.continue_trajectory(self.new_traj)
@@ -89,22 +79,18 @@ class Hillclimber:
     
     def compare(self):
         improvement = self.new_quality > self.original_quality
-        print("nieuw:",self.new_quality)
-        print("oud", self.original_quality)
+
         if improvement: 
             self.original_trajectory = self.trajectories
             self.original_quality = self.new_quality
-            print("accepted")
             
-    def run(self):
-        iterations = 100
+    def run(self, iterations):
         self.random_railmap()
         
         for i in range(100):
             self.choose_random_trajectory()
             self.new_trajectory()
             self.compare()
-        print(self.original_quality)
             
             
             
