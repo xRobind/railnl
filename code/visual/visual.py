@@ -136,20 +136,26 @@ class Visualisation:
         # plt.savefig(f"hist_{self.region}.png")
         plt.show()
 
-    def boxplot(self, all_K_values):
+    def boxplot(self, all_K_values, t = None):
         """plot the K's of all algorithms and their averages next to eachother
         for comparison reasons.
+        Return True to only plot boxplot while visualising.
         """
         try:
             plt.title("K's of our algorithms")
             plt.boxplot(all_K_values, showfliers=True, labels=["baseline", "hill climber", "pool", "simulated annealing"])
             # plt.savefig(f"boxplot_compare_{self.region}")
             plt.show()
+            
+            return True
+        
         except(ValueError):
             plt.title("K-values")
             plt.boxplot(all_K_values, showfliers=True)
-            # plt.savefig(f"boxplot_{self.region}")
+            plt.savefig("boxplot_{t}_{self.region}.png")
             plt.show()
+
+            return False
         
 
 

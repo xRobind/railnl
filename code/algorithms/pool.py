@@ -56,13 +56,8 @@ class Pool:
         """
         # create a new train table and calculate it's K
         self.create_network()
-        k = self.calculate_K()
-
-        # update if it is better or the same, 
-        # otherwise revert back to old train table
-        if k >= self.K:
-            self.K = k
-            self.best_network = self.network
+        S = Schedule(self.network, self.B.total_connections)
+        self.K = S.calculate_K_simple()
 
     def calculate_K(self):
         """calculate the quality of the train table using Schedule class.
