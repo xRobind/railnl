@@ -1,5 +1,6 @@
 # this file contains functions that retrieves input from a user,
 # and handles our different algorithms
+import csv
 
 from code.algorithms.baseline import Baseline
 from code.algorithms.hill_climber import Hillclimber
@@ -28,8 +29,8 @@ class Main:
         and the max trajectories to be used in a railmap
         """
         # retrieve existing algorithm
-        # self.algorithm = input("\nWhich algorithm?\n")
-        self.algorithm = "simulated annealing"
+        self.algorithm = input("\nWhich algorithm?\n")
+        # self.algorithm = "simulated annealing"
 
 
         # choose between all our algorithms
@@ -201,8 +202,16 @@ class Main:
         self.highest_K = 0
     
     def simulated_annealing(self):
+        # reset K's
+        self.K_values = []
+
         simulated_annealing_instance = Simulated_annealing(self.max, self.region)
         simulated_annealing_instance.run()
+
+        # for visualisation
+        self.trajectories = simulated_annealing_instance.trajectories
+        self.K_values = simulated_annealing_instance.K_values
+        self.all_K_values.append(simulated_annealing_instance.K_values)
         
 
     def visualisation(self):
@@ -225,6 +234,37 @@ class Main:
         # plot all K's next to eachother from all algorithms
         v.boxplot(self.all_K_values)
 
+    def output(self):
+        # set column names
+        fields = ["train", "stations"]
+
+        # lists to store stations in
+        stations = []
+        all_stations = []
+
+        # loop through every trajectory and add every station
+        for trajectory in self.trajectories:
+            for station in trajectory.stations:
+                stations.append(station.name)
+            all_stations.append(stations)
+
+        rows = []
+
+        for i in range(0, len(all_stations)):
+            rows.append([f"train_{i + 1}", f"{all_stations[i]}"])
+
+        filename = "output.csv"
+
+        # writing to csv file
+        with open(filename, 'w') as csvfile:
+            # creating a csv writer object
+            csvwriter = csv.writer(csvfile)
+        
+            # writing the fields
+            csvwriter.writerow(fields)
+        
+            # writing the data rows
+            csvwriter.writerows(rows)
 
 
         

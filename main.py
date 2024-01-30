@@ -10,6 +10,7 @@ if __name__ == "__main__":
         # initialise and run baseline algorithm
         main.baseline()
         main.visualisation()
+        main.output()
     
     # execution of hill climber algorrithm
     elif main.algorithm == "hill climber":
@@ -27,13 +28,15 @@ if __name__ == "__main__":
         
     elif main.algorithm == "simulated annealing":
         main.simulated_annealing()
-        # main.visualisation()
+        main.visualisation()
+        main.output()
 
     elif main.algorithm == "all":
         main.baseline()
         main.hill_climber()
         # main.beam()
         main.pool()
+        main.simulated_annealing()
         main.visualisation()
     
 
