@@ -30,7 +30,7 @@ class Main:
         """
         # retrieve existing algorithm
         # self.algorithm = input("\nWhich algorithm?\n")
-        self.algorithm = "simulated annealing"
+        self.algorithm = "hill climber"
 
 
         # choose between all our algorithms
