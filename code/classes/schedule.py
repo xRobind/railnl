@@ -46,12 +46,12 @@ class Schedule:
             self.time += trajectory.time
 
             for i in range(0, len(trajectory.stations) - 1):
-                if (trajectory.stations[i + 1], trajectory.stations[i])\
+                if (trajectory.stations[i + 1].name, trajectory.stations[i].name)\
                 not in connections:
-                    connections.append((trajectory.stations[i],
-                                    trajectory.stations[i + 1]))
+                    connections.append((trajectory.stations[i].name, \
+                                        trajectory.stations[i + 1].name))
         
-        connections = set(connections)
+        connections = list(set(connections))
 
         p = len(connections) / self.all_connections
         print("\nberekening K:")

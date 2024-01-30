@@ -64,7 +64,6 @@ class Hillclimber:
 
     def choose_random_trajectory(self):
         #randomly select a trajectory from the railmap and remove it from network after creating a copy
-        print(self.trajectories)
         self.random_trajectory = random.choice(self.trajectories)
         self.trajectories.remove(self.random_trajectory)
         
@@ -72,9 +71,10 @@ class Hillclimber:
     def new_trajectory(self):
         baseline = Baseline(self.max, self.region)
         self.new_traj = baseline.start_trajectory()
-        # for station in self.new_traj.stations:
-#             print(station.name)
-
+        print("nieuw traject")
+        for station in self.new_traj.stations:
+            print(station.name)
+        print()
         # Continue the trajectory until a stopping condition is met
         while True:
             result = self.baseline_instance.continue_trajectory(self.new_traj)
@@ -86,8 +86,6 @@ class Hillclimber:
         S = Schedule(self.trajectories, self.baseline_instance.total_connections)
         self.new_quality = S.calculate_K_simple()
         self.K_values.append(self.new_quality)
-            
-        print("TRAJECTORIES", self.trajectories)
     
     def compare(self):
         improvement = self.new_quality > self.original_quality
