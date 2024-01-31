@@ -136,7 +136,6 @@ class IDS:
         ##add number of connections to all station objects
         for station in self.stations:
             station.nmbr()
-            print(station.connections[0].station.name, station.connections[0].connection.name ,station.connections[0].time)
 
     def start_trajectory(self):
         """initialize a trajectory with a starting station and amount of stops
@@ -167,11 +166,6 @@ class IDS:
             try:
                 current_schedule = self.stack.pop()
             except AssertionError: 
-                for i in range(len(self.list_all[-1].trajectories)):
-                    print("nieuwe")
-                    print(self.list_all[-1].trajectories[i].time)
-                    for j in range(len(self.list_all[-1].trajectories[i].stations)):
-                        print(self.list_all[-1].trajectories[i].stations[j].station.name , self.list_all[-1].trajectories[i].stations[j].connection.name)
                 return self.list_all[-1], self.list_all[-1].calculate_K2()
         
             ##look at possible next connection    
