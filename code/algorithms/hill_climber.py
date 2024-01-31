@@ -42,19 +42,11 @@ class Hillclimber:
         # Continue the trajectory until a stopping condition is met
         while True:
             result = self.baseline_instance.continue_trajectory(random_network)
-<<<<<<< HEAD
+            
             if result == "stop":
                 self.trajectories.append(random_network)
                 break
-=======
 
-            if result == "stop" and random_network != "stop":
-                self.trajectories.append(random_network)
-                break
-            elif result == "stop" and random_network == "stop":
-                break
->>>>>>> eef070c8feb5a0bbf8831ca58eaccb927ea98972
-            elif result == "new trajectory":
                 self.trajectories.append(random_network)
                 random_network = self.baseline_instance.start_trajectory()
 

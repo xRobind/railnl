@@ -103,10 +103,9 @@ class IDS:
                     connection = parts[1]
                 except(IndexError):
                     break
-                if "Holland" in filename:
-                    time = int(parts[2].strip("\n"))
-                else:
-                    time = int(parts[2].strip(".0\n"))
+
+                time = float(parts[2].strip("\n"))
+
 
                 
                 for station in self.stations:
@@ -146,8 +145,8 @@ class IDS:
         
         ##add number of connections to all station objects
         for station in self.stations:
-            station.nmbr()    
-
+            station.nmbr()
+            print(station.connections[0].station.name, station.connections[0].connection.name ,station.connections[0].time)
 
     def start_trajectory(self):
         """initialize a trajectory with a starting station and amount of stops
@@ -177,9 +176,14 @@ class IDS:
             ##if no schedules left, return the best one present
             try:
                 current_schedule = self.stack.pop()
-            except AssertionError:         
+            except AssertionError: 
+                for i in range(len(self.list_all[-1].trajectories)):
+                    print("nieuwe")
+                    print(self.list_all[-1].trajectories[i].time)
+                    for j in range(len(self.list_all[-1].trajectories[i].stations)):
+                        print(self.list_all[-1].trajectories[i].stations[j].station.name , self.list_all[-1].trajectories[i].stations[j].connection.name)
                 return self.list_all[-1], self.list_all[-1].calculate_K2()
-                
+        
             ##look at possible next connection    
             for next_connection in current_schedule.trajectories[-1].stations[-1].connection.connections:
                 if current_schedule.trajectories[-1].stations[-1].corresponding.connection_id != next_connection.connection_id: 
@@ -225,8 +229,7 @@ class IDS:
 
  
     def make_trajectories(self):
-        self.list_all = []
-                            
+        self.list_all = []                    
         while len(self.stack.items) > 1:
             current_schedule2 = self.stack.pop()
                                 
