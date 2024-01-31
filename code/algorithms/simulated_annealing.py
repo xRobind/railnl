@@ -84,14 +84,14 @@ class Simulated_annealing:
 
         # Continue the trajectory until a stopping condition is met
         while True:
-            result = self.baseline_instance.continue_trajectory(self.new_traj)
+            result = self.baseline.continue_trajectory(self.new_traj)
 
             if result == "stop" or result == "new trajectory":
                 self.trajectories.append(self.new_traj)
                 break
                 
         #calculate and save the quality of the new network
-        S = Schedule(self.trajectories, self.baseline_instance.total_connections)
+        S = Schedule(self.trajectories, self.baseline.total_connections)
         self.new_quality = S.calculate_K_simple()
         #save K fot plotting
         self.K_values.append(self.new_quality)
