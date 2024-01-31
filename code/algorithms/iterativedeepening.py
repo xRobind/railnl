@@ -98,7 +98,6 @@ class IDS:
                 else:
                     time = float(parts[2].strip("\n"))
 
-                
                 for station in self.stations:
                     if name == station.name:
                         for station2 in self.stations:

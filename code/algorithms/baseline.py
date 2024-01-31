@@ -14,7 +14,7 @@ class Baseline:
     stations are used. It then uses a known formula to calculate the quality
     of the lines. The goal is to implement its methods in such a way that the
     quality of the lines will end up the closest to the number 10000.
-    """    
+    """
 
     def __init__(self, max: int, region: str) -> None:
         """initialise lists that contain stations as objects of the class,
@@ -30,18 +30,18 @@ class Baseline:
         self.stations = load.stations()
         self.connections = load.connections()
         self.total_connections = len(self.connections)
-        
+
         #set maximum of trajectories
         self.max_trajectories = max
 
     def start_trajectory(self) -> Any:
         """initialize a trajectory with a starting station and amount of stops
-        that it will make
+        that it will make.
         """
         # stop if the maximum of trajectories
         if len(self.trajectories) == self.max_trajectories:
             return "stop"
-        
+
         # random starting station from our list of station objects
         starting_station = random.choice(self.stations)
 
