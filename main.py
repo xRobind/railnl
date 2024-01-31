@@ -17,9 +17,9 @@ if __name__ == "__main__":
         main.output("hill_climber")
 
     elif main.algorithm == "beam":
-        #testen
         main.beam()
         main.visualisation()
+        main.output("beam")
 
     elif main.algorithm == "pool":
         main.pool()

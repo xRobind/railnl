@@ -46,7 +46,7 @@ class Hillclimber:
             if result == "stop":
                 self.trajectories.append(random_network)
                 break
-
+            elif result == "new trajectory":
                 self.trajectories.append(random_network)
                 random_network = self.baseline_instance.start_trajectory()
 
