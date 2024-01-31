@@ -20,6 +20,8 @@ For the hill climber algorithm we first randomly generate a network using the ba
 The simulated annealing algorithm almost works he same as the hill climber algorithm. The only difference is that with the simulated annealing algorithm declines in quality can sometimes still lead te a raplacement of the old network. The probabilty that this happens depends on the number of iterations, the temparature and the old and new quality's. 
 
 - Iterative Deepening
+  
+The iterative deepening algorithm creates multiple schedules. It then adds a certain number of connections, depending on the depth set in the code. After the depth is reached, the algrotihm takes the best number of schedules, how many depends on the breadth set in the code. This process repeats itself, untill it reaches the goal or cannot go further.
 
 ## Usage
 When entering "python3 main.py" in the terminal, you will be asked a couple of things like which algorithm you want to use on which region etc. After filling this in, the programme will be run. Csv files with K-values will be saved and plots for visualisation will be shown.
