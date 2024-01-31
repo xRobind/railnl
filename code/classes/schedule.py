@@ -21,12 +21,17 @@ class Schedule:
         self.p: float = 0
         
     def calculate_K2(self) -> float:
+        """Function to calculate the quality of a network, 
+        returns the quality. Used in the iterative 
+        deepening algorithm."""
         for trajectory in self.trajectories:
             self.time += trajectory.time
             for connection in trajectory.stations:
                 if connection.connection_id in self.connections_over:
+                    # Mark connections as used
                     self.connections_used.append(connection.connection_id)
                     self.connections_used.append(connection.corresponding.connection_id)
+                    # Remove used connections from available list
                     self.connections_over.remove(connection.connection_id)
                     self.connections_over.remove(connection.corresponding.connection_id)
                         
@@ -40,6 +45,9 @@ class Schedule:
         return self.score
 
     def calculate_K_simple(self) -> float:
+        """Function to calculate the quality of a network,
+        returns the quality. Used in the hill climber, simulated
+        annealing, baseline and pool algorithm."""
         connections = []
 
         for trajectory in self.trajectories:
@@ -48,6 +56,7 @@ class Schedule:
             for i in range(0, len(trajectory.stations) - 1):
                 if (trajectory.stations[i + 1].name, trajectory.stations[i].name)\
                 not in connections:
+                    # Track unique connections in the schedule
                     connections.append((trajectory.stations[i].name, \
                                         trajectory.stations[i + 1].name))
         
@@ -58,8 +67,7 @@ class Schedule:
         return p * 10000 - (len(self.trajectories) * 100 + self.time)
 
     def add_trajectory(self, trajectory) -> None:
+        """Add a new trajectorry to the Schedule."""
         self.trajectories.append(trajectory)
         
-    def write_output():
-        pass
     
