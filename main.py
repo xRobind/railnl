@@ -28,7 +28,7 @@ if __name__ == "__main__":
         
     elif main.algorithm == "simulated annealing":
         main.simulated_annealing()
-        main.visualisation(500)
+        main.visualisation()
         main.output("simulated annealing")
 
     elif main.algorithm == "all":

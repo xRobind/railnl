@@ -70,14 +70,15 @@ class Simulated_annealing:
         self.random_trajectory = random.choice(self.trajectories)
         self.trajectories.remove(self.random_trajectory)
 
+
     def new_trajectory(self) -> None:
         """Makes a random trajectory, adds it to the previous
         network and calculates the quality of this new network.
         """
-        baseline = Baseline(self.max, self.region)
-        self.new_traj = baseline.start_trajectory()
+        self.baseline = Baseline(self.max, self.region)
+        self.new_traj = self.baseline.start_trajectory()
 
-        # Continue the trajectory until a stopping condition is met
+        # continue the trajectory until a stopping condition is met
         while True:
             result = self.baseline.continue_trajectory(self.new_traj)
 
@@ -85,10 +86,8 @@ class Simulated_annealing:
                 self.trajectories.append(self.new_traj)
                 break
 
-        #calculate and save the quality of the new network
         S = Schedule(self.trajectories, self.baseline.total_connections)
         self.new_quality = S.calculate_K_simple()
-        #save K fot plotting
         self.K_values.append(self.new_quality)
     
     def calculate_temperature(self) -> None:
