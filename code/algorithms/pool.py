@@ -30,7 +30,7 @@ class Pool:
             # empty list and start again
             self.B.trajectories = []
             trajectory = self.B.start_trajectory()
-            
+
             # continue a trajectory until a stopping condition is met
             # and add the completed trajectory to the list
             while True:
@@ -42,7 +42,7 @@ class Pool:
 
     def create_network(self) -> None:
         """Create a train table with the maximum amount of trajectories.
-        """        
+        """
         self.network = []
 
         # randomly choose a trajectory to add to the train table
