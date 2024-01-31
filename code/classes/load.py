@@ -60,7 +60,7 @@ class Load:
                 if self.region == "Holland":
                     time = int(parts[2].strip("\n"))
                 else:
-                    time = int(parts[2].strip(".0\n"))
+                    time = float(parts[2].strip("\n"))
 
                 # add connection to connection list in Station class,
                 # and the list of all connections,

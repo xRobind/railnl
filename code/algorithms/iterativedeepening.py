@@ -1,20 +1,10 @@
-import random
-import sys
-import matplotlib.pyplot as plt
 import copy
-import gc
-
-sys.path.append('../classes')
-sys.path.append('code/classes')
-sys.path.append('../..')
 
 from code.classes.stations import Station
 from code.classes.trajectory import Trajectory
 from code.classes.stack import Stack
 from code.classes.connection import Connection
 from code.classes.schedule import Schedule
-
-# import psutil, collections, os
 
 
 class IDS:
@@ -103,9 +93,10 @@ class IDS:
                     connection = parts[1]
                 except(IndexError):
                     break
-
-                time = float(parts[2].strip("\n"))
-
+                if "Holland" in filename:
+                    time = int(parts[2].strip("\n"))
+                else:
+                    time = float(parts[2].strip("\n"))
 
                 
                 for station in self.stations:
