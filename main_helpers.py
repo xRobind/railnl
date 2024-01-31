@@ -25,7 +25,6 @@ class Main:
         self.highest_K = 0
         self.iterations = 1000
         self.trajectories = None
-        self.runtime = 30
         self.K_value_output = 0
 
     def user_input(self):
@@ -62,6 +61,7 @@ class Main:
         self.max = int(input("\nWhat is the maximum of trajectories?\n"))
         # self.max = 20
 
+        self.runtime = int(input("\nFor how many seconds do you want to run?\n"))
 
         # must be between 1 and 7
         while self.max < 1 or self.max > 45:
@@ -85,7 +85,7 @@ for {self.runtime} seconds...")
         n_runs = 0
 
         # csv file to store K's
-        filename = f"baseline_K_{self.runtime}s.csv"
+        filename = f"baseline_K_{self.runtime}s_{self.region}.csv"
         # writing to csv file
         with open(filename, 'w') as csvfile:
             # creating a csv writer object
@@ -145,34 +145,34 @@ for {self.runtime} seconds...")
         self.K_values = []
 
         # let the user know the algorithm is running
-       #  print(f"\nUsing Hill climber algorithm in {self.region} \
-# for {self.runtime} seconds..")
+        print(f"\nUsing Hill climber algorithm in {self.region} \
+for {self.runtime} seconds..")
         
         # use time to run the algorithm for a given time
-        # start = time.time()
-#         n_runs = 0
-#
-#         # csv file to store K's
-#         filename = f"hillclimber_K_{self.runtime}s.csv"
-#         # writing to csv file
-#         with open(filename, 'w') as csvfile:
-#             # creating a csv writer object
-#             csvwriter = csv.writer(csvfile)
-#             # write the field
-#             csvwriter.writerow(["K values"])
-#
-#         while time.time() - start < self.runtime:
-#             n_runs += 1
+        start = time.time()
+        n_runs = 0
+
+        # csv file to store K's
+        filename = f"hillclimber_K_{self.runtime}s_{self.region}.csv"
+        # writing to csv file
+        with open(filename, 'w') as csvfile:
+            # creating a csv writer object
+            csvwriter = csv.writer(csvfile)
+            # write the field
+            csvwriter.writerow(["K values"])
+
+        while time.time() - start < self.runtime:
+            n_runs += 1
 
             # run the hill climber algorithm and add the found K
-        hillclimber_instance = Hillclimber(self.max, self.region)
-        hillclimber_instance.run(self.iterations)
-        self.K_values.append(hillclimber_instance.original_quality)
+            hillclimber_instance = Hillclimber(self.max, self.region)
+            hillclimber_instance.run(self.iterations)
+            self.K_values.append(hillclimber_instance.original_quality)
 
             # write K to the data row
-            # with open(filename, 'a') as csvfile:
-#                 csvwriter = csv.writer(csvfile)
-#                 csvwriter.writerow([hillclimber_instance.original_quality])
+            with open(filename, 'a') as csvfile:
+                csvwriter = csv.writer(csvfile)
+                csvwriter.writerow([hillclimber_instance.original_quality])
     
         # add to the list of all K values
         self.all_K_values.append(self.K_values)
@@ -186,7 +186,7 @@ for {self.runtime} seconds...")
         # reset K's
         self.K_values = []
         # let the user know the algorithm is running
-        print(f"\nUsing Iterative Deepening algorithm in {self.region}")
+        print(f"\nUsing Iterative Deepening algorithm in {self.region}..")
 
         test = IDS(self.max, self.region)
         test.start_trajectory()
@@ -204,9 +204,7 @@ for {self.runtime} seconds...")
         print(k)
         self.K_values.append(k)
         self.all_K_values.append(k)
-        
-        
-        
+
         #set variables for visualisation
 
     def pool(self):
@@ -229,7 +227,7 @@ for {self.runtime} seconds...")
         n_runs = 0
 
         # csv file to store K's
-        filename = f"pool_K_{self.runtime}s.csv"
+        filename = f"pool_K_{self.runtime}s_{self.region}.csv"
         # writing to csv file
         with open(filename, 'w') as csvfile:
             # creating a csv writer object
@@ -269,7 +267,7 @@ for {self.runtime} seconds...")
         self.K_values = []
 
         # let the user know the algorithm is running
-        print(f"\nUsing Simulaed annealing algorithm in {self.region} \
+        print(f"\nUsing Simulated annealing algorithm in {self.region} \
 for {self.runtime} seconds..")
 
         # use time to run the algorithm for a given time
@@ -277,7 +275,7 @@ for {self.runtime} seconds..")
         n_runs = 0
 
         # csv file to store K's
-        filename = f"SimAn_K_{self.runtime}s.csv"
+        filename = f"SimAn_K_{self.runtime}s_{self.region}.csv"
         # writing to csv file
         with open(filename, 'w') as csvfile:
             # creating a csv writer object
@@ -302,12 +300,8 @@ for {self.runtime} seconds..")
         self.K_value_output = simulated_annealing_instance.K_values[-1]
         self.trajectories = simulated_annealing_instance.original_trajectories
         self.all_K_values.append(simulated_annealing_instance.K_values)
-        
-        
-        
-        
 
-    def visualisation(self, t):
+    def visualisation(self, t=None):
         """This method carries out the visualisation.
         """
         assert self.trajectories is not None,\
@@ -329,7 +323,7 @@ for {self.runtime} seconds..")
         # plot histogram of all K's from a single algorithm
         v.histogram(self.K_values, self.iterations)
         # plot all K's next to eachother from all algorithms
-        v.boxplot(self.all_K_values, t)
+        v.boxplot(self.all_K_values, t=None)
 
         return
 

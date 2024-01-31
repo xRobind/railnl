@@ -152,7 +152,7 @@ class Visualisation:
         except(ValueError):
             plt.title("K-values")
             plt.boxplot(all_K_values, showfliers=True)
-            plt.savefig("boxplot_{t}_{self.region}.png")
+            plt.savefig(f"boxplot_{t}_{self.region}.png")
             plt.show()
 
             return False

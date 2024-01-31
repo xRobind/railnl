@@ -14,7 +14,7 @@ from code.classes.stack import Stack
 from code.classes.connection import Connection
 from code.classes.schedule import Schedule
 
-import psutil, collections, os
+# import psutil, collections, os
 
 
 class IDS:
@@ -31,7 +31,7 @@ class IDS:
         self.stack2 = Stack()
         self.list_all = []
         self.depth = 4
-        self.breadth = 300
+        self.breadth = 400
         self.connection_breadth = 30
         if region == "Holland":
             self.time = 120
