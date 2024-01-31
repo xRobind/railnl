@@ -25,8 +25,8 @@ class IDS:
         
         ##set parameters
         self.depth = 3
-        self.breadth = 50
-        self.connection_breadth = 25
+        self.breadth = 3
+        self.connection_breadth = 3
         
         ##set maximum time and goal depending on case
         if region == "Holland":
@@ -98,7 +98,6 @@ class IDS:
                 else:
                     time = float(parts[2].strip("\n"))
 
-                
                 for station in self.stations:
                     if name == station.name:
                         for station2 in self.stations:
@@ -196,7 +195,7 @@ class IDS:
 
                         ##reset the number of connections added and increase depth
                         nr_connections_added = 0
-                        self.depth += 3
+                        self.depth += 2
 
 
     def best_schedules(self):
