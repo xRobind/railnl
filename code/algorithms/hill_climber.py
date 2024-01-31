@@ -15,7 +15,10 @@ from code.algorithms.baseline import Baseline
 
 
 class Hillclimber:
-    """ this class......."""
+    """ this class takes a random network, and than makes random 
+    changed to the network. If the change results into a better 
+    quality the original network is replaced.If not, another
+    random change is made."""
 
     def __init__(self, max, region) -> None:
         self.max = max
@@ -30,74 +33,75 @@ class Hillclimber:
         # save K's for plotting
         self.K_values = []
 
-    def random_railmap(self):
+
+    def random_railmap(self) -> None:
         """Generate a random railmap using the Baseline class."""
         # Start with a random trajectory from the baseline
-        try:
-            random_network = self.baseline_instance.start_trajectory() 
-        except(AttributeError):
-            return
-
-            
+        random_network = self.baseline_instance.start_trajectory()
+        
         # Continue the trajectory until a stopping condition is met
         while True:
             result = self.baseline_instance.continue_trajectory(random_network)
-
-            if result == "stop" and random_network != "stop":
-                print("123")
-                print(random_network)
+            if result == "stop":
                 self.trajectories.append(random_network)
                 break
-            elif result == "stop" and random_network == "stop":
-                print("456")
-                break
             elif result == "new trajectory":
-                print("789")
                 self.trajectories.append(random_network)
                 random_network = self.baseline_instance.start_trajectory()
 
-
-        # Calculate the quality of the generated railmap
+        # Calculate and save the quality of the generated railmap
         S = Schedule(self.trajectories, self.baseline_instance.total_connections)
         self.original_quality = S.calculate_K_simple()
+        
         # save K for plotting
         self.K_values.append(self.original_quality)
         
         #keep track of original trajectory
         self.original_trajectories = random_network
 
-    def choose_random_trajectory(self):
+
+    def choose_random_trajectory(self) -> None:
+        """Randomly chooses a trajectory from network,
+         and deletes it from the network."""
         #randomly select a trajectory from the railmap and remove it from network after creating a copy
         self.random_trajectory = random.choice(self.trajectories)
         self.trajectories.remove(self.random_trajectory)
         
     
-    def new_trajectory(self):
-        self.baseline = Baseline(self.max, self.region)
-        self.new_traj = self.baseline.start_trajectory()
+    def new_trajectory(self) -> None:
+        """Makes a random trajectory, adds it to the previous 
+        network and calculates the quality of this new network."""
+        baseline = Baseline(self.max, self.region)
+        self.new_traj = baseline.start_trajectory()
 
         # Continue the trajectory until a stopping condition is met
         while True:
-            result = self.baseline.continue_trajectory(self.new_traj)
-            print(result)
+            result = self.baseline_instance.continue_trajectory(self.new_traj)
 
             if result == "stop" or result == "new trajectory":
-                print(result)
                 self.trajectories.append(self.new_traj)
                 break
-
-        S = Schedule(self.trajectories, self.baseline.total_connections)
+                
+        #calculate and save the quality of the new network
+        S = Schedule(self.trajectories, self.baseline_instance.total_connections)
         self.new_quality = S.calculate_K_simple()
+        #save K fot plotting
         self.K_values.append(self.new_quality)
     
-    def compare(self):
+    
+    def compare(self) -> None:
+        """Checks if new network is an improvement, 
+        and replaces it if this is the case."""
+        #define improvement 
         improvement = self.new_quality > self.original_quality
 
         if improvement: 
+            # If the new network is an improvement, replace the original with the new one
             self.original_trajectories = copy.deepcopy(self.trajectories)
             self.original_quality = self.new_quality
             
-    def run(self, iterations):
+            
+    def run(self, iterations) -> None:
         self.random_railmap()
         
         for i in range(100):
