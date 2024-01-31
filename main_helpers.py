@@ -69,10 +69,10 @@ class Main:
     int(input("\nMaximum number of trajectories must be between 1 and 45.\n"))
 
     def baseline(self):
-        # reset K's
-        self.K_values = []
         """This method carries out the baseline algorithm
         """
+        # reset K's
+        self.K_values = []
         # let the user know the algorithm is running
         print(f"\nUsing Baseline algorithm in {self.region} \
 for {self.runtime} seconds...")
@@ -141,9 +141,10 @@ for {self.runtime} seconds...")
         self.highest_K = 0
     
     def hill_climber(self):
+        """This method carries out the hill climber algorithm."""
+        
         # reset K's
         self.K_values = []
-
         # let the user know the algorithm is running
         print(f"\nUsing Hill climber algorithm in {self.region} \
 for {self.runtime} seconds..")
@@ -183,6 +184,7 @@ for {self.runtime} seconds..")
 
 
     def beam(self):
+        """This mathod carries out the iterative deepening algorithm."""
         # reset K's
         self.K_values = []
         # let the user know the algorithm is running
@@ -211,6 +213,7 @@ for {self.runtime} seconds..")
         self.all_K_values.append(k)
 
     def pool(self):
+        """This method carries out the pool algorithm."""
         # reset K's
         self.K_values = []
 
@@ -266,6 +269,7 @@ for {self.runtime} seconds..")
         self.highest_K = 0
     
     def simulated_annealing(self):
+        """This method carries out the simulated annealing algorithm."""
         # reset K's
         self.K_values = []
 
