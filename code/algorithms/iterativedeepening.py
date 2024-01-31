@@ -1,20 +1,10 @@
-import random
-import sys
-import matplotlib.pyplot as plt
 import copy
-import gc
-
-sys.path.append('../classes')
-sys.path.append('code/classes')
-sys.path.append('../..')
 
 from code.classes.stations import Station
 from code.classes.trajectory import Trajectory
 from code.classes.stack import Stack
 from code.classes.connection import Connection
 from code.classes.schedule import Schedule
-
-# import psutil, collections, os
 
 
 class IDS:
@@ -106,9 +96,8 @@ class IDS:
                 if "Holland" in filename:
                     time = int(parts[2].strip("\n"))
                 else:
-                    time = int(parts[2].strip(".0\n"))
+                    time = float(parts[2].strip("\n"))
 
-                
                 for station in self.stations:
                     if name == station.name:
                         for station2 in self.stations:
@@ -146,8 +135,7 @@ class IDS:
         
         ##add number of connections to all station objects
         for station in self.stations:
-            station.nmbr()    
-
+            station.nmbr()
 
     def start_trajectory(self):
         """initialize a trajectory with a starting station and amount of stops
@@ -177,9 +165,9 @@ class IDS:
             ##if no schedules left, return the best one present
             try:
                 current_schedule = self.stack.pop()
-            except AssertionError:         
+            except AssertionError: 
                 return self.list_all[-1], self.list_all[-1].calculate_K2()
-                
+        
             ##look at possible next connection    
             for next_connection in current_schedule.trajectories[-1].stations[-1].connection.connections:
                 if current_schedule.trajectories[-1].stations[-1].corresponding.connection_id != next_connection.connection_id: 
@@ -225,8 +213,7 @@ class IDS:
 
  
     def make_trajectories(self):
-        self.list_all = []
-                            
+        self.list_all = []                    
         while len(self.stack.items) > 1:
             current_schedule2 = self.stack.pop()
                                 

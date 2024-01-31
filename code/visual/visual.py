@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
 import matplotlib
-import numpy as np
 
 class Visualisation:
+    """This class makes for the visualisation of our results.
+    A map with the made connections can be drawn, a histogram of all
+    calculated K's, and a boxplot of single or of multiple results.
+    """
 
     def __init__(self, region, trajectories) -> None:
         # dictionaries with information about size (number of connections) of stations
@@ -20,6 +23,10 @@ class Visualisation:
         matplotlib.use("TkAgg")
 
     def load_stations(self):
+        """This method loads all stations from the data file and makes sure
+        it keeps track of their x- and y-coordinates, as well as initialising
+        a variable for its size, which means the number of its connections.
+        """
         with open(f"data/Stations{self.region}.txt") as f:
             # skip first line
             next(f)
@@ -55,6 +62,9 @@ class Visualisation:
             self.y_values.append(self.y_station[station])
 
     def load_sizes(self):
+        """This method loads all connections from the data file and makes sure
+        it keeps track of its size, which means the number of its connections.
+        """
         with open(f"data/Connecties{self.region}.txt") as f:
             # skip first line
             next(f)
@@ -86,6 +96,9 @@ class Visualisation:
                 self.sizes.append(self.size_of_station[station])
 
     def get_connections(self):
+        """This method retrieves all connections by looping through the
+        trajectories.
+        """
         # for each trajectory, create a list that saves the name of the
         # stations in the trajectory
         for trajectory in self.trajectories:
@@ -99,6 +112,9 @@ class Visualisation:
                 self.connections.append((stations[i], stations [i + 1]))
 
     def draw(self):
+        """This method draws a map of the selected region and plots the
+        trajectories over it.
+        """
         # determine size of the figure and remove axes
         plt.figure()
         img = plt.imread(f"code/visual/maps/{self.region}_empty.jpeg")
@@ -111,7 +127,6 @@ class Visualisation:
         else:
             plt.imshow(img, extent=[3.1, 7.5, 50.6, 53.7])
 
-
         # make lists of all connections and plot them
         for line in self.connections:
             station, connection = line
@@ -122,6 +137,7 @@ class Visualisation:
             plt.draw()
             plt.pause(.1)
 
+        # save and show
         plt.savefig(f"railmap_{self.region}.png")
         plt.show()
 
@@ -133,13 +149,16 @@ class Visualisation:
             plt.hist(K_values, int(iterations / 4))
         else:
             plt.hist(K_values, int(iterations))
-        # plt.savefig(f"hist_{self.region}.png")
+
+        # save and show
+        plt.savefig(f"hist_{self.region}.png")
         plt.show()
 
-    def boxplot(self, all_K_values, t = None):
+    def boxplot(self, all_K_values, t = None) -> bool:
         """plot the K's of all algorithms and their averages next to eachother
         for comparison reasons.
-        Return True to only plot boxplot while visualising.
+        Return True to only plot boxplot while visualising, when running all
+        algorithms we're only interested in the comparing boxplot.
         """
         try:
             plt.title("K's of our algorithms")
