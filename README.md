@@ -9,6 +9,7 @@ We want to develop a program that provides the best possible solution for connec
 - Pool
 - Simulated Annealing
 - Iterative Deepening
+  
 The iterative deepening algorithm creates multiple schedules. It then adds a certain number of connections, depending on the depth set in the code. After the depth is reached, the algrotihm takes the best number of schedules, how many depends on the breadth set in the code. This process repeats itself, untill it reaches the goal or cannot go further.
 
 ## Usage
