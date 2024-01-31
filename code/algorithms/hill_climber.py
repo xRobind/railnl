@@ -1,8 +1,5 @@
-import sys
 import random
-import matplotlib.pyplot as plt
 import copy
-
 
 from code.classes.stations import Station
 from code.classes.trajectory import Trajectory
@@ -10,7 +7,6 @@ from code.algorithms.baseline import Baseline
 from code.classes.connection import Connection
 from code.classes.schedule import Schedule
 from code.classes.load import Load
-
 from code.algorithms.baseline import Baseline
 
 

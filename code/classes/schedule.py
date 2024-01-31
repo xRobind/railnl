@@ -1,7 +1,7 @@
-import copy
 from typing import Any
 
 from code.classes.trajectory import Trajectory
+
 
 class Schedule:
 

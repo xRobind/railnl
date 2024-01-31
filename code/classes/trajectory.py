@@ -2,6 +2,7 @@ from typing import Optional
 
 from code.classes.stations import Station
 
+
 class Trajectory:
     """this class keeps track of a trajectory and it's eslapsed
     time and visited stations

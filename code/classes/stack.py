@@ -1,4 +1,7 @@
 class Stack(object) :
+    """This class creates and handles a stack.
+    """
+    
     def __init__ (self) -> None:
         self.items: list = []
         

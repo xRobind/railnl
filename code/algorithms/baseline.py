@@ -1,6 +1,4 @@
 import random
-import sys
-import matplotlib.pyplot as plt
 from typing import Any
 
 from code.classes.stations import Station
