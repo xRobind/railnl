@@ -30,9 +30,9 @@ class IDS:
         self.stack = Stack()
         self.stack2 = Stack()
         self.list_all = []
-        self.depth = 4
-        self.breadth = 400
-        self.connection_breadth = 30
+        self.depth = 3
+        self.breadth = 7
+        self.connection_breadth = 5
         if region == "Holland":
             self.time = 120
             self.goal = 9000
@@ -182,11 +182,11 @@ class IDS:
                         if(new.calculate_K2() > self.goal):
                             return new, new.calculate_K2()
                             
-                        print(new.trajectories[-1].time, len(new.connections_used), len(new.all_connections), len(new.connections_over))
-                        for i in range(len(new.trajectories)):
-                            print("nieuwe")
-                            for j in range(len(new.trajectories[i].stations)):
-                                print(new.trajectories[i].stations[j].station.name, new.trajectories[i].stations[j].connection.name)                           
+                        # print(new.trajectories[-1].time, len(new.connections_used), len(new.all_connections), len(new.connections_over))
+                        # for i in range(len(new.trajectories)):
+                        #     # print("nieuwe")
+                        #     for j in range(len(new.trajectories[i].stations)):
+                                # print(new.trajectories[i].stations[j].station.name, new.trajectories[i].stations[j].connection.name)                           
                         for i in range(self.breadth, 1, -1):
                             self.stack.push(self.list_all[-i])
                             

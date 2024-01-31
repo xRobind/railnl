@@ -122,7 +122,7 @@ class Visualisation:
             plt.draw()
             plt.pause(.1)
 
-        # plt.savefig(f"railmap_{self.region}.png")
+        plt.savefig(f"railmap_{self.region}.png")
         plt.show()
 
     def histogram(self, K_values, iterations):
@@ -143,8 +143,8 @@ class Visualisation:
         """
         try:
             plt.title("K's of our algorithms")
-            plt.boxplot(all_K_values, showfliers=True, labels=["baseline", "hill climber", "pool", "simulated annealing"])
-            # plt.savefig(f"boxplot_compare_{self.region}")
+            plt.boxplot(all_K_values, showfliers=True, labels=["random", "hill climber", "pool", "simulated annealing"])
+            plt.savefig(f"boxplot_compare_{self.region}")
             plt.show()
             
             return True

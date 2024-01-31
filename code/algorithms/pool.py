@@ -18,12 +18,12 @@ class Pool:
         """
         self.B = Baseline(max, region)
         self.all_trajectories: list[Trajectory] = []
-        self.K = -10000
+        self.K: float = -10000.0
 
         self.create_trajectories(amount)
         self.create_network()
 
-    def create_trajectories(self, amount):
+    def create_trajectories(self, amount: int) -> None:
         """Create a number trajectories.
         """
         for i in range(0, amount):
@@ -40,7 +40,7 @@ class Pool:
                     self.all_trajectories.append(trajectory)
                     break
 
-    def create_network(self):
+    def create_network(self) -> None:
         """Create a train table with the maximum amount of trajectories.
         """        
         self.network = []
@@ -49,7 +49,7 @@ class Pool:
         for i in range(0, self.B.max_trajectories):
             self.network.append(r.choice(self.all_trajectories))
 
-    def change_network(self):
+    def change_network(self) -> None:
         """Randomly change the network by picking 7 random trajectories,
         and calculate the K after. If it is better: keep the change,
         otherwise discard it.
@@ -59,7 +59,7 @@ class Pool:
         S = Schedule(self.network, self.B.total_connections)
         self.K = S.calculate_K_simple()
 
-    def calculate_K(self):
+    def calculate_K(self) -> float:
         """calculate the quality of the train table using Schedule class.
         """
         S = Schedule(self.network, self.B.total_connections)
