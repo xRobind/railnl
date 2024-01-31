@@ -17,7 +17,7 @@ class Trajectory:
         self.nr_connections = 0
 
     def add_first_time(self) -> None:
-        self.time = self.stations[0].time
+        self.time += self.stations[0].time
         
     def add_time(self, connection_time: int) -> None:
         self.time += connection_time
@@ -29,9 +29,7 @@ class Trajectory:
     def add_connection_and_time(self, connection, max_time) -> bool:
         if self.time + connection.time > max_time:
             return False
-        # if self.stations[-1].connection_id == connection.corresponding.connection_id:
-            # if self.stations[-2].connection_id == connection.connection_id:
-                # return False
+
         self.stations.append(connection)
         self.time += connection.time
         return True
@@ -42,10 +40,6 @@ class Trajectory:
                 return False
         return True
             
-        
-    # def __str__(self) -> str:
-    #     return str(self.stations)
-        
         
         
 
